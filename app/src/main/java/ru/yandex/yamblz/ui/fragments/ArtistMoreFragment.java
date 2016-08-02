@@ -8,8 +8,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.hannesdorfmann.fragmentargs.FragmentArgs;
 import com.hannesdorfmann.fragmentargs.annotation.Arg;
@@ -21,9 +21,9 @@ import ru.yandex.yamblz.artists.ArtistModel;
 import ru.yandex.yamblz.artists.DataSingleton;
 
 @FragmentWithArgs
-public class ArtistFragment extends Fragment {
+public class ArtistMoreFragment extends Fragment {
     @Arg
-    int position;
+    int artistPosition;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +33,7 @@ public class ArtistFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_artist,container,false);
+        return inflater.inflate(R.layout.fragment_artist_more,container,false);
     }
 
     @Override
@@ -41,13 +41,22 @@ public class ArtistFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ImageView imageView= (ImageView) view.findViewById(R.id.artist_image);
         imageView.setBackgroundColor(Color.BLACK);
-        ArtistModel artistModel= DataSingleton.get().getArtists().get(position);
+        ArtistModel artistModel=DataSingleton.get().getArtists().get(artistPosition);
         Picasso.with(getContext()).load(artistModel.getBigImage()).into(imageView);
-        Button more= (Button) view.findViewById(R.id.btn_more);
-        more.setOnClickListener(v -> {
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout,
-                    new ArtistMoreFragmentBuilder(position).build()).addToBackStack(null).commit();
-        });
 
+        StringBuilder genres=new StringBuilder();
+        for(String genre :artistModel.getGenres()){
+            genres.append(genre);
+            genres.append(", ");
+        }
+        genres.delete(genres.length()-2,genres.length());
+        TextView genresTextView= (TextView) view.findViewById(R.id.artist_genres);
+        genresTextView.setText(genres.toString());
+        TextView albums= (TextView) view.findViewById(R.id.artist_albums);
+        albums.setText(String.valueOf(artistModel.getAlbums()));
+        TextView songs= (TextView) view.findViewById(R.id.artist_songs);
+        albums.setText(String.valueOf(artistModel.getTracks()));
+        TextView bioText= (TextView) view.findViewById(R.id.artist_biography);
+        bioText.setText(artistModel.getDescription());
     }
 }

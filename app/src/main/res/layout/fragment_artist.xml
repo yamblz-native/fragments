@@ -10,9 +10,10 @@
             android:layout_centerHorizontal="true"
             android:layout_height="300dp"/>
         <Button
+            android:id="@+id/btn_more"
             android:layout_below="@+id/artist_image"
             android:layout_width="200dp"
             android:layout_centerHorizontal="true"
-            android:text="more"
+            android:text="@string/more"
             android:layout_height="50dp"/>
 </RelativeLayout>

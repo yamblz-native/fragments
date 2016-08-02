@@ -19,7 +19,7 @@ public class ArtistsPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return new ArtistFragmentBuilder(artistModels.get(position).getBigImage()).build();
+        return new ArtistFragmentBuilder(position).build();
     }
 
     @Override
