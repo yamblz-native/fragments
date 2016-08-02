@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import ru.yandex.yamblz.artists.DataSingleton;
 import ru.yandex.yamblz.developer_settings.DevMetricsProxy;
 import ru.yandex.yamblz.developer_settings.DeveloperSettingsModel;
 import timber.log.Timber;
@@ -31,7 +32,9 @@ public class App extends Application {
             DevMetricsProxy devMetricsProxy = applicationComponent.devMetricsProxy();
             devMetricsProxy.apply();
         }
+        DataSingleton.init(this);
     }
+
 
     @NonNull
     protected DaggerApplicationComponent.Builder prepareApplicationComponent() {
