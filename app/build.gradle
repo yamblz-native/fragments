@@ -15,9 +15,10 @@ android {
         applicationId 'ru.yandex.yamblz'
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
-        versionCode versions.code // Notice that you may want to use BUILD_NUMBER from CI in real project with own CI.
+        versionCode versions.code
+        // Notice that you may want to use BUILD_NUMBER from CI in real project with own CI.
         versionName versions.name
-
+//        vectorDrawables.useSupportLibrary = true
         // Make generated apks contain version name and code.
         archivesBaseName = "app-${versions.name}-${versions.code}"
     }
@@ -104,6 +105,8 @@ dependencies {
     compile libraries.tinyDancer
     compile libraries.lynx
     compile libraries.processPhoenix
+
+    compile 'com.squareup.picasso:picasso:2.5.2'
 
     testCompile libraries.junit
     testCompile libraries.robolectric
