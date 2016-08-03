@@ -76,16 +76,16 @@ subprojects {
     }
 
     afterEvaluate {
-        tasks.findByName('pmd').dependsOn('assemble')
-        tasks.findByName('findbugs').dependsOn('assemble')
+//        tasks.findByName('pmd').dependsOn('assemble')
+//        tasks.findByName('findbugs').dependsOn('assemble')
+//
+//        def checkTask = tasks.findByName('check')
+//
+//        checkTask.dependsOn('pmd')
+//        checkTask.dependsOn('findbugs')
+//        checkTask.dependsOn('checkstyle')
 
-        def checkTask = tasks.findByName('check')
-
-        checkTask.dependsOn('pmd')
-        checkTask.dependsOn('findbugs')
-        checkTask.dependsOn('checkstyle')
-
-        dependencyUpdates.outputDir = new File("${projectDir}/build/reports/versions")
+//        dependencyUpdates.outputDir = new File("${projectDir}/build/reports/versions")
 
         // Log instrumentation tests results.
         tasks.withType(com.android.build.gradle.internal.tasks.AndroidTestTask) { task ->
