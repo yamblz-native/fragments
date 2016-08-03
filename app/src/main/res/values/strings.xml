@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">Yamblz</string>
     <string name="content">Hello</string>
-    <string name="title_activity_main2">Main2Activity</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="more">more</string>
     <string name="biography">Биография</string>
+    <string name="artist_song">%1$d альбомов - %2$d песен</string>
 </resources>

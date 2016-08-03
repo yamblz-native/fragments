@@ -1,10 +1,11 @@
 package ru.yandex.yamblz.ui.fragments;
 
 
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,13 +22,19 @@ import ru.yandex.yamblz.artists.ArtistModel;
 import ru.yandex.yamblz.artists.DataSingleton;
 
 @FragmentWithArgs
-public class ArtistMoreFragment extends Fragment {
+public class ArtistMoreDialogFragment extends DialogFragment {
     @Arg
     int artistPosition;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FragmentArgs.inject(this);
+    }
+
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        super.onCancel(dialog);
+        dismiss();
     }
 
     @Nullable
