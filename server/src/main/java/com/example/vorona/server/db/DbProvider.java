@@ -65,6 +65,14 @@ public class DbProvider implements DbContract {
 
     }
 
+    public void dropAndInsert(List<Singer> singers) {
+        SQLiteDatabase db = mDbOpenHelper.getWritableDatabase();
+        mDbOpenHelper.onUpgrade(db, db.getVersion(), db.getVersion()+1);
+        for (Singer singer: singers) {
+            insertSinger(singer);
+        }
+    }
+
     private ContentValues createCV(Singer singer) {
         ContentValues cv = new ContentValues();
         cv.put("id", singer.getId());

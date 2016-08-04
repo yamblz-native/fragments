@@ -3,6 +3,7 @@ package com.example.vorona.server.db;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import static com.example.vorona.server.db.DbContract.Artist.*;
 
@@ -18,6 +19,7 @@ public class DBHelper extends SQLiteOpenHelper implements DbContract{
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        Log.w("DBHelper", "Creating table");
         db.execSQL("create table " + ARTISTS + " ("
                 + LOCAL_ID + " integer primary key autoincrement,"
                 + ID +" integer,"
@@ -37,5 +39,6 @@ public class DBHelper extends SQLiteOpenHelper implements DbContract{
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE " + ARTISTS);
+        db.setVersion(newVersion);
     }
 }

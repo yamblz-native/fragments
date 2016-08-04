@@ -1,25 +1,22 @@
 package com.example.vorona.server.ui.activities;
 
 import android.app.LoaderManager;
+import android.content.ContentProvider;
+import android.content.ContentValues;
 import android.content.Loader;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.BinderThread;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.widget.TextView;
 
 import com.example.vorona.server.R;
+import com.example.vorona.server.db.DbProvider;
 import com.example.vorona.server.loaders.JsonLoader;
 import com.example.vorona.server.model.Singer;
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.appindexing.Thing;
-import com.google.android.gms.common.api.GoogleApiClient;
+import com.example.vorona.server.provider.MyContentProvider;
 
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -40,19 +37,36 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         getLoaderManager().initLoader(0, null, this);
     }
 
-
     @Override
     public Loader<List<Singer>> onCreateLoader(int i, Bundle bundle) {
         return new JsonLoader(this);
     }
 
+    static final String PROVIDER_NAME = "ru.yandex.yamblz.database";
+    static final String URL = "content://" + PROVIDER_NAME + "/artists";
+    static final Uri CONTENT_URI = Uri.parse(URL);
+
     @Override
     public void onLoadFinished(Loader<List<Singer>> loader, List<Singer> singerList) {
-//TODO put in content provider
-        if (singerList != null)
+        if (singerList != null) {
             resulst.setText("Downloaded!");
+            getContentResolver().insert(CONTENT_URI, createCV(singerList.get(0)));
+        }
         else
             resulst.setText("Failed!");
+    }
+
+    public ContentValues createCV(Singer singer) {
+        ContentValues cv = new ContentValues();
+        cv.put("id", singer.getId());
+        cv.put("name", singer.getName());
+        cv.put("bio", singer.getBio());
+        cv.put("albums", singer.getAlbums());
+        cv.put("tracks", singer.getTracks());
+        cv.put("cover", singer.getCover_big());
+        cv.put("genres", singer.getGenres());
+        cv.put("cover_small", singer.getCover_small());
+        return cv;
     }
 
     @Override

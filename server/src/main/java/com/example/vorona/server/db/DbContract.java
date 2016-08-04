@@ -6,12 +6,12 @@ package com.example.vorona.server.db;
 public interface DbContract {
     String DB_NAME = "main.sqlite";
 
-    String ARTISTS = "atrists";
+    String ARTISTS = "artists";
     interface Artist {
         String LOCAL_ID = "local_id";
         String ID = "id";
         String BIO = "bio";
-        String ALBUM = "album";
+        String ALBUM = "albums";
         String TRACKS = "tracks";
         String NAME = "name";
         String COVER = "cover";
