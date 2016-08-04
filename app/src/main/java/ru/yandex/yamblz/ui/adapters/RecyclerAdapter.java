@@ -2,6 +2,7 @@ package ru.yandex.yamblz.ui.adapters;
 
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +17,16 @@ import ru.yandex.yamblz.R;
 public abstract class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.GroupsViewHolder>
         implements View.OnClickListener {
 
-    public abstract void setPerformerSelectedListener(PerformerSelectedListener listener);
+    PerformerSelectedListener performerSelectedListener;
+
+    RecyclerAdapter(PerformerSelectedListener listener) {
+        performerSelectedListener = listener;
+    }
+
+    public void setPerformerSelectedListener(PerformerSelectedListener listener) {
+        Log.w("Adapter", "Listener Set");
+        performerSelectedListener = listener;
+    }
 
     class GroupsViewHolder extends RecyclerView.ViewHolder {
         TextView groupName, genres;
@@ -37,5 +47,14 @@ public abstract class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapt
         return new GroupsViewHolder(view);
     }
 
+
+    @Override
+    public void onClick(View v) {
+        Log.w("Adapter", "OnClick");
+        int singer = (int) v.getTag(R.id.tag);
+        if (performerSelectedListener != null) {
+            performerSelectedListener.onPerformerSelected(singer);
+        }
+    }
 
 }

@@ -28,23 +28,23 @@ public class ListFragment extends Fragment{
 
     final String POSITION = "Position";
 
-    private ListProvider mProvider;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.w("ListFragment", "OnCreateView");
         View rootView = inflater.inflate(R.layout.fragment_list, container, false);
         ButterKnife.bind(this, rootView);
         try {
-            mProvider = (ListProvider) getActivity();
-            RecyclerAdapter adapter = new FirstRecyclerAdapter(mProvider.getList());
-            adapter.setPerformerSelectedListener((PerformerSelectedListener)getActivity());
+            ListProvider mProvider = (ListProvider) getActivity();
+            RecyclerAdapter adapter = new FirstRecyclerAdapter(mProvider.getList(),
+                    (PerformerSelectedListener)getActivity());
             rv.setAdapter(adapter);
+
         } catch (ClassCastException e) {
             throw new ClassCastException(getActivity().toString()
                     + " must implement ListProvider && PerformerSelectedListener");
         }
-        setRecyclerViewLayoutManager(savedInstanceState);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        rv.setLayoutManager(layoutManager);
         return rootView;
     }
 
@@ -59,11 +59,5 @@ public class ListFragment extends Fragment{
             state.putInt(POSITION, pos);
         }
         super.onSaveInstanceState(state);
-    }
-
-
-    public void setRecyclerViewLayoutManager(Bundle savedInstanceState) {
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        rv.setLayoutManager(layoutManager);
     }
 }
