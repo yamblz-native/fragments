@@ -8,6 +8,7 @@ import android.support.v7.app.AlertDialog;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -53,6 +54,16 @@ public class FullInfoDialogFragment extends DialogFragment {
     }
 
     @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_info, null);
+        ButterKnife.bind(this, view);
+        if (getActivity().findViewById(R.id.tabs) != null)
+            getActivity().findViewById(R.id.tabs).setVisibility(View.GONE);
+        return view;
+    }
+
+    @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
@@ -75,8 +86,12 @@ public class FullInfoDialogFragment extends DialogFragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-
-
-
+        txt.setText(singer.getName());
+        bio.setMovementMethod(new ScrollingMovementMethod());
+        bio.setText(singer.getName() + " - " + singer.getBio());
+        tracks.setText("Альбомов " + singer.getAlbums() + ", треков " + singer.getTracks());
+        Context context = cover.getContext();
+        Picasso.with(context).load(singer.getCover_big()).into(cover);
+        Picasso.with(context).load(singer.getCover_big()).into(back);
     }
 }

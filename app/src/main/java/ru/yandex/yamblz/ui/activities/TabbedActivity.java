@@ -26,7 +26,6 @@ import ru.yandex.yamblz.loaders.JsonLoader;
 import ru.yandex.yamblz.model.Singer;
 import ru.yandex.yamblz.ui.adapters.PerformerSelectedListener;
 import ru.yandex.yamblz.ui.fragments.FullInfoDialogFragment;
-import ru.yandex.yamblz.ui.fragments.FullInfoFragment;
 import ru.yandex.yamblz.ui.fragments.ListFragment;
 import ru.yandex.yamblz.ui.fragments.ListProvider;
 import ru.yandex.yamblz.ui.fragments.OnMoreClicked;
@@ -57,7 +56,7 @@ public class TabbedActivity extends AppCompatActivity implements LoaderManager.L
         if (mViewPager != null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.full_info_container, FullInfoFragment.newInstance(singers.get(position)), "info")
+                    .add(R.id.full_info_container, FullInfoDialogFragment.newInstance(singers.get(position)), "info")
                     .addToBackStack("")
                     .commit();
         } else {
