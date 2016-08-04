@@ -24,11 +24,17 @@ import java.util.HashMap;
 import java.util.List;
 
 import static com.example.vorona.server.db.DbContract.ARTISTS;
+import static com.example.vorona.server.db.DbContract.Artist.ALBUM;
+import static com.example.vorona.server.db.DbContract.Artist.BIO;
+import static com.example.vorona.server.db.DbContract.Artist.COVER;
+import static com.example.vorona.server.db.DbContract.Artist.COVER_SMALL;
+import static com.example.vorona.server.db.DbContract.Artist.GENRES;
 import static com.example.vorona.server.db.DbContract.Artist.ID;
 import static com.example.vorona.server.db.DbContract.Artist.LOCAL_ID;
 import static com.example.vorona.server.db.DbContract.Artist.NAME;
+import static com.example.vorona.server.db.DbContract.Artist.TRACKS;
 
-public class MyContentProvider extends ContentProvider implements DbContract{
+public class MyContentProvider extends ContentProvider implements DbContract {
 
     static final String PROVIDER_NAME = "ru.yandex.yamblz.database";
     static final String URL = "content://" + PROVIDER_NAME + "/artists";
@@ -39,24 +45,34 @@ public class MyContentProvider extends ContentProvider implements DbContract{
     private DBHelper dbHelper;
 
     static final UriMatcher uriMatcher;
-    static{
+
+    static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(PROVIDER_NAME, "artists", ART);
         uriMatcher.addURI(PROVIDER_NAME, "artists/#", ART_ID);
     }
 
     @Override
+    public boolean onCreate() {
+        Log.w("ContentProvider", "onCreate");
+        Context context = getContext();
+        dbHelper = new DBHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        return db != null;
+    }
+
+    @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         int count = 0;
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        switch (uriMatcher.match(uri)){
+        switch (uriMatcher.match(uri)) {
             case ART:
                 count = db.delete(ARTISTS, selection, selectionArgs);
                 break;
 
             case ART_ID:
                 String id = uri.getPathSegments().get(1);
-                count = db.delete( ARTISTS, ID +  " = " + id +
+                count = db.delete(ARTISTS, ID + " = " + id +
                         (!TextUtils.isEmpty(selection) ? " AND (" + selection + ')' : ""), selectionArgs);
                 break;
 
@@ -70,7 +86,7 @@ public class MyContentProvider extends ContentProvider implements DbContract{
 
     @Override
     public String getType(Uri uri) {
-        switch (uriMatcher.match(uri)){
+        switch (uriMatcher.match(uri)) {
             case ART:
                 return "vnd.android.cursor.dir/vnd.ru.yandex.yamblz.database.artists";
             case ART_ID:
@@ -84,44 +100,19 @@ public class MyContentProvider extends ContentProvider implements DbContract{
     @Override
     public Uri insert(@NonNull Uri uri, ContentValues values) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        long rowID = db.insert(	ARTISTS, "", values);
-        if (rowID > 0)
-        {
+        Cursor presence = db.query(ARTISTS, null, NAME + " = ?", new String[]{values.get(NAME).toString()}, null, null, null);
+        if (presence.moveToFirst()) {
+            presence.close();
+            return null;
+        }
+        presence.close();
+        long rowID = db.insert(ARTISTS, "", values);
+        if (rowID > 0) {
             Uri _uri = ContentUris.withAppendedId(CONTENT_URI, rowID);
             getContext().getContentResolver().notifyChange(_uri, null);
             return _uri;
         }
         throw new SQLException("Failed to add a record into " + uri);
-    }
-
-    public void insertSingers(List<Singer> singerList) {
-        ContentResolver resolver = getContext().getContentResolver();
-        for (Singer singer: singerList) {
-            ContentValues cv = createCV(singer);
-            Uri result = resolver.insert(CONTENT_URI, cv);
-        }
-    }
-
-    public ContentValues createCV(Singer singer) {
-        ContentValues cv = new ContentValues();
-        cv.put("id", singer.getId());
-        cv.put("name", singer.getName());
-        cv.put("bio", singer.getBio());
-        cv.put("albums", singer.getAlbums());
-        cv.put("tracks", singer.getTracks());
-        cv.put("cover", singer.getCover_big());
-        cv.put("genres", singer.getGenres());
-        cv.put("cover_small", singer.getCover_small());
-        return cv;
-    }
-
-    @Override
-    public boolean onCreate() {
-        Log.w("ContentProvider", "onCreate");
-        Context context = getContext();
-        dbHelper = new DBHelper(context);
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        return db != null;
     }
 
     public Cursor query(Uri uri, String[] projection, String selection,
@@ -161,42 +152,22 @@ public class MyContentProvider extends ContentProvider implements DbContract{
                       String[] selectionArgs) {
         int count = 0;
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        switch (uriMatcher.match(uri)){
+        switch (uriMatcher.match(uri)) {
             case ART:
                 count = db.update(ARTISTS, values, selection, selectionArgs);
                 break;
 
             case ART_ID:
                 count = db.update(ARTISTS, values, ID + " = " + uri.getPathSegments().get(1) +
-                        (!TextUtils.isEmpty(selection) ? " AND (" +selection + ')' : ""), selectionArgs);
+                        (!TextUtils.isEmpty(selection) ? " AND (" + selection + ')' : ""), selectionArgs);
                 break;
 
             default:
-                throw new IllegalArgumentException("Unknown URI " + uri );
+                throw new IllegalArgumentException("Unknown URI " + uri);
         }
         getContext().getContentResolver().notifyChange(uri, null);
         return count;
     }
 
-    public List<Singer> getSingers() {
-        ContentResolver cr = getContext().getContentResolver();
-        List<Singer> singerList = new ArrayList<>();
-        Cursor c = cr.query(CONTENT_URI, null, null, null, null);
-        if (c.moveToFirst()) {
-            do {
-                Singer singer = new Singer();
-                singer.setId(c.getInt(c.getColumnIndex("id")));
-                singer.setName(c.getString(c.getColumnIndex("name")));
-                singer.setBio(c.getString(c.getColumnIndex("bio")));
-                singer.setAlbums(c.getInt(c.getColumnIndex("albums")));
-                singer.setTracks(c.getInt(c.getColumnIndex("tracks")));
-                singer.setCover_big(c.getString(c.getColumnIndex("cover")));
-                singer.setGenres(c.getString(c.getColumnIndex("genres")));
-                singer.setCover_small(c.getString(c.getColumnIndex("cover_small")));
-                singerList.add(singer);
-            } while (c.moveToNext());
-        }
-        c.close();
-        return singerList;
-    }
+
 }

@@ -28,11 +28,11 @@ public class DbProvider implements DbContract {
         mDbOpenHelper = new DBHelper(context);
     }
 
+
     public List<Singer> getSingers() {
         SQLiteDatabase db = mDbOpenHelper.getWritableDatabase();
-        String table = ARTISTS;
         List<Singer> singerList = new ArrayList<>();
-        Cursor c = db.query(table, null, null, null, null, null, null);
+        Cursor c = db.query(ARTISTS, null, null, null, null, null, null);
         if (c.moveToFirst()) {
             do {
                 Singer singer = new Singer();
@@ -56,7 +56,7 @@ public class DbProvider implements DbContract {
         ContentValues values = createCV(singer);
         db.beginTransaction();
         try {
-            db.insertOrThrow(ARTISTS, null, values);
+            db.insert(ARTISTS, null, values);
             db.beginTransaction();
         }
         finally {
@@ -65,15 +65,13 @@ public class DbProvider implements DbContract {
 
     }
 
-    public void dropAndInsert(List<Singer> singers) {
-        SQLiteDatabase db = mDbOpenHelper.getWritableDatabase();
-        mDbOpenHelper.onUpgrade(db, db.getVersion(), db.getVersion()+1);
+    public void insertList(List<Singer> singers) {
         for (Singer singer: singers) {
             insertSinger(singer);
         }
     }
 
-    private ContentValues createCV(Singer singer) {
+    public ContentValues createCV(Singer singer) {
         ContentValues cv = new ContentValues();
         cv.put("id", singer.getId());
         cv.put("name", singer.getName());
