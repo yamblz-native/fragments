@@ -26,7 +26,6 @@
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:clickable="true"
             android:gravity="center_vertical"
             android:textAlignment="center"
             android:textSize="20sp"
@@ -37,7 +36,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="3dp"
-            android:clickable="true"
             android:gravity="center_vertical"
             android:textAlignment="center"
             android:textSize="12sp" />

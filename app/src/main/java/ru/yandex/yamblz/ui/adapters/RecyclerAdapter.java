@@ -28,7 +28,7 @@ public abstract class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapt
         performerSelectedListener = listener;
     }
 
-    class GroupsViewHolder extends RecyclerView.ViewHolder {
+    class GroupsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView groupName, genres;
         ImageView cover;
 
@@ -36,6 +36,16 @@ public abstract class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapt
             super(itemView);
             groupName = (TextView) itemView.findViewById(R.id.name);
             genres = (TextView) itemView.findViewById(R.id.genres);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            Log.w("Adapter", "OnClick");
+            int singer = (int) v.getTag(R.id.tag);
+            if (performerSelectedListener != null) {
+                performerSelectedListener.onPerformerSelected(singer);
+            }
         }
     }
 
@@ -43,18 +53,13 @@ public abstract class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapt
     public GroupsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item, parent, false);
-        view.setOnClickListener(this);
         return new GroupsViewHolder(view);
     }
 
 
     @Override
     public void onClick(View v) {
-        Log.w("Adapter", "OnClick");
-        int singer = (int) v.getTag(R.id.tag);
-        if (performerSelectedListener != null) {
-            performerSelectedListener.onPerformerSelected(singer);
-        }
+
     }
 
 }
