@@ -59,8 +59,9 @@ public class ArtistFragment extends Fragment {
             });
         }else{
             btnMore.setOnClickListener(v -> {
+                ArtistMoreDialogFragment dialogFragment=ArtistMoreDialogFragmentBuilder.newArtistMoreDialogFragment(position);
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout,
-                        new ArtistMoreFragmentBuilder(position).build()).addToBackStack(null).commit();
+                        dialogFragment).addToBackStack(null).commit();
             });
         }
     }
