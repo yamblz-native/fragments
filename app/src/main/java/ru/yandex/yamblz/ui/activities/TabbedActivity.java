@@ -6,6 +6,7 @@ import android.content.Loader;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -60,11 +61,8 @@ public class TabbedActivity extends AppCompatActivity implements LoaderManager.L
                     .addToBackStack("")
                     .commit();
         } else {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.full_info_cont, FullInfoDialogFragment.newInstance(singers.get(position)), "info")
-                    .addToBackStack("")
-                    .commit();
+            DialogFragment newFragment = FullInfoDialogFragment.newInstance(singers.get(position));
+            newFragment.show(getSupportFragmentManager(), "info");
         }
     }
 
@@ -128,6 +126,7 @@ public class TabbedActivity extends AppCompatActivity implements LoaderManager.L
 
     @Override
     public void onPerformerSelected(int singer) {
+        Log.w("Activity", "PerformerSelected");
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.detail, PlaceholderFragment.newInstance(singer), "info")

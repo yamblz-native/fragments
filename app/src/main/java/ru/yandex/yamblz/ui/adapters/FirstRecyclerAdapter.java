@@ -1,6 +1,7 @@
 package ru.yandex.yamblz.ui.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -68,6 +69,7 @@ public class FirstRecyclerAdapter extends RecyclerAdapter{
      */
     @Override
     public void onClick(View v) {
+        Log.w("Adapter", "OnClick");
         int singer = (int) v.getTag(R.id.tag);
         if (performerSelectedListener != null) {
             performerSelectedListener.onPerformerSelected(singer);

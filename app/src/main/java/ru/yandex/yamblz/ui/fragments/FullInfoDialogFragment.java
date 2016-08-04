@@ -1,12 +1,13 @@
 package ru.yandex.yamblz.ui.fragments;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -35,22 +36,12 @@ public class FullInfoDialogFragment extends DialogFragment {
 
     private Singer singer;
 
-    public static FullInfoFragment newInstance(Singer singer) {
+    public static FullInfoDialogFragment newInstance(Singer singer) {
         Bundle args = new Bundle();
         args.putParcelable("Singer", singer);
-        FullInfoFragment fragment = new FullInfoFragment();
+        FullInfoDialogFragment fragment = new FullInfoDialogFragment();
         fragment.setArguments(args);
         return fragment;
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_info, null);
-        ButterKnife.bind(this, view);
-        if (getActivity().findViewById(R.id.tabs) != null)
-            getActivity().findViewById(R.id.tabs).setVisibility(View.GONE);
-        return view;
     }
 
     @Override
@@ -62,8 +53,16 @@ public class FullInfoDialogFragment extends DialogFragment {
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+
+        View view = inflater.inflate(R.layout.fragment_info, null);
+        builder.setView(view)
+                .setPositiveButton("Ok", (dialog, id) -> {
+                });
+        ButterKnife.bind(this, view);
         txt.setText(singer.getName());
         bio.setMovementMethod(new ScrollingMovementMethod());
         bio.setText(singer.getName() + " - " + singer.getBio());
@@ -71,6 +70,13 @@ public class FullInfoDialogFragment extends DialogFragment {
         Context context = cover.getContext();
         Picasso.with(context).load(singer.getCover_big()).into(cover);
         Picasso.with(context).load(singer.getCover_big()).into(back);
+        return builder.create();
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+
+
 
     }
 }
