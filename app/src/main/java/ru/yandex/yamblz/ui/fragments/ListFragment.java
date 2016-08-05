@@ -2,8 +2,6 @@ package ru.yandex.yamblz.ui.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -15,8 +13,6 @@ import android.view.ViewGroup;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.yandex.yamblz.R;
-import ru.yandex.yamblz.loaders.JsonLoader;
-import ru.yandex.yamblz.model.Singer;
 import ru.yandex.yamblz.ui.adapters.FirstRecyclerAdapter;
 import ru.yandex.yamblz.ui.adapters.PerformerSelectedListener;
 import ru.yandex.yamblz.ui.adapters.RecyclerAdapter;

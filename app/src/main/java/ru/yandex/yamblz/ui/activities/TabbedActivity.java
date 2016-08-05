@@ -1,6 +1,5 @@
 package ru.yandex.yamblz.ui.activities;
 
-import android.app.Activity;
 import android.app.LoaderManager;
 import android.content.Loader;
 import android.os.Handler;
@@ -16,13 +15,12 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 
 import java.util.List;
 
 import ru.yandex.yamblz.R;
-import ru.yandex.yamblz.loaders.JsonLoader;
+import ru.yandex.yamblz.loaders.ArtistLoader;
 import ru.yandex.yamblz.model.Singer;
 import ru.yandex.yamblz.ui.adapters.PerformerSelectedListener;
 import ru.yandex.yamblz.ui.fragments.FullInfoDialogFragment;
@@ -67,7 +65,7 @@ public class TabbedActivity extends AppCompatActivity implements LoaderManager.L
 
     @Override
     public Loader<List<Singer>> onCreateLoader(int id, Bundle args) {
-        return new JsonLoader(this);
+        return new ArtistLoader(this);
     }
 
     private Handler handler = new Handler(){
