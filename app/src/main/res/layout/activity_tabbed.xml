@@ -26,17 +26,12 @@
 
         </android.support.v7.widget.Toolbar>
 
-        <HorizontalScrollView
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabs"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scrollbars="horizontal">
+            android:layout_height="wrap_content" />
 
-            <android.support.design.widget.TabLayout
-                android:id="@+id/tabs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-        </HorizontalScrollView>
 
     </android.support.design.widget.AppBarLayout>
 
@@ -47,9 +42,9 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <FrameLayout
+        android:id="@+id/full_info_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/full_info_container" />
+        android:layout_height="match_parent" />
 
 
 </android.support.design.widget.CoordinatorLayout>

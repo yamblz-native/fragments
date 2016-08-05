@@ -7,10 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
 import ru.yandex.yamblz.R;
+import ru.yandex.yamblz.model.Singer;
 
 /**
  * Created by vorona on 03.08.16.
@@ -42,8 +44,9 @@ public class PlaceholderFragment extends Fragment {
 
         mCallback = (OnMoreClicked) getActivity();
         mProvider = (ListProvider) getActivity();
-
-        Picasso.with(getActivity()).load(mProvider.getList().get(pos).getCover_big())
+        Singer singer = mProvider.getList().get(pos);
+        ((TextView)rootView.findViewById(R.id.txtArtist)).setText(singer.getName());
+        Picasso.with(getActivity()).load(singer.getCover_big())
                 .into(((ImageView) rootView.findViewById(R.id.imgCover)));
         (rootView.findViewById(R.id.btnMore)).setOnClickListener(v -> mCallback.onArticleSelected(pos));
 

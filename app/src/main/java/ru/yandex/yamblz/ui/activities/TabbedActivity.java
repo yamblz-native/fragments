@@ -19,6 +19,8 @@ import android.view.View;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import ru.yandex.yamblz.R;
 import ru.yandex.yamblz.loaders.ArtistLoader;
 import ru.yandex.yamblz.model.Singer;
@@ -34,18 +36,23 @@ public class TabbedActivity extends AppCompatActivity implements LoaderManager.L
         OnMoreClicked, ListProvider, PerformerSelectedListener {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
-    private ViewPager mViewPager;
     private static List<Singer> singers;
+
+    @BindView(R.id.container)
+    ViewPager mViewPager;
+    @BindView(R.id.tabs)
+    TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tabbed);
-
+        ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.container);
+        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         getLoaderManager().initLoader(0, null, this);
     }
 

@@ -62,7 +62,7 @@ public class MyContentProvider extends ContentProvider implements DbContract {
     }
 
     @Override
-    public int delete(Uri uri, String selection, String[] selectionArgs) {
+    public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
         int count = 0;
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         switch (uriMatcher.match(uri)) {
@@ -85,7 +85,7 @@ public class MyContentProvider extends ContentProvider implements DbContract {
     }
 
     @Override
-    public String getType(Uri uri) {
+    public String getType(@NonNull Uri uri) {
         switch (uriMatcher.match(uri)) {
             case ART:
                 return "vnd.android.cursor.dir/vnd.ru.yandex.yamblz.database.artists";
@@ -115,7 +115,7 @@ public class MyContentProvider extends ContentProvider implements DbContract {
         throw new SQLException("Failed to add a record into " + uri);
     }
 
-    public Cursor query(Uri uri, String[] projection, String selection,
+    public Cursor query(@NonNull Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
         Log.d("Provider", "query, " + uri.toString());
 
