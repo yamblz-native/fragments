@@ -54,14 +54,14 @@ public class DbProvider implements DbContract {
     public void insertSinger(Singer singer) {
         SQLiteDatabase db = mDbOpenHelper.getWritableDatabase();
         ContentValues values = createCV(singer);
-        db.beginTransaction();
-        try {
+//        db.beginTransaction();
+//        try {
             db.insert(ARTISTS, null, values);
-            db.beginTransaction();
-        }
-        finally {
-            db.endTransaction();
-        }
+//            db.beginTransaction();
+//        }
+//        finally {
+//            db.endTransaction();
+//        }
 
     }
 

@@ -37,7 +37,7 @@ import static com.example.vorona.server.db.DbContract.Artist.TRACKS;
 public class MyContentProvider extends ContentProvider implements DbContract {
 
     static final String PROVIDER_NAME = "ru.yandex.yamblz.database";
-    static final String URL = "content://" + PROVIDER_NAME + "/artists";
+    static final String URL = "content://" + PROVIDER_NAME + "/" + ARTISTS;
     static final Uri CONTENT_URI = Uri.parse(URL);
     static final int ART = 1;
     static final int ART_ID = 2;
@@ -48,8 +48,8 @@ public class MyContentProvider extends ContentProvider implements DbContract {
 
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI(PROVIDER_NAME, "artists", ART);
-        uriMatcher.addURI(PROVIDER_NAME, "artists/#", ART_ID);
+        uriMatcher.addURI(PROVIDER_NAME, ARTISTS, ART);
+        uriMatcher.addURI(PROVIDER_NAME, ARTISTS+"/#", ART_ID);
     }
 
     @Override
@@ -144,13 +144,14 @@ public class MyContentProvider extends ContentProvider implements DbContract {
 
         cursor.setNotificationUri(getContext().getContentResolver(),
                 CONTENT_URI);
+        System.out.println(cursor.getCount());
         return cursor;
     }
 
     @Override
     public int update(@NonNull Uri uri, ContentValues values, String selection,
                       String[] selectionArgs) {
-        int count = 0;
+        int count;
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         switch (uriMatcher.match(uri)) {
             case ART:
