@@ -6,4 +6,5 @@
     <string name="more">more</string>
     <string name="biography">Биография</string>
     <string name="artist_song">%1$d альбомов - %2$d песен</string>
+    <string name="load">load</string>
 </resources>

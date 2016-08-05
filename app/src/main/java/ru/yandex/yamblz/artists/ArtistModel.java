@@ -1,19 +1,32 @@
 package ru.yandex.yamblz.artists;
 
-import java.util.ArrayList;
+import java.util.List;
 
 //Модель артиста,генерируется GSON
 public class ArtistModel {
     private long id;
     private String name;
     private Cover cover;
-    private ArrayList<String> genres;
+    private List<String> genres;
     private int tracks;
     private int albums;
     private String link;
     private String description;
 
     public ArtistModel() {
+    }
+
+    public ArtistModel(long id, String name, String imageBig, String imageSmall, List<String> genres, int tracks, int albums, String link, String description) {
+        this.id = id;
+        this.name = name;
+        this.cover = new Cover();
+        cover.big=imageBig;
+        cover.small=imageSmall;
+        this.genres = genres;
+        this.tracks = tracks;
+        this.albums = albums;
+        this.link = link;
+        this.description = description;
     }
 
     @Override
@@ -43,7 +56,7 @@ public class ArtistModel {
         return cover;
     }
 
-    public ArrayList<String> getGenres() {
+    public List<String> getGenres() {
         return genres;
     }
 
