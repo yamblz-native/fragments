@@ -3,10 +3,8 @@ package ru.yandex.yamblz.artists;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -18,8 +16,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+
+import ru.yandex.yamblz.lib.ArtistModel;
+import ru.yandex.yamblz.lib.ContentProviderContract;
+
+import static ru.yandex.yamblz.lib.ArtistModel.cursorToModel;
 
 //Singleton для получения данных об артистах из любого места приложения
 
@@ -27,8 +29,6 @@ public class DataSingleton {
     private static final String TAG = "DataSingleton";
     private static DataSingleton dataSingleton;
     private List<ArtistModel> artists;
-    private static final String AUTHORITY = "ru.yandex.yamblz.db.MyContentProvider";
-    public static final String URL = "content://" + AUTHORITY + "/artists";
 
     private DataSingleton(Context context) {
         PackageManager pm = context.getPackageManager();
@@ -40,7 +40,7 @@ public class DataSingleton {
             haveProvider = false;
         }
         if (haveProvider) {
-            artists=new ArrayList<>();
+            artists = new ArrayList<>();
             Toast.makeText(context, "have content provider", Toast.LENGTH_LONG).show();
         } else {
             loadFromJson(context);
@@ -119,13 +119,12 @@ public class DataSingleton {
 
         @Override
         protected Void doInBackground(Void... params) {
-            cursor = context.getContentResolver().query(Uri.parse(URL), null, null, null, null, null);
+            cursor = context.getContentResolver().query(Uri.parse(ContentProviderContract.URL), null, null, null, null, null);
             cursor.moveToFirst();
             if (cursor.getCount() == 0) {
                 Toast.makeText(context, "ContentProvider empty please load data", Toast.LENGTH_LONG).show();
                 cursor.close();
             } else {
-                Log.d("dsadas", DatabaseUtils.dumpCursorToString(cursor));
                 artists.clear();
                 while (cursor.moveToNext()) {
                     artists.add(cursorToModel(cursor));
@@ -134,26 +133,6 @@ public class DataSingleton {
 
             }
             return null;
-        }
-
-        private ArtistModel cursorToModel(Cursor cursor) {
-            long id = cursor.getLong(0);
-            String name = cursor.getString(1);
-            int tracks = cursor.getInt(2);
-            int albums = cursor.getInt(3);
-            String link = cursor.getString(4);
-            String description = cursor.getString(5);
-            String imageBig = cursor.getString(6);
-            String imageSmall = cursor.getString(7);
-            String genres = cursor.getString(11);
-            List<String> genresList;
-            if(genres==null){
-                genresList=new ArrayList<>();
-            }else{
-                genresList=Arrays.asList(genres.split(", "));
-            }
-
-            return new ArtistModel(id,name,imageBig,imageSmall,genresList,tracks,albums,link,description);
         }
     }
 }

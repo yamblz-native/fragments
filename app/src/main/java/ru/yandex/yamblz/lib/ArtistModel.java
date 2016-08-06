@@ -1,5 +1,9 @@
-package ru.yandex.yamblz.artists;
+package ru.yandex.yamblz.lib;
 
+import android.database.Cursor;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 //Модель артиста,генерируется GSON
@@ -87,5 +91,24 @@ public class ArtistModel {
     private static class Cover {
         public String small;
         public String big;
+    }
+
+    public static ArtistModel cursorToModel(Cursor cursor) {
+        long id = cursor.getLong(0);
+        String name = cursor.getString(1);
+        int tracks = cursor.getInt(2);
+        int albums = cursor.getInt(3);
+        String link = cursor.getString(4);
+        String description = cursor.getString(5);
+        String imageBig = cursor.getString(6);
+        String imageSmall = cursor.getString(7);
+        String genres = cursor.getString(11);
+        List<String> genresList;
+        if (genres == null) {
+            genresList = new ArrayList<>();
+        } else {
+            genresList = Arrays.asList(genres.split(", "));
+        }
+        return new ArtistModel(id, name, imageBig, imageSmall, genresList, tracks, albums, link, description);
     }
 }

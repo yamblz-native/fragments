@@ -18,8 +18,8 @@ import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs;
 import com.squareup.picasso.Picasso;
 
 import ru.yandex.yamblz.R;
-import ru.yandex.yamblz.artists.ArtistModel;
 import ru.yandex.yamblz.artists.DataSingleton;
+import ru.yandex.yamblz.lib.ArtistModel;
 
 @FragmentWithArgs
 public class ArtistMoreDialogFragment extends DialogFragment {

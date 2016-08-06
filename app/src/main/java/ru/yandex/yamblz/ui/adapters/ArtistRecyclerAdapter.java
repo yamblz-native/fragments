@@ -15,8 +15,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.yandex.yamblz.R;
-import ru.yandex.yamblz.artists.ArtistModel;
 import ru.yandex.yamblz.artists.DataSingleton;
+import ru.yandex.yamblz.lib.ArtistModel;
 import ru.yandex.yamblz.ui.fragments.ContentFragment;
 
 public class ArtistRecyclerAdapter extends RecyclerView.Adapter<ArtistRecyclerAdapter.MyViewHolder> {

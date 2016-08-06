@@ -20,8 +20,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import ru.yandex.yamblz.R;
-import ru.yandex.yamblz.artists.ArtistModel;
 import ru.yandex.yamblz.artists.DataSingleton;
+import ru.yandex.yamblz.lib.ArtistModel;
 
 @FragmentWithArgs
 public class ArtistFragment extends Fragment {
@@ -40,26 +40,26 @@ public class ArtistFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_artist,container,false);
+        return inflater.inflate(R.layout.fragment_artist, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        unbinder= ButterKnife.bind(this,view);
+        unbinder = ButterKnife.bind(this, view);
         imageView.setBackgroundColor(Color.BLACK);
-        if(savedInstanceState!=null){
-            position=savedInstanceState.getInt("position");
+        if (savedInstanceState != null) {
+            position = savedInstanceState.getInt("position");
         }
         update(position);
-        if(getContext().getResources().getBoolean(R.bool.is_tablet)){
+        if (getContext().getResources().getBoolean(R.bool.is_tablet)) {
             btnMore.setOnClickListener(v -> {
-               ArtistMoreDialogFragment dialogFragment=ArtistMoreDialogFragmentBuilder.newArtistMoreDialogFragment(position);
-                dialogFragment.show(getChildFragmentManager(),null);
+                ArtistMoreDialogFragment dialogFragment = ArtistMoreDialogFragmentBuilder.newArtistMoreDialogFragment(position);
+                dialogFragment.show(getChildFragmentManager(), null);
             });
-        }else{
+        } else {
             btnMore.setOnClickListener(v -> {
-                ArtistMoreDialogFragment dialogFragment=ArtistMoreDialogFragmentBuilder.newArtistMoreDialogFragment(position);
+                ArtistMoreDialogFragment dialogFragment = ArtistMoreDialogFragmentBuilder.newArtistMoreDialogFragment(position);
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout,
                         dialogFragment).addToBackStack(null).commit();
             });
@@ -74,14 +74,14 @@ public class ArtistFragment extends Fragment {
     }
 
     public void update(int position) {
-        this.position=position;
-        ArtistModel artistModel= DataSingleton.get().getArtists().get(position);
+        this.position = position;
+        ArtistModel artistModel = DataSingleton.get().getArtists().get(position);
         Picasso.with(getContext()).load(artistModel.getBigImage()).into(imageView);
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt("position",position);
+        outState.putInt("position", position);
     }
 }

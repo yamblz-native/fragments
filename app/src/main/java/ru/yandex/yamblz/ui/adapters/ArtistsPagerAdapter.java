@@ -7,8 +7,8 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.List;
 
-import ru.yandex.yamblz.artists.ArtistModel;
 import ru.yandex.yamblz.artists.DataSingleton;
+import ru.yandex.yamblz.lib.ArtistModel;
 import ru.yandex.yamblz.ui.fragments.ArtistFragmentBuilder;
 
 public class ArtistsPagerAdapter extends FragmentStatePagerAdapter {
