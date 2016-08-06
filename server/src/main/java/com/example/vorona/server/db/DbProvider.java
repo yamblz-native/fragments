@@ -1,9 +1,7 @@
 package com.example.vorona.server.db;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
@@ -11,7 +9,6 @@ import android.support.annotation.VisibleForTesting;
 
 import com.example.vorona.server.model.Singer;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -20,67 +17,105 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by user on 31/07/2016.
  */
-public class DbProvider implements DbContract {
+public class DbProvider {
 
-    private final DBHelper mDbOpenHelper;
+    private final DbBackend mDbBackend;
+    private final DbNotificationManager mDbNotificationManager;
+    private final CustomExecutor mExecutor;
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
+
+    public interface ResultCallback<T> {
+        void onFinished(T result);
+    }
 
     public DbProvider(Context context) {
-        mDbOpenHelper = new DBHelper(context);
+        mDbBackend = new DbBackend(context);
+        mDbNotificationManager = FakeContainer.getNotificationInstance(context);
+        mExecutor = new CustomExecutor();
     }
 
+    @VisibleForTesting
+    DbProvider(DbBackend dbBackend,
+               DbNotificationManager dbNotificationManager,
+               CustomExecutor executor) {
+        mDbBackend = dbBackend;
+        mDbNotificationManager = dbNotificationManager;
+        mExecutor = executor;
+    }
 
-    public List<Singer> getSingers() {
-        SQLiteDatabase db = mDbOpenHelper.getWritableDatabase();
-        List<Singer> singerList = new ArrayList<>();
-        Cursor c = db.query(ARTISTS, null, null, null, null, null, null);
-        if (c.moveToFirst()) {
-            do {
-                Singer singer = new Singer();
-                singer.setId(c.getInt(c.getColumnIndex("id")));
-                singer.setName(c.getString(c.getColumnIndex("name")));
-                singer.setBio(c.getString(c.getColumnIndex("bio")));
-                singer.setAlbums(c.getInt(c.getColumnIndex("albums")));
-                singer.setTracks(c.getInt(c.getColumnIndex("tracks")));
-                singer.setCover_big(c.getString(c.getColumnIndex("cover")));
-                singer.setGenres(c.getString(c.getColumnIndex("genres")));
-                singer.setCover_small(c.getString(c.getColumnIndex("cover_small")));
-                singerList.add(singer);
-            } while (c.moveToNext());
+    public void getSingers(final ResultCallback<List<Singer>> callback) {
+        mExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                final List<Singer> c =  mDbBackend.getSingers();
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        callback.onFinished(c);
+                    }
+                });
+            }
+        });
+    }
+
+    public void getSingers(final int id, final ResultCallback<Singer> callback) {
+        mExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                final Singer c =  mDbBackend.getSinger(id);
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        callback.onFinished(c);
+                    }
+                });
+            }
+        });
+    }
+
+    public void insertSinger(final Singer singer) {
+        mExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                mDbBackend.insertSinger(singer);
+                mDbNotificationManager.notifyListeners();
+            }
+        });
+    }
+
+    public void insertSingerUnique(final Singer singer) {
+        mExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                mDbBackend.insertSingerUnique(singer);
+                mDbNotificationManager.notifyListeners();
+            }
+        });
+    }
+
+    public void insertListUnique(final List<Singer> singer) {
+        mExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                mDbBackend.insertListUnique(singer);
+                mDbNotificationManager.notifyListeners();
+            }
+        });
+    }
+
+    public void insertList(final List<Singer> singer) {
+        mExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                mDbBackend.insertList(singer);
+                mDbNotificationManager.notifyListeners();
+            }
+        });
+    }
+
+    class CustomExecutor extends ThreadPoolExecutor {
+        CustomExecutor() {
+            super(2, 4, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
         }
-        c.close();
-        return singerList;
-    }
-
-    public void insertSinger(Singer singer) {
-        SQLiteDatabase db = mDbOpenHelper.getWritableDatabase();
-        ContentValues values = createCV(singer);
-//        db.beginTransaction();
-//        try {
-            db.insert(ARTISTS, null, values);
-//            db.beginTransaction();
-//        }
-//        finally {
-//            db.endTransaction();
-//        }
-
-    }
-
-    public void insertList(List<Singer> singers) {
-        for (Singer singer: singers) {
-            insertSinger(singer);
-        }
-    }
-
-    public ContentValues createCV(Singer singer) {
-        ContentValues cv = new ContentValues();
-        cv.put("id", singer.getId());
-        cv.put("name", singer.getName());
-        cv.put("bio", singer.getBio());
-        cv.put("albums", singer.getAlbums());
-        cv.put("tracks", singer.getTracks());
-        cv.put("cover", singer.getCover_big());
-        cv.put("genres", singer.getGenres());
-        cv.put("cover_small", singer.getCover_small());
-        return cv;
     }
 }

@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
 import com.example.vorona.server.R;
+import com.example.vorona.server.db.DbBackend;
 import com.example.vorona.server.db.DbProvider;
 import com.example.vorona.server.loaders.JsonLoader;
 import com.example.vorona.server.model.Singer;
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         if (singerList != null) {
             resulst.setText("Downloaded!");
             DbProvider provider = new DbProvider(this);
-            provider.insertList(singerList);
+            provider.insertListUnique(singerList);
 //            List<Singer> singers = provider.getSingers();
 //            for (Singer singer:singers)
 //                System.out.println(singer.getName());
