@@ -1,6 +1,7 @@
 package com.example.vorona.server.db;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -40,5 +41,12 @@ public class DBHelper extends SQLiteOpenHelper implements DbContract{
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE " + ARTISTS);
         db.setVersion(newVersion);
+    }
+
+    @Override
+    public void onConfigure(SQLiteDatabase db) {
+        super.onConfigure(db);
+        Cursor cursor = db.rawQuery("PRAGMA journal_mode = WAL;", null);
+        cursor.close();
     }
 }
