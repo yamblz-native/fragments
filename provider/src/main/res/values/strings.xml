@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">Fragment</string>
+    <string name="app_name">Provider</string>
     <string name="content">Hello</string>
 </resources>

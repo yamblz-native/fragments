@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ru.yandex.yamblz">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name="ru.yandex.yamblz.App"
         android:allowBackup="false"
@@ -18,6 +20,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:authorities=""
+            android:name=""
+            android:exported="true" />
+
     </application>
 
 </manifest>
