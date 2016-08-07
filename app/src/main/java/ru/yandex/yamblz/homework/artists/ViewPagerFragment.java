@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.Toast;
 
@@ -23,7 +22,7 @@ import ru.yandex.yamblz.homework.data.source.DataSourceImpl;
 /**
  * Created by platon on 06.08.2016.
  */
-public class ViewPagerFragment extends BaseFragment implements ArtistsView, SwipeRefreshLayout.OnRefreshListener
+public class ViewPagerFragment extends BaseFragment implements ArtistsView
 {
     private ArtistsPresenter presenter;
 
@@ -32,9 +31,6 @@ public class ViewPagerFragment extends BaseFragment implements ArtistsView, Swip
 
     @BindView(R.id.tab_layout)
     TabLayout tabLayout;
-
-    @BindView(R.id.swipe_view)
-    SwipeRefreshLayout swipeLayout;
 
     public static ViewPagerFragment newInstance()
     {
@@ -54,7 +50,6 @@ public class ViewPagerFragment extends BaseFragment implements ArtistsView, Swip
         updateToolbar(getString(R.string.app_name), false);
 
         presenter = new ArtistsPresenterImpl(Injection.provideDataSource(getContext().getApplicationContext()));
-        swipeLayout.setOnRefreshListener(this);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         tabLayout.setupWithViewPager(viewPager);
@@ -83,20 +78,11 @@ public class ViewPagerFragment extends BaseFragment implements ArtistsView, Swip
     }
 
     @Override
-    public void showProgressView(boolean show)
-    {
-        swipeLayout.setRefreshing(show);
-    }
+    public void showProgressView(boolean show) {}
 
     @Override
     public void showError(String error)
     {
         Toast.makeText(getContext(), error, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onRefresh()
-    {
-        presenter.fetchArtists();
     }
 }
