@@ -32,7 +32,8 @@ public interface ApplicationComponent {
 
     DevMetricsProxy devMetricsProxy();
 
-    @NonNull @Named(ApplicationModule.MAIN_THREAD_HANDLER)
+    @NonNull
+    @Named(ApplicationModule.MAIN_THREAD_HANDLER)
     Handler mainThreadHandler();
 
     void inject(@NonNull MainActivity mainActivity);

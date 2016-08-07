@@ -97,6 +97,10 @@ dependencies {
     apt libraries.butterKnifeCompiler
 
     compile libraries.timber
+    compile libraries.glide
+
+    compile libraries.rxJava
+    compile libraries.rxAndroid
 
     // Developer tools (Developer Settings)
     compile libraries.stetho
