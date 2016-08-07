@@ -23,6 +23,7 @@
     <string name="settings_music_text">Включить панельку</string>
     <string name="settings_music_summary">с Музыкой и Радио</string>
     <string name="music_preference">music_preference</string>
+    <string name="more">Подробнее</string>
 
     <plurals name="tracks">
         <item quantity="zero">%d песен</item>

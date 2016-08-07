@@ -102,6 +102,12 @@ dependencies {
     compile libraries.rxJava
     compile libraries.rxAndroid
 
+    compile libraries.icepick
+    provided libraries.icepickProcessor
+
+    compile libraries.fragmentargs
+    apt libraries.fragmentargsProcessor
+
     // Developer tools (Developer Settings)
     compile libraries.stetho
     compile libraries.leakCanary

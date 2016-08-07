@@ -10,7 +10,7 @@ import javax.inject.Named;
 import ru.yandex.yamblz.App;
 import ru.yandex.yamblz.R;
 import ru.yandex.yamblz.developer_settings.DeveloperSettingsModule;
-import ru.yandex.yamblz.ui.fragments.ArtistsListFragment;
+import ru.yandex.yamblz.ui.fragments.ArtistsPagerFragment;
 import ru.yandex.yamblz.ui.other.ViewModifier;
 
 public class MainActivity extends BaseActivity {
@@ -32,7 +32,7 @@ public class MainActivity extends BaseActivity {
         if (savedInstanceState == null) {
             supportFragmentManager
                     .beginTransaction()
-                    .replace(R.id.main_frame_layout, new ArtistsListFragment())
+                    .replace(R.id.main_frame_layout, new ArtistsPagerFragment())
                     .commit();
         }
     }
