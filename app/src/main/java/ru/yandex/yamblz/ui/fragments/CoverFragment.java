@@ -34,6 +34,8 @@ public class CoverFragment extends BaseFragment {
 
     private Unbinder unbinder;
 
+    private Artist artist;
+
     public static Fragment newInstance(Artist artist) {
         Bundle args = new Bundle();
         args.putParcelable(ARTIST_EXTRA, artist);
@@ -51,7 +53,7 @@ public class CoverFragment extends BaseFragment {
 
         Bundle args = getArguments();
         if (args != null) {
-            Artist artist = args.getParcelable(ARTIST_EXTRA);
+            artist = args.getParcelable(ARTIST_EXTRA);
             Picasso.with(getActivity())
                     .load(artist.cover().bigCover())
                     .error(R.drawable.leak_canary_icon) //TODO: delete canary icon
@@ -68,7 +70,6 @@ public class CoverFragment extends BaseFragment {
 
     @OnClick(R.id.button_more)
     public void onMoreClick() {
-        //TODO: null -> artist
-        ((MainActivity) getActivity()).showDetailedFragment(null);
+        ((MainActivity) getActivity()).showDetailedFragment(artist);
     }
 }

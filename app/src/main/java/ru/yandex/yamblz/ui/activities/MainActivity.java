@@ -1,8 +1,6 @@
 package ru.yandex.yamblz.ui.activities;
 
 import android.annotation.SuppressLint;
-import android.content.ComponentName;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
@@ -15,7 +13,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import ru.yandex.yamblz.App;
-import ru.yandex.yamblz.Contract;
 import ru.yandex.yamblz.R;
 import ru.yandex.yamblz.developer_settings.DeveloperSettingsModule;
 import ru.yandex.yamblz.model.Artist;
@@ -57,20 +54,16 @@ public class MainActivity extends BaseActivity implements LoaderManager.LoaderCa
                         .add(R.id.detail_container, new PagerFragment(), PagerFragment.FRAGMENT_TAG)
                         .commit();
             }
-
         }
-        Intent i = new Intent();
-        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        i.setAction(Contract.Service.ACTION);
-        i.setComponent(new ComponentName(Contract.Service.SERVICE_PACKAGE_NAME, Contract.Service.SERVICE_CLASS_NAME));
-
-        //startService(i);
 
         getSupportLoaderManager().initLoader(1, null, this);
     }
 
     public void onArtistSelected(Artist artist) {
-        //TODO: impl
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.detail_container, CoverFragment.newInstance(artist), CoverFragment.FRAGMENT_TAG)
+                .commit();
     }
 
     @Override

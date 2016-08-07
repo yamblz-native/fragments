@@ -6,6 +6,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +25,6 @@ import timber.log.Timber;
  */
 public class PagerFragment extends Fragment {
     public static final String FRAGMENT_TAG = "pager fragment";
-
 
     @BindView(R.id.tab_layout)
     TabLayout tabLayout;
@@ -51,7 +51,7 @@ public class PagerFragment extends Fragment {
         return v;
     }
 
-    public class MuAdapter extends FragmentPagerAdapter {
+    public class MuAdapter extends FragmentStatePagerAdapter {
 
         private List<Artist> dataset;
 
