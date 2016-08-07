@@ -1,4 +1,26 @@
 <resources>
-    <string name="app_name">Yamblz</string>
-    <string name="content">Hello</string>
+    <string name="app_name">Исполнители</string>
+    <string name="list_empty">Нет данных</string>
+    <string name="loading_message">Загрузка</string>
+    <string name="btn_details_text">Подробнее</string>
+    <string name="fragment_container_text">Выберите артиста из списка</string>
+
+    <plurals name="numberOfTracks">
+        <item quantity="zero">no tracks</item>
+        <item quantity="one">%d song</item>
+        <item quantity="two">%d songs</item>
+        <item quantity="few">%d songs</item>
+        <item quantity="many">%d songs</item>
+        <item quantity="other">%d songs</item>
+    </plurals>
+
+    <plurals name="numberOfAlbums">
+        <item quantity="zero">no albums</item>
+        <item quantity="one">%d album</item>
+        <item quantity="two">%d albums</item>
+        <item quantity="few">%d albums</item>
+        <item quantity="many">%d albums</item>
+        <item quantity="other">%d albums</item>
+    </plurals>
+
 </resources>

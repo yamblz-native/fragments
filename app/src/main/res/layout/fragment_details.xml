@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/port_scrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:id="@+id/linearLayoutPort"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/background_light">
+
+        <ImageView
+            android:id="@+id/detail_cover"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="false"
+            android:minHeight="300dp"
+            />
+
+        <TextView
+            android:id="@+id/detail_genres"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_medium"
+            android:layout_marginRight="@dimen/margin_medium"
+            android:textSize="16sp"
+            android:layout_marginTop="@dimen/margin_medium"
+            />
+
+        <TextView
+            android:id="@+id/detail_albums_songs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/margin_medium"
+            android:textSize="16sp"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:layout_marginLeft="@dimen/margin_medium" />
+
+        <TextView
+            android:id="@+id/detail_bio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Биография"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:layout_marginLeft="@dimen/margin_medium"
+            android:layout_marginRight="@dimen/margin_medium"
+            style="@style/TextAppearance.AppCompat.Large"
+            />
+        <TextView
+            android:id="@+id/detail_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_medium"
+            android:lineSpacingMultiplier="1.2"
+            style="@style/TextAppearance.AppCompat.Medium"
+            />
+        </LinearLayout>
+</ScrollView>
