@@ -2,21 +2,33 @@ package ru.yandex.yamblz.ui.activities;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
+
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import butterknife.ButterKnife;
 import ru.yandex.yamblz.App;
 import ru.yandex.yamblz.R;
 import ru.yandex.yamblz.developer_settings.DeveloperSettingsModule;
+import ru.yandex.yamblz.singerscontracts.Singer;
 import ru.yandex.yamblz.ui.fragments.ContentFragment;
+import ru.yandex.yamblz.ui.fragments.DescFragment;
+import ru.yandex.yamblz.ui.fragments.ListFragment;
+import ru.yandex.yamblz.ui.fragments.PreviewFragment;
+import ru.yandex.yamblz.ui.fragments.TabsFragment;
 import ru.yandex.yamblz.ui.other.ViewModifier;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements PreviewFragment.Callbacks, ListFragment.Callbacks {
 
     @Inject @Named(DeveloperSettingsModule.MAIN_ACTIVITY_VIEW_MODIFIER)
     ViewModifier viewModifier;
+
+    private boolean mPortrait;
 
     @SuppressLint("InflateParams") // It's okay in our case.
     @Override
@@ -26,11 +38,45 @@ public class MainActivity extends BaseActivity {
 
         setContentView(viewModifier.modify(getLayoutInflater().inflate(R.layout.activity_main, null)));
 
-        if (savedInstanceState == null) {
+        ButterKnife.bind(this);
+
+        mPortrait = findViewById(R.id.preview_fragment) == null;
+        Log.e("TAG", "PORTRAIT " + mPortrait);
+
+        if(mPortrait && savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.main_frame_layout, new ContentFragment())
+                    .add(R.id.container, TabsFragment.newInstance())
                     .commit();
         }
+    }
+
+
+    @Override
+    public void onMoreChosen(Singer singer) {
+        if(mPortrait) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.container, DescFragment.newInstance(singer))
+                    .addToBackStack(null)
+                    .commit();
+        } else {
+            DescFragment descFragment = DescFragment.newInstance(singer);
+            descFragment.show(getSupportFragmentManager(), null);
+        }
+    }
+
+    @Override
+    public void onSingerChosen(Singer singer) {
+        PreviewFragment previewFragment = (PreviewFragment)getSupportFragmentManager()
+                .findFragmentById(R.id.preview_fragment);
+        previewFragment.setSinger(singer);
+    }
+
+    @Override
+    public void onSingersShown(@NonNull List<Singer> singers) {
+        PreviewFragment previewFragment = (PreviewFragment)getSupportFragmentManager()
+                .findFragmentById(R.id.preview_fragment);
+        previewFragment.setSinger(singers.get(0));
     }
 }

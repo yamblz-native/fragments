@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin">
+    <fragment
+        android:name="ru.yandex.yamblz.ui.fragments.ListFragment"
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        android:id="@+id/list_fragment"/>
+    <fragment
+        android:name="ru.yandex.yamblz.ui.fragments.PreviewFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/preview_fragment"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"/>
+</android.support.v4.widget.DrawerLayout>
