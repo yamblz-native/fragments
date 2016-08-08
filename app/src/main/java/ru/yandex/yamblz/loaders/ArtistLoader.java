@@ -1,20 +1,11 @@
 package ru.yandex.yamblz.loaders;
 
 import android.content.AsyncTaskLoader;
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import android.util.JsonReader;
 import android.util.Log;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,9 +41,9 @@ public class ArtistLoader extends AsyncTaskLoader<List<Singer>> {
                     singer.setBio(c.getString(c.getColumnIndex("bio")));
                     singer.setAlbums(c.getInt(c.getColumnIndex("albums")));
                     singer.setTracks(c.getInt(c.getColumnIndex("tracks")));
-                    singer.setCover_big(c.getString(c.getColumnIndex("cover")));
+                    singer.setCoverBig(c.getString(c.getColumnIndex("cover")));
                     singer.setGenres(c.getString(c.getColumnIndex("genres")));
-                    singer.setCover_small(c.getString(c.getColumnIndex("cover_small")));
+                    singer.setCoverSmall(c.getString(c.getColumnIndex("cover_small")));
                     singers.add(singer);
                 } while (c.moveToNext());
                 c.close();

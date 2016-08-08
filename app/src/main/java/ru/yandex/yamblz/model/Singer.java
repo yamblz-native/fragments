@@ -7,8 +7,8 @@ public class Singer implements Parcelable{
     private long id;
     private String genres = "";
     private String link;
-    private String cover_small;
-    private String cover_big;
+    private String coverSmall;
+    private String coverBig;
     private String name = "";
     private int tracks;
     private int albums;
@@ -23,8 +23,8 @@ public class Singer implements Parcelable{
     public Singer(Parcel parcel) {
         id = parcel.readLong();
         name = parcel.readString();
-        cover_small = parcel.readString();
-        cover_big = parcel.readString();
+        coverSmall = parcel.readString();
+        coverBig = parcel.readString();
         bio = parcel.readString();
         albums = parcel.readInt();
         tracks = parcel.readInt();
@@ -67,8 +67,8 @@ public class Singer implements Parcelable{
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(id);
         dest.writeString(name);
-        dest.writeString(cover_small);
-        dest.writeString(cover_big);
+        dest.writeString(coverSmall);
+        dest.writeString(coverBig);
         dest.writeString(bio);
         dest.writeInt(albums);
         dest.writeInt(tracks);
@@ -83,12 +83,12 @@ public class Singer implements Parcelable{
         this.name = name;
     }
 
-    public void setCover_small(String cover_small) {
-        this.cover_small = cover_small;
+    public void setCoverSmall(String coverSmall) {
+        this.coverSmall = coverSmall;
     }
 
-    public void setCover_big(String cover_big) {
-        this.cover_big = cover_big;
+    public void setCoverBig(String coverBig) {
+        this.coverBig = coverBig;
     }
 
     public void setBio(String bio) {
@@ -119,12 +119,12 @@ public class Singer implements Parcelable{
         return tracks;
     }
 
-    public String getCover_small() {
-        return cover_small;
+    public String getCoverSmall() {
+        return coverSmall;
     }
 
-    public String getCover_big() {
-        return cover_big;
+    public String getCoverBig() {
+        return coverBig;
     }
 
     public long getId() {

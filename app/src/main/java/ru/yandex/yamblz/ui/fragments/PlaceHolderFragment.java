@@ -1,6 +1,5 @@
 package ru.yandex.yamblz.ui.fragments;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -46,10 +45,17 @@ public class PlaceholderFragment extends Fragment {
         mProvider = (ListProvider) getActivity();
         Singer singer = mProvider.getList().get(pos);
         ((TextView)rootView.findViewById(R.id.txtArtist)).setText(singer.getName());
-        Picasso.with(getActivity()).load(singer.getCover_big())
+        Picasso.with(getActivity()).load(singer.getCoverBig())
                 .into(((ImageView) rootView.findViewById(R.id.imgCover)));
         (rootView.findViewById(R.id.btnMore)).setOnClickListener(v -> mCallback.onArticleSelected(pos));
 
         return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mCallback = null;
+        mProvider = null;
     }
 }

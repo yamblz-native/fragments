@@ -79,8 +79,8 @@ public class FullInfoDialogFragment extends DialogFragment {
         bio.setText(singer.getName() + " - " + singer.getBio());
         tracks.setText("Альбомов " + singer.getAlbums() + ", треков " + singer.getTracks());
         Context context = cover.getContext();
-        Picasso.with(context).load(singer.getCover_big()).into(cover);
-        Picasso.with(context).load(singer.getCover_big()).into(back);
+        Picasso.with(context).load(singer.getCoverBig()).into(cover);
+        Picasso.with(context).load(singer.getCoverBig()).into(back);
         return builder.create();
     }
 
@@ -91,7 +91,7 @@ public class FullInfoDialogFragment extends DialogFragment {
         bio.setText(singer.getName() + " - " + singer.getBio());
         tracks.setText("Альбомов " + singer.getAlbums() + ", треков " + singer.getTracks());
         Context context = cover.getContext();
-        Picasso.with(context).load(singer.getCover_big()).into(cover);
-        Picasso.with(context).load(singer.getCover_big()).into(back);
+        Picasso.with(context).load(singer.getCoverBig()).into(cover);
+        Picasso.with(context).load(singer.getCoverBig()).into(back);
     }
 }
