@@ -4,6 +4,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,15 +13,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.hannesdorfmann.fragmentargs.FragmentArgs;
+import com.hannesdorfmann.fragmentargs.annotation.Arg;
+import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import ru.yandex.yamblz.R;
 import ru.yandex.yamblz.data.models.Artist;
 import ru.yandex.yamblz.ui.activities.MainActivity;
 
-public class ArtistFragment extends BaseFragment {
-    private static final String ARTIST_KEY = "ARTIST_KEY";
-
+@FragmentWithArgs
+public class ArtistDetailFragment extends DialogFragment {
     @BindView(R.id.cover_big)
     ImageView cover;
     @BindView(R.id.genres)
@@ -30,20 +35,30 @@ public class ArtistFragment extends BaseFragment {
     @BindView(R.id.description)
     TextView description;
 
+    @Arg
+    private Artist artist;
+
+    private Unbinder viewBinder;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        FragmentArgs.inject(this);
+    }
 
     @NonNull
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_artist, container, false);
+        return inflater.inflate(R.layout.fragment_artist_detail, container, false);
     }
 
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Artist artist = getArguments().getParcelable(ARTIST_KEY);
+        viewBinder = ButterKnife.bind(this, view);
         Resources resources = getResources();
 
         if (artist != null) {
@@ -64,13 +79,16 @@ public class ArtistFragment extends BaseFragment {
         }
     }
 
+    public void setArtist(Artist artist) {
+        this.artist = artist;
+    }
 
-    public static ArtistFragment newInstance(Artist artist) {
-        Bundle args = new Bundle();
-        ArtistFragment fragment = new ArtistFragment();
-        args.putParcelable(ARTIST_KEY, artist);
-        fragment.setArguments(args);
-        return fragment;
+    @Override
+    public void onDestroyView() {
+        if (viewBinder != null) {
+            viewBinder.unbind();
+        }
+        super.onDestroyView();
     }
 
     /**

@@ -1,7 +1,6 @@
 package ru.yandex.yamblz.ui.adapters;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,7 +40,6 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ArtistVi
     public void onBindViewHolder(ArtistViewHolder holder, int position) {
         Artist artist = artists.get(position);
         Context context = holder.cover.getContext();
-        Resources resources = context.getResources();
 
         Glide.with(context)
                 .load(artist.getCover().getSmall())
@@ -51,11 +49,6 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ArtistVi
                 .into(holder.cover);
 
         holder.name.setText(artist.getName());
-        holder.genres.setText(artist.getGenres());
-        int albums = artist.getAlbums();
-        int tracks = artist.getTracks();
-        holder.info.setText(resources.getQuantityString(R.plurals.albums, albums, albums) +
-                ", " + resources.getQuantityString(R.plurals.tracks, tracks, tracks));
     }
 
     @Override
@@ -68,12 +61,12 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ArtistVi
         ImageView cover;
         @BindView(R.id.name)
         TextView name;
-        @BindView(R.id.genres)
-        TextView genres;
-        @BindView(R.id.info)
-        TextView info;
 
         private OnItemCLickListener listener;
+
+        public interface OnItemCLickListener {
+            void onItemClick(int position);
+        }
 
         ArtistViewHolder(View itemView, OnItemCLickListener OnItemClickListener) {
             super(itemView);
@@ -84,12 +77,8 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ArtistVi
         @OnClick(R.id.artist_item)
         void onArtistItemClick() {
             if (listener != null) {
-                listener.onItemClick(getAdapterPosition(), cover);
+                listener.onItemClick(getAdapterPosition());
             }
-        }
-
-        public interface OnItemCLickListener {
-            void onItemClick(int position, ImageView cover);
         }
     }
 }

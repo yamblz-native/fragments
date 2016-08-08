@@ -13,7 +13,9 @@ public class IterableCursor implements Iterable<Cursor> {
 
     public IterableCursor(Cursor cursor) {
         this.cursor = cursor;
-        this.cursor.moveToPosition(-1);
+        if (cursor != null) {
+            this.cursor.moveToPosition(-1);
+        }
     }
 
     @Override
@@ -21,10 +23,10 @@ public class IterableCursor implements Iterable<Cursor> {
         return new Iterator<Cursor>() {
             @Override
             public boolean hasNext() {
-                if (cursor.isClosed() && !cursor.moveToNext()) {
+                if (cursor != null && cursor.isClosed() && !cursor.moveToNext()) {
                     cursor.close();
                 }
-                return !cursor.isClosed() && cursor.moveToNext();
+                return cursor != null && !cursor.isClosed() && cursor.moveToNext();
             }
 
             @Override

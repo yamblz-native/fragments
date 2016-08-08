@@ -1,50 +1,53 @@
 package ru.yandex.yamblz.ui.fragments;
 
+/**
+ * Created by shmakova on 08.08.16.
+ */
+
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.view.ViewPager;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import butterknife.BindView;
+
 import ru.yandex.yamblz.R;
-import ru.yandex.yamblz.managers.DataManager;
 import ru.yandex.yamblz.data.models.Artist;
+import ru.yandex.yamblz.managers.DataManager;
 import ru.yandex.yamblz.ui.activities.MainActivity;
-import ru.yandex.yamblz.ui.adapters.ArtistsFragmentStatePagerAdapter;
-import ru.yandex.yamblz.ui.other.SlidingTabLayout;
+import ru.yandex.yamblz.ui.adapters.ArtistsAdapter;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class ArtistsPagerFragment extends BaseFragment {
+public class ArtistsListFragment extends BaseFragment {
     private DataManager dataManager;
-    private FragmentManager fragmentManager;
     private Subscription subscription;
 
-    @BindView(R.id.pager)
-    ViewPager viewPager;
-    @BindView(R.id.sliding_tab_layout)
-    SlidingTabLayout slidingTabLayout;
+    @BindView(R.id.artists_list)
+    RecyclerView recyclerView;
 
     @NonNull
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_artists_pager, container, false);
+        return inflater.inflate(R.layout.fragment_artists_list, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         updateToolBar();
-        fragmentManager = getChildFragmentManager();
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(linearLayoutManager);
         dataManager = DataManager.getInstance(getContext());
         loadArtists();
     }
@@ -57,8 +60,16 @@ public class ArtistsPagerFragment extends BaseFragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(artistsList -> {
                     if (artistsList != null) {
-                        viewPager.setAdapter(new ArtistsFragmentStatePagerAdapter(fragmentManager, artistsList));
-                        slidingTabLayout.setViewPager(viewPager);
+                        ArtistsAdapter artistsAdapter = new ArtistsAdapter(artistsList, (position) -> {
+                            Artist artist = artistsList.get(position);
+                            Fragment artistFragment = new ArtistPageFragmentBuilder(artist).build();
+                            getActivity().getSupportFragmentManager()
+                                    .beginTransaction()
+                                    .replace(R.id.detail_frame_layout, artistFragment)
+                                    .addToBackStack(null)
+                                    .commit();
+                        });
+                        recyclerView.setAdapter(artistsAdapter);
                     }
                 });
     }
@@ -70,6 +81,7 @@ public class ArtistsPagerFragment extends BaseFragment {
         }
         super.onDestroyView();
     }
+
 
     /**
      * Updates toolbar

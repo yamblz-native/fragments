@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import java.util.List;
 
 import ru.yandex.yamblz.data.models.Artist;
-import ru.yandex.yamblz.ui.fragments.ArtistSlidePageFragmentBuilder;
+import ru.yandex.yamblz.ui.fragments.ArtistPageFragmentBuilder;
 
 /**
  * Created by shmakova on 07.08.16.
@@ -23,7 +23,7 @@ public class ArtistsFragmentStatePagerAdapter extends FragmentStatePagerAdapter 
 
     @Override
     public Fragment getItem(int position) {
-        return new ArtistSlidePageFragmentBuilder(artists.get(position)).build();
+        return new ArtistPageFragmentBuilder(artists.get(position)).build();
     }
 
     @Override
