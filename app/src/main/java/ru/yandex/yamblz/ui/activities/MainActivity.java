@@ -41,7 +41,6 @@ public class MainActivity extends BaseActivity implements PreviewFragment.Callba
         ButterKnife.bind(this);
 
         mPortrait = findViewById(R.id.preview_fragment) == null;
-        Log.e("TAG", "PORTRAIT " + mPortrait);
 
         if(mPortrait && savedInstanceState == null) {
             getSupportFragmentManager()

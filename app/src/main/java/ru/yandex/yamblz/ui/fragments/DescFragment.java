@@ -132,7 +132,6 @@ public class DescFragment extends BaseDialogFragment {
     }
 
     private void hideData() {
-        //TODO
         name.setText("");
         genres.setText("");
         tracks.setText("");

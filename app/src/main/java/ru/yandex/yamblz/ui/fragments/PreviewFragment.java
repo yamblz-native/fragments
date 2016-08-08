@@ -55,7 +55,6 @@ public class PreviewFragment extends BaseFragment {
     };
 
     public static PreviewFragment newInstance(Singer singer) {
-        Log.e("TAG", "SINGER " + singer);
         Bundle bundle = new Bundle();
         bundle.putParcelable(SINGER_EXTRA, singer);
 
@@ -125,7 +124,6 @@ public class PreviewFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.e("TAG", "ON RESUME " + mSinger);
         if(mSinger != null) {
             onSingerSet();
         } else if(mSingerId != NO_SINGER) {

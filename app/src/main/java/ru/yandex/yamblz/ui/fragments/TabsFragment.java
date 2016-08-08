@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,7 +66,6 @@ public class TabsFragment extends BaseFragment {
     private DataProvider.Callback<List<Singer>> mSingersCallback = new DataProvider.Callback<List<Singer>>() {
         @Override
         public void postResult(List<Singer> result) {
-            //TODO why need child FM?
             singersPager.setAdapter(new SingersPagerAdapter(getChildFragmentManager(), result));
             tabLayout.setupWithViewPager(singersPager);
         }
