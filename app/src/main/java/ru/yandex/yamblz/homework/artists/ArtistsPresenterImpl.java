@@ -30,10 +30,10 @@ public class ArtistsPresenterImpl implements ArtistsPresenter
     public void fetchArtists()
     {
         artistsView.showProgressView(true);
-        dataSource.getArtists()
+        subscriptions.add(dataSource.getArtists()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(onNext, onError);
+                .subscribe(onNext, onError));
     }
 
     @Override
