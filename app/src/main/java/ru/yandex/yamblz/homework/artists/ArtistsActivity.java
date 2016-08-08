@@ -1,44 +1,41 @@
 package ru.yandex.yamblz.homework.artists;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-
-import ru.yandex.yamblz.App;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import ru.yandex.yamblz.R;
-import ru.yandex.yamblz.developer_settings.DeveloperSettingsModule;
-import ru.yandex.yamblz.ui.activities.BaseActivity;
-import ru.yandex.yamblz.ui.other.ViewModifier;
+import ru.yandex.yamblz.homework.artists.interfaces.FragmentTransactionManager;
+import ru.yandex.yamblz.homework.artists.interfaces.ToolbarProvider;
 
-public class ArtistsActivity extends BaseActivity
+public class ArtistsActivity extends AppCompatActivity implements ToolbarProvider, FragmentTransactionManager
 {
-    @Inject
-    @Named(DeveloperSettingsModule.MAIN_ACTIVITY_VIEW_MODIFIER)
-    ViewModifier viewModifier;
+    @BindView(R.id.main_toolbar) Toolbar toolbar;
 
-    @SuppressLint("InflateParams")
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        App.get(this).applicationComponent().inject(this);
-        setContentView(viewModifier.modify(getLayoutInflater().inflate(R.layout.activity_artists, null)));
-        setupActionBar(getString(R.string.app_name), false);
+        setContentView(R.layout.activity_artists);
+        ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
+
         boolean twoPanel = getResources().getBoolean(R.bool.two_panel);
 
         if (savedInstanceState == null)
         {
-            if (!twoPanel) showFragment(ViewPagerFragment.newInstance(), false);
+            if (!twoPanel) showFragment(ViewPagerFragment.newInstance());
         }
     }
 
+    @Override
     public void showFragment(Fragment fragment, boolean toBackStack)
     {
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -49,12 +46,19 @@ public class ArtistsActivity extends BaseActivity
         transaction.commit();
     }
 
-    public void setupActionBar(String title, boolean hasBackButton)
+    @Override
+    public void showFragment(Fragment fragment)
     {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        toolbar.setTitle(title);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(hasBackButton);
+        showFragment(fragment, false);
+    }
+
+    @Override
+    public void removeFragment(Fragment fragment)
+    {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.remove(fragment);
+        transaction.commit();
     }
 
     @Override
@@ -68,5 +72,19 @@ public class ArtistsActivity extends BaseActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void updateToolbar(String title, boolean hasBackButton)
+    {
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle(title);
+        actionBar.setDisplayHomeAsUpEnabled(hasBackButton);
+    }
+
+    @Override
+    public void updateToolbar(String title)
+    {
+        updateToolbar(title, false);
     }
 }

@@ -24,7 +24,7 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ArtistsV
     private View emptyView;
     private List<Artist> artists;
     private OnItemClickListener onItemClickListener;
-    private WeakReference<Context> context;
+    private Context context;
 
     public interface OnItemClickListener
     {
@@ -34,7 +34,7 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ArtistsV
     public ArtistsAdapter(Context context, View emptyView)
     {
         this.emptyView = emptyView;
-        this.context = new WeakReference<>(context);
+        this.context = context;
     }
 
     @Override
@@ -92,7 +92,7 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ArtistsV
         public void bind(Artist artist)
         {
             artistName.setText(artist.getName());
-            Glide.with(context.get())
+            Glide.with(context)
                     .load(artist.getCoverSmall())
                     .override(100, 100)
                     .into(artistImage);

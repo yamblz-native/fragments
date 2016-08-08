@@ -16,9 +16,10 @@ import ru.yandex.yamblz.homework.Injection;
 import ru.yandex.yamblz.homework.artists.adapter.ArtistsAdapter;
 import ru.yandex.yamblz.homework.artists.interfaces.ArtistsPresenter;
 import ru.yandex.yamblz.homework.artists.interfaces.ArtistsView;
+import ru.yandex.yamblz.homework.artists.interfaces.FragmentTransactionManager;
+import ru.yandex.yamblz.homework.artists.interfaces.ToolbarProvider;
 import ru.yandex.yamblz.homework.base.BaseFragment;
 import ru.yandex.yamblz.homework.data.entity.Artist;
-import ru.yandex.yamblz.homework.data.source.DataSourceImpl;
 
 /**
  * Created by platon on 06.08.2016.
@@ -38,6 +39,15 @@ public class ArtistsListFragment extends BaseFragment implements ArtistsView,
     private ArtistsAdapter artistsAdapter;
     private ArtistsPresenter presenter;
 
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState)
+    {
+        super.onActivityCreated(savedInstanceState);
+        ToolbarProvider toolbarProvider = getToolbarProvider();
+        if (toolbarProvider != null) toolbarProvider.updateToolbar(getString(R.string.app_name));
+    }
+
     @Override
     protected int getLayout()
     {
@@ -50,8 +60,10 @@ public class ArtistsListFragment extends BaseFragment implements ArtistsView,
         super.onViewCreated(view, savedInstanceState);
 
         presenter = new ArtistsPresenterImpl(Injection.provideDataSource(getContext().getApplicationContext()));
+
         artistsAdapter = new ArtistsAdapter(getContext(), emptyView);
         artistsAdapter.setOnItemClickListener(this);
+
         swipeLayout.setOnRefreshListener(this);
         rv.setAdapter(artistsAdapter);
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -101,6 +113,8 @@ public class ArtistsListFragment extends BaseFragment implements ArtistsView,
     public void onItemClick(View view, int position)
     {
         Artist artist = artistsAdapter.getList().get(position);
-        replaceFragment(ArtistsFragment.newInstance(artist), false);
+        FragmentTransactionManager fragmentTransactionManager = getFragmentTransactionManager();
+        if (fragmentTransactionManager != null)
+            fragmentTransactionManager.showFragment(ArtistsFragment.newInstance(artist), false);
     }
 }

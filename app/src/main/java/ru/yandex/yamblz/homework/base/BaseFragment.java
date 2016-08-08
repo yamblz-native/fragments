@@ -1,5 +1,6 @@
 package ru.yandex.yamblz.homework.base;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,8 +10,9 @@ import android.view.ViewGroup;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import ru.yandex.yamblz.R;
 import ru.yandex.yamblz.homework.artists.ArtistsActivity;
+import ru.yandex.yamblz.homework.artists.interfaces.FragmentTransactionManager;
+import ru.yandex.yamblz.homework.artists.interfaces.ToolbarProvider;
 
 /**
  * Created by platon on 06.08.2016.
@@ -18,8 +20,21 @@ import ru.yandex.yamblz.homework.artists.ArtistsActivity;
 public abstract class BaseFragment extends Fragment
 {
     private Unbinder unbinder;
+    private ToolbarProvider toolbarProvider;
+    private FragmentTransactionManager fragmentTransactionManager;
 
     protected abstract int getLayout();
+
+    @Override
+    public void onAttach(Context context)
+    {
+        super.onAttach(context);
+        if (getActivity() instanceof ArtistsActivity)
+        {
+            toolbarProvider = (ToolbarProvider) getActivity();
+            fragmentTransactionManager = (FragmentTransactionManager) getActivity();
+        }
+    }
 
     @Nullable
     @Override
@@ -42,14 +57,13 @@ public abstract class BaseFragment extends Fragment
         super.onDestroyView();
     }
 
-    protected void updateToolbar(String name, boolean hasBackButton)
+    protected FragmentTransactionManager getFragmentTransactionManager()
     {
-        if (name == null) name = getString(R.string.app_name);
-        ((ArtistsActivity) getActivity()).setupActionBar(name, hasBackButton);
+        return fragmentTransactionManager;
     }
 
-    protected void replaceFragment(Fragment fragment, boolean toBackStack)
+    protected ToolbarProvider getToolbarProvider()
     {
-        ((ArtistsActivity) getActivity()).showFragment(fragment, toBackStack);
+        return toolbarProvider;
     }
 }

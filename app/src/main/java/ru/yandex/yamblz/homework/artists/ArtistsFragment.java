@@ -10,6 +10,8 @@ import com.bumptech.glide.Glide;
 import butterknife.BindView;
 import butterknife.OnClick;
 import ru.yandex.yamblz.R;;
+import ru.yandex.yamblz.homework.artists.interfaces.FragmentTransactionManager;
+import ru.yandex.yamblz.homework.artists.interfaces.ToolbarProvider;
 import ru.yandex.yamblz.homework.base.BaseFragment;
 import ru.yandex.yamblz.homework.data.entity.Artist;
 
@@ -59,8 +61,9 @@ public class ArtistsFragment extends BaseFragment
         if (isLargeLayout) DetailsFragment.newInstance(artist).show(getChildFragmentManager(), "details");
         else
         {
-            replaceFragment(DetailsFragment.newInstance(artist), true);
-            updateToolbar(artist.getName(), true);
+            FragmentTransactionManager fragmentTransactionManager = getFragmentTransactionManager();
+            if (fragmentTransactionManager != null)
+                fragmentTransactionManager.showFragment(DetailsFragment.newInstance(artist), true);
         }
     }
 }

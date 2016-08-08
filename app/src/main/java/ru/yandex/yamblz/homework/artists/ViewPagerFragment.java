@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.Toast;
 
@@ -15,14 +16,14 @@ import ru.yandex.yamblz.homework.Injection;
 import ru.yandex.yamblz.homework.artists.adapter.PagerFragmentAdapter;
 import ru.yandex.yamblz.homework.artists.interfaces.ArtistsPresenter;
 import ru.yandex.yamblz.homework.artists.interfaces.ArtistsView;
+import ru.yandex.yamblz.homework.artists.interfaces.ToolbarProvider;
 import ru.yandex.yamblz.homework.base.BaseFragment;
 import ru.yandex.yamblz.homework.data.entity.Artist;
-import ru.yandex.yamblz.homework.data.source.DataSourceImpl;
 
 /**
  * Created by platon on 06.08.2016.
  */
-public class ViewPagerFragment extends BaseFragment implements ArtistsView
+public class ViewPagerFragment extends BaseFragment implements ArtistsView, SwipeRefreshLayout.OnRefreshListener
 {
     private ArtistsPresenter presenter;
 
@@ -31,6 +32,9 @@ public class ViewPagerFragment extends BaseFragment implements ArtistsView
 
     @BindView(R.id.tab_layout)
     TabLayout tabLayout;
+
+    @BindView(R.id.swipe_view)
+    SwipeRefreshLayout swipeLayout;
 
     public static ViewPagerFragment newInstance()
     {
@@ -44,12 +48,21 @@ public class ViewPagerFragment extends BaseFragment implements ArtistsView
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState)
+    {
+        super.onActivityCreated(savedInstanceState);
+        ToolbarProvider toolbarProvider = getToolbarProvider();
+        if (toolbarProvider != null) toolbarProvider.updateToolbar(getString(R.string.app_name));
+    }
+
+    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
-        updateToolbar(getString(R.string.app_name), false);
 
         presenter = new ArtistsPresenterImpl(Injection.provideDataSource(getContext().getApplicationContext()));
+        swipeLayout.setOnRefreshListener(this);
+
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         tabLayout.setupWithViewPager(viewPager);
@@ -78,11 +91,20 @@ public class ViewPagerFragment extends BaseFragment implements ArtistsView
     }
 
     @Override
-    public void showProgressView(boolean show) {}
+    public void showProgressView(boolean show)
+    {
+        swipeLayout.setRefreshing(show);
+    }
 
     @Override
     public void showError(String error)
     {
         Toast.makeText(getContext(), error, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onRefresh()
+    {
+        presenter.fetchArtists();
     }
 }

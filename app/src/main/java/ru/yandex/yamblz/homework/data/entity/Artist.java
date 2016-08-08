@@ -17,7 +17,18 @@ public class Artist implements Parcelable
     private String coverSmall;
     private String coverBig;
 
-    private Artist() {}
+    protected Artist(int id, String name, String genres, int tracks,
+                     int albums, String desc, String coverSmall, String coverBig)
+    {
+        this.id = id;
+        this.name = name;
+        this.genres = genres;
+        this.tracks = tracks;
+        this.albums = albums;
+        this.desc = desc;
+        this.coverSmall = coverSmall;
+        this.coverBig = coverBig;
+    }
 
     protected Artist(Parcel in)
     {
@@ -88,7 +99,7 @@ public class Artist implements Parcelable
 
     public static Builder Builder()
     {
-        return new Artist().new Builder();
+        return new Builder();
     }
 
     @Override
@@ -110,50 +121,68 @@ public class Artist implements Parcelable
         parcel.writeString(coverBig);
     }
 
-    public class Builder
+    public static class Builder
     {
-        public Builder setId(int id) {
-            Artist.this.id = id;
+        private int id;
+        private String name;
+        private String genres;
+        private int tracks;
+        private int albums;
+        private String desc;
+        private String coverSmall;
+        private String coverBig;
+
+        public Builder setId(int id)
+        {
+            this.id = id;
             return this;
         }
 
-        public Builder setName(String name) {
-            Artist.this.name = name;
+        public Builder setName(String name)
+        {
+            this.name = name;
             return this;
         }
 
-        public Builder setGenres(String genres) {
-            Artist.this.genres = genres;
+        public Builder setGenres(String genres)
+        {
+            this.genres = genres;
             return this;
         }
 
-        public Builder setTracks(int tracks) {
-            Artist.this.tracks = tracks;
+        public Builder setTracks(int tracks)
+        {
+            this.tracks = tracks;
             return this;
         }
 
-        public Builder setAlbums(int albums) {
-            Artist.this.albums = albums;
+        public Builder setAlbums(int albums)
+        {
+            this.albums = albums;
             return this;
         }
 
-        public Builder setDesc(String desc) {
-            Artist.this.desc = desc;
+        public Builder setDesc(String desc)
+        {
+            this.desc = desc;
             return this;
         }
 
-        public Builder setCoverSmall(String cover) {
+        public Builder setCoverSmall(String cover)
+        {
             coverSmall = cover;
             return this;
         }
 
-        public Builder setCoverBig(String cover) {
+        public Builder setCoverBig(String cover)
+        {
             coverBig = cover;
             return this;
         }
 
-        public Artist build() {
-            return Artist.this;
+        public Artist build()
+        {
+            return new Artist(id, name, genres, tracks, albums, desc, coverSmall, coverBig);
         }
     }
 

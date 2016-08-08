@@ -11,7 +11,7 @@ public interface ArtistsContract
     String CONTENT_AUTHORITY = "ru.yandex.yamblz.artists_provider";
     String PATH_ARTISTS = "artists";
 
-    Uri ARTISTS_URI = Uri.parse("content://ru.yandex.yamblz.artists_provider/artists");
+    Uri ARTISTS_URI = Uri.parse("content://" + CONTENT_AUTHORITY + "/" + PATH_ARTISTS);
 
     String TYPE_ARTISTS_DIR = ContentResolver.CURSOR_DIR_BASE_TYPE + "/vnd." + CONTENT_AUTHORITY + "." + PATH_ARTISTS;
     String TYPE_ARTISTS_ITEM = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/vnd." + CONTENT_AUTHORITY + "." + PATH_ARTISTS;
