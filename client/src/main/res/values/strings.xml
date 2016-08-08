@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Fragments HW</string>
+    <string name="content">Fragments &amp; Content Provider &amp; SQLite</string>
+</resources>
