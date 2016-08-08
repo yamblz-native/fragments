@@ -57,6 +57,14 @@ public abstract class BaseFragment extends Fragment
         super.onDestroyView();
     }
 
+    @Override
+    public void onDetach()
+    {
+        toolbarProvider = null;
+        fragmentTransactionManager = null;
+        super.onDetach();
+    }
+
     protected FragmentTransactionManager getFragmentTransactionManager()
     {
         return fragmentTransactionManager;

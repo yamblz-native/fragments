@@ -16,20 +16,20 @@ import rx.subscriptions.CompositeSubscription;
  */
 public class ArtistsPresenterImpl implements ArtistsPresenter
 {
-    private ArtistsView mArtistsView;
-    private CompositeSubscription mSubscriptions;
+    private ArtistsView artistsView;
+    private CompositeSubscription subscriptions;
     private IDataSource dataSource;
 
     public ArtistsPresenterImpl(IDataSource dataSource)
     {
         this.dataSource = dataSource;
-        mSubscriptions = new CompositeSubscription();
+        subscriptions = new CompositeSubscription();
     }
 
     @Override
     public void fetchArtists()
     {
-        mArtistsView.showProgressView(true);
+        artistsView.showProgressView(true);
         dataSource.getArtists()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -39,31 +39,30 @@ public class ArtistsPresenterImpl implements ArtistsPresenter
     @Override
     public void bind(ArtistsView view)
     {
-        this.mArtistsView = view;
+        this.artistsView = view;
     }
 
     @Override
     public void unbind()
     {
-        mArtistsView.showProgressView(false);
-        mArtistsView = null;
+        artistsView = null;
     }
 
     @Override
     public void unsubscribe()
     {
-        mSubscriptions.clear();
+        subscriptions.clear();
     }
 
     private Action1<List<Artist>> onNext = artists ->
     {
-        mArtistsView.showProgressView(false);
-        mArtistsView.showArtists(artists);
+        artistsView.showProgressView(false);
+        artistsView.showArtists(artists);
     };
 
     private Action1<Throwable> onError = e ->
     {
-        mArtistsView.showProgressView(false);
-        mArtistsView.showError(e.getMessage());
+        artistsView.showProgressView(false);
+        artistsView.showError(e.getMessage());
     };
 }
