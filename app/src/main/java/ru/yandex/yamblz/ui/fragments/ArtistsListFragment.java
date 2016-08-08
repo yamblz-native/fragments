@@ -4,10 +4,10 @@ package ru.yandex.yamblz.ui.fragments;
  * Created by shmakova on 08.08.16.
  */
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -34,6 +34,12 @@ public class ArtistsListFragment extends BaseFragment {
     @BindView(R.id.artists_list)
     RecyclerView recyclerView;
 
+    private OnListItemCLickListener onListItemCLickListener;
+
+    public interface OnListItemCLickListener {
+        void onListItemClick(Artist artist);
+    }
+
     @NonNull
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -52,6 +58,9 @@ public class ArtistsListFragment extends BaseFragment {
         loadArtists();
     }
 
+    /**
+     * Loads artists and sends it to recyclerView
+     */
     private void loadArtists() {
         subscription = Observable.from(dataManager.getArtistsListCursor())
                 .map(Artist::getArtistFromCursor)
@@ -62,12 +71,7 @@ public class ArtistsListFragment extends BaseFragment {
                     if (artistsList != null) {
                         ArtistsAdapter artistsAdapter = new ArtistsAdapter(artistsList, (position) -> {
                             Artist artist = artistsList.get(position);
-                            Fragment artistFragment = new ArtistPageFragmentBuilder(artist).build();
-                            getActivity().getSupportFragmentManager()
-                                    .beginTransaction()
-                                    .replace(R.id.detail_frame_layout, artistFragment)
-                                    .addToBackStack(null)
-                                    .commit();
+                            onListItemCLickListener.onListItemClick(artist);
                         });
                         recyclerView.setAdapter(artistsAdapter);
                     }
@@ -92,5 +96,22 @@ public class ArtistsListFragment extends BaseFragment {
             actionBar.setTitle(R.string.main_activity_name);
             actionBar.setDisplayHomeAsUpEnabled(false);
         }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        if (!(getActivity() instanceof OnListItemCLickListener)) {
+            throw new ClassCastException(getActivity().toString() + " must implement OnListItemCLickListener");
+        }
+
+        onListItemCLickListener = (OnListItemCLickListener) getActivity();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        onListItemCLickListener = null;
     }
 }

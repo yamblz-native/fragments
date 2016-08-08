@@ -49,6 +49,9 @@ public class ArtistsPagerFragment extends BaseFragment {
         loadArtists();
     }
 
+    /**
+     * Loads artists and sends it to viewPager
+     */
     private void loadArtists() {
         subscription = Observable.from(dataManager.getArtistsListCursor())
                 .map(Artist::getArtistFromCursor)

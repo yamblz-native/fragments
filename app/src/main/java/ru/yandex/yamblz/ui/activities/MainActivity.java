@@ -2,6 +2,7 @@ package ru.yandex.yamblz.ui.activities;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.MenuItem;
 
@@ -15,10 +16,14 @@ import ru.yandex.yamblz.developer_settings.DeveloperSettingsModule;
 import ru.yandex.yamblz.ui.fragments.ArtistDetailFragment;
 import ru.yandex.yamblz.ui.fragments.ArtistDetailFragmentBuilder;
 import ru.yandex.yamblz.ui.fragments.ArtistPageFragment;
+import ru.yandex.yamblz.ui.fragments.ArtistPageFragmentBuilder;
+import ru.yandex.yamblz.ui.fragments.ArtistsListFragment;
 import ru.yandex.yamblz.ui.fragments.ArtistsPagerFragment;
 import ru.yandex.yamblz.ui.other.ViewModifier;
 
-public class MainActivity extends BaseActivity implements ArtistPageFragment.OnMoreButtonClickListener {
+public class MainActivity extends BaseActivity implements
+        ArtistPageFragment.OnMoreButtonClickListener,
+        ArtistsListFragment.OnListItemCLickListener {
     private static final String ARTIST_DETAIL_FRAGMENT_TAG = "ARTIST_DETAIL_FRAGMENT_TAG";
     private FragmentManager supportFragmentManager;
     private boolean hasTwoPanes;
@@ -54,19 +59,14 @@ public class MainActivity extends BaseActivity implements ArtistPageFragment.OnM
         if (hasTwoPanes) {
             artistDetailFragment.show(supportFragmentManager, ARTIST_DETAIL_FRAGMENT_TAG);
         } else {
-            supportFragmentManager.beginTransaction()
+            supportFragmentManager
+                    .beginTransaction()
                     .replace(R.id.main_frame_layout, artistDetailFragment)
                     .addToBackStack(null)
                     .commit();
         }
     }
 
-    /**
-     * On options menu item selected
-     *
-     * @param item of menu
-     * @return result of options item selected
-     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -75,5 +75,15 @@ public class MainActivity extends BaseActivity implements ArtistPageFragment.OnM
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onListItemClick(Artist artist) {
+        Fragment artistFragment = new ArtistPageFragmentBuilder(artist).build();
+        supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.detail_frame_layout, artistFragment)
+                .addToBackStack(null)
+                .commit();
     }
 }

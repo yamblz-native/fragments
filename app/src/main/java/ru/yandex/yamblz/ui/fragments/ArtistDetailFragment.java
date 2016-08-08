@@ -62,7 +62,11 @@ public class ArtistDetailFragment extends DialogFragment {
         Resources resources = getResources();
 
         if (artist != null) {
-            updateToolBar(artist.getName());
+            boolean hasTwoPanes = getResources().getBoolean(R.bool.has_two_panes);
+
+            if (!hasTwoPanes) {
+                updateToolBar(artist.getName());
+            }
 
             Glide.with(view.getContext())
                     .load(artist.getCover().getBig())

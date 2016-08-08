@@ -4,12 +4,12 @@
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/artists_list_fragment"
-              android:name="ru.yandex.yamblz.ui.fragments.ArtistsListFragment"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:layout_weight="1"/>
+    <fragment
+        android:id="@+id/artists_list_fragment"
+        android:name="ru.yandex.yamblz.ui.fragments.ArtistsListFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
 
     <FrameLayout
         android:id="@+id/detail_frame_layout"
