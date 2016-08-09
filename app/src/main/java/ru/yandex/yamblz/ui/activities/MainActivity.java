@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import java.util.List;
 
@@ -16,7 +15,6 @@ import ru.yandex.yamblz.App;
 import ru.yandex.yamblz.R;
 import ru.yandex.yamblz.developer_settings.DeveloperSettingsModule;
 import ru.yandex.yamblz.singerscontracts.Singer;
-import ru.yandex.yamblz.ui.fragments.ContentFragment;
 import ru.yandex.yamblz.ui.fragments.DescFragment;
 import ru.yandex.yamblz.ui.fragments.ListFragment;
 import ru.yandex.yamblz.ui.fragments.PreviewFragment;
@@ -28,7 +26,7 @@ public class MainActivity extends BaseActivity implements PreviewFragment.Callba
     @Inject @Named(DeveloperSettingsModule.MAIN_ACTIVITY_VIEW_MODIFIER)
     ViewModifier viewModifier;
 
-    private boolean mPortrait;
+    private boolean mPhone;
 
     @SuppressLint("InflateParams") // It's okay in our case.
     @Override
@@ -40,9 +38,9 @@ public class MainActivity extends BaseActivity implements PreviewFragment.Callba
 
         ButterKnife.bind(this);
 
-        mPortrait = findViewById(R.id.preview_fragment) == null;
+        mPhone = findViewById(R.id.preview_fragment) == null;
 
-        if(mPortrait && savedInstanceState == null) {
+        if(mPhone && savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
                     .add(R.id.container, TabsFragment.newInstance())
@@ -53,7 +51,7 @@ public class MainActivity extends BaseActivity implements PreviewFragment.Callba
 
     @Override
     public void onMoreChosen(Singer singer) {
-        if(mPortrait) {
+        if(mPhone) {
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container, DescFragment.newInstance(singer))
