@@ -99,6 +99,11 @@ dependencies {
     compile libraries.timber
     compile libraries.glide
 
+    compile libraries.storio
+    compile libraries.storioResolver
+    compile libraries.storioAnnotations
+    apt libraries.storioProcessor
+
     compile libraries.rxJava
     compile libraries.rxAndroid
 

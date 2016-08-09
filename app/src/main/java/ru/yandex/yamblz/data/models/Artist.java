@@ -1,44 +1,51 @@
 package ru.yandex.yamblz.data.models;
 
-import android.database.Cursor;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
+
+import com.pushtorefresh.storio.contentresolver.annotations.StorIOContentResolverColumn;
+import com.pushtorefresh.storio.contentresolver.annotations.StorIOContentResolverType;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import ru.yandex.yamblz.utils.AppConfig;
+import timber.log.Timber;
+
 /**
  * Created by shmakova on 12.04.16.
  */
+@StorIOContentResolverType(uri = AppConfig.ARTISTS_URI)
 public class Artist implements Parcelable {
-    private int id;
-    private String name;
+    @StorIOContentResolverColumn(name = "rowid", key = true)
+    int id;
+    @StorIOContentResolverColumn(name = "name")
+    String name;
     private List<String> genres;
     private Cover cover;
-    private int tracks;
-    private int albums;
-    private String description;
-    private String link;
+    @StorIOContentResolverColumn(name = "tracks")
+    int tracks;
+    @StorIOContentResolverColumn(name = "albums")
+    int albums;
+    @StorIOContentResolverColumn(name = "description")
+    String description;
+    @StorIOContentResolverColumn(name = "link")
+    String link;
+    @StorIOContentResolverColumn(name = "cover_small")
+    String coverSmall;
+    @StorIOContentResolverColumn(name = "cover_big")
+    String coverBig;
+    @StorIOContentResolverColumn(name = "genres_list")
+    String genresString;
 
-    private Artist(int id, String name, List<String> genres, Cover cover, int tracks, int albums, String description, String link) {
-        this.id = id;
-        this.name = name;
-        this.genres = genres;
-        this.cover = cover;
-        this.tracks = tracks;
-        this.albums = albums;
-        this.description = description;
-        this.link = link;
+    Artist() {
     }
 
     public String getDescription() {
         return description;
-    }
-
-    public String getLink() {
-        return link;
     }
 
     public int getTracks() {
@@ -110,78 +117,38 @@ public class Artist implements Parcelable {
         return "Artist: " + name;
     }
 
-    public static class Builder {
-        private int id;
-        private String name;
-        private List<String> genres;
-        private Cover cover;
-        private int tracks;
-        private int albums;
-        private String description;
-        private String link;
-
-        public Builder setId(int id) {
-            this.id = id;
-            return this;
-        }
-
-        public Builder setName(String name) {
-            this.name = name;
-            return this;
-        }
-
-        public Builder setGenres(List<String> genres) {
-            this.genres = genres;
-            return this;
-        }
-
-        public Builder setCover(Cover cover) {
-            this.cover = cover;
-            return this;
-        }
-
-        public Builder setTracks(int tracks) {
-            this.tracks = tracks;
-            return this;
-        }
-
-        public Builder setAlbums(int albums) {
-            this.albums = albums;
-            return this;
-        }
-
-        public Builder setDescription(String description) {
-            this.description = description;
-            return this;
-        }
-
-        public Builder setLink(String link) {
-            this.link = link;
-            return this;
-        }
-
-        public Artist build() {
-            return new Artist(id, name, genres, cover, tracks, albums, description, link);
-        }
+    private String getCoverSmall() {
+        return coverSmall;
     }
 
-    public static Artist getArtistFromCursor(Cursor cursor) {
-        String genresString = cursor.getString(8);
-        List<String> genres = new ArrayList<>(Collections.singletonList(genresString));
+    private String getCoverBig() {
+        return coverBig;
+    }
+
+    private String getGenresString() {
+        return genresString;
+    }
+
+    public void setCover(Cover cover) {
+        this.cover = cover;
+    }
+
+    private void setGenres(List<String> genres) {
+        this.genres = genres;
+    }
+
+    public static Artist convertArtistFields(Artist artist) {
+        Timber.d(artist.getName());
+        List<String> genres = new ArrayList<>(Collections.singletonList(artist.getGenresString()));
 
         Cover cover = new Cover(
-                cursor.getString(6),
-                cursor.getString(7)
+                artist.getCoverSmall(),
+                artist.getCoverBig()
         );
 
-        return new Artist.Builder()
-                .setName(cursor.getString(1))
-                .setTracks(cursor.getInt(2))
-                .setAlbums(cursor.getInt(3))
-                .setGenres(genres)
-                .setCover(cover)
-                .setDescription(cursor.getString(4))
-                .setLink(cursor.getString(5))
-                .build();
+        artist.setCover(cover);
+        artist.setGenres(genres);
+
+        return artist;
     }
 }
