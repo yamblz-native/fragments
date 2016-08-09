@@ -32,9 +32,13 @@ public class ListFragment extends Fragment {
             RecyclerAdapter adapter = new FirstRecyclerAdapter(mProvider.getList(),
                     (PerformerSelectedListener) getActivity());
             rv.setAdapter(adapter);
+        } else {
+            throw new ClassCastException(getActivity().toString()
+                    + " must implement ListProvider && PerformerSelectedListener");
         }
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         rv.setLayoutManager(layoutManager);
         return rootView;
     }
+
 }

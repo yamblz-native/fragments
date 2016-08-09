@@ -29,7 +29,7 @@ import ru.yandex.yamblz.ui.fragments.FullInfoDialogFragment;
 import ru.yandex.yamblz.ui.fragments.ListFragment;
 import ru.yandex.yamblz.ui.fragments.ListProvider;
 import ru.yandex.yamblz.ui.fragments.OnMoreClicked;
-import ru.yandex.yamblz.ui.fragments.PlaceholderFragment;
+import ru.yandex.yamblz.ui.fragments.PlaceHolderFragment;
 
 
 public class TabbedActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Singer>>,
@@ -90,7 +90,7 @@ public class TabbedActivity extends AppCompatActivity implements LoaderManager.L
 
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.detail, PlaceholderFragment.newInstance(0), "info")
+                    .add(R.id.detail, PlaceHolderFragment.newInstance(0), "info")
                     .commit();
     }
 
@@ -133,7 +133,7 @@ public class TabbedActivity extends AppCompatActivity implements LoaderManager.L
         Log.w("Activity", "PerformerSelected");
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.detail, PlaceholderFragment.newInstance(singer), "info")
+                .add(R.id.detail, PlaceHolderFragment.newInstance(singer), "info")
                 .commit();
     }
 
@@ -146,7 +146,7 @@ public class TabbedActivity extends AppCompatActivity implements LoaderManager.L
 
         @Override
         public Fragment getItem(int position) {
-            return PlaceholderFragment.newInstance(position);
+            return PlaceHolderFragment.newInstance(position);
         }
 
         @Override

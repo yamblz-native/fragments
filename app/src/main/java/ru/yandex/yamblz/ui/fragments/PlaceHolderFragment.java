@@ -17,17 +17,16 @@ import ru.yandex.yamblz.model.Singer;
  * Created by vorona on 03.08.16.
  */
 
-public class PlaceholderFragment extends Fragment {
+public class PlaceHolderFragment extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
     OnMoreClicked mCallback;
     ListProvider mProvider;
 
-
-    public PlaceholderFragment() {
+    public PlaceHolderFragment() {
     }
 
-    public static PlaceholderFragment newInstance(int sectionNumber) {
-        PlaceholderFragment fragment = new PlaceholderFragment();
+    public static PlaceHolderFragment newInstance(int sectionNumber) {
+        PlaceHolderFragment fragment = new PlaceHolderFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
