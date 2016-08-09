@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
@@ -21,7 +22,6 @@ import ru.yandex.yamblz.data.models.ArtistStorIOContentResolverGetResolver;
 import ru.yandex.yamblz.data.models.Artist;
 import ru.yandex.yamblz.ui.activities.MainActivity;
 import ru.yandex.yamblz.ui.adapters.ArtistsFragmentStatePagerAdapter;
-import ru.yandex.yamblz.ui.other.SlidingTabLayout;
 import ru.yandex.yamblz.utils.AppConfig;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -34,8 +34,8 @@ public class ArtistsPagerFragment extends BaseFragment {
 
     @BindView(R.id.pager)
     ViewPager viewPager;
-    @BindView(R.id.sliding_tab_layout)
-    SlidingTabLayout slidingTabLayout;
+    @BindView(R.id.tab_layout)
+    TabLayout tabLayout;
 
     @NonNull
     @Override
@@ -76,7 +76,7 @@ public class ArtistsPagerFragment extends BaseFragment {
                             }
 
                             viewPager.setAdapter(new ArtistsFragmentStatePagerAdapter(fragmentManager, artistsList));
-                            slidingTabLayout.setViewPager(viewPager);
+                            tabLayout.setupWithViewPager(viewPager);
                         },
                         throwable -> Timber.e(throwable.toString()));
     }
