@@ -58,14 +58,14 @@ public class ArtistFragment extends Fragment implements LoaderManager.LoaderCall
         update(name);
         if (getContext().getResources().getBoolean(R.bool.is_tablet)) {
             btnMore.setOnClickListener(v -> {
-            //    ArtistMoreDialogFragment dialogFragment = ArtistMoreDialogFragmentBuilder.newArtistMoreDialogFragment(name);
-              //  dialogFragment.show(getChildFragmentManager(), null);
+                ArtistMoreDialogFragment dialogFragment = ArtistMoreDialogFragmentBuilder.newArtistMoreDialogFragment(name);
+                dialogFragment.show(getChildFragmentManager(), null);
             });
         } else {
             btnMore.setOnClickListener(v -> {
-               // ArtistMoreDialogFragment dialogFragment = ArtistMoreDialogFragmentBuilder.newArtistMoreDialogFragment(name);
-               // getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout,
-                //        dialogFragment).addToBackStack(null).commit();
+                ArtistMoreDialogFragment dialogFragment = ArtistMoreDialogFragmentBuilder.newArtistMoreDialogFragment(name);
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout,
+                        dialogFragment).addToBackStack(null).commit();
             });
         }
     }
