@@ -55,6 +55,7 @@ public class ArtistsFragment extends BaseFragment
         }
     }
 
+
     @OnClick(R.id.btn_artist_details)
     void onClickDetails()
     {

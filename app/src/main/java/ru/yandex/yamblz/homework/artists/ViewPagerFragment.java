@@ -1,10 +1,12 @@
 package ru.yandex.yamblz.homework.artists;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -47,7 +49,6 @@ public class ViewPagerFragment extends BaseFragment implements ArtistsView, Swip
         return R.layout.fragment_view_pager;
     }
 
-
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState)
     {
@@ -68,7 +69,6 @@ public class ViewPagerFragment extends BaseFragment implements ArtistsView, Swip
         super.onResume();
         presenter.bind(this);
         presenter.fetchArtists();
-        getToolbarProvider().updateToolbar(getString(R.string.app_name));
     }
 
     @Override

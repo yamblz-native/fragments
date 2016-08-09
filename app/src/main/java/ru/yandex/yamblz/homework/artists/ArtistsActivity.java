@@ -79,6 +79,7 @@ public class ArtistsActivity extends AppCompatActivity implements ToolbarProvide
         switch (item.getItemId())
         {
             case android.R.id.home:
+                updateToolbar(getString(R.string.app_name));
                 onBackPressed();
                 return true;
         }
