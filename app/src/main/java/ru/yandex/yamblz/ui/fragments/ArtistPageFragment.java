@@ -78,7 +78,8 @@ public class ArtistPageFragment extends BaseFragment {
         super.onAttach(context);
 
         if (!(getActivity() instanceof OnMoreButtonClickListener)) {
-            throw new ClassCastException(getActivity().toString() + " must implement OnMoreButtonClickListener");
+            throw new ClassCastException(getActivity().toString() + " must implement " +
+                    OnMoreButtonClickListener.class.getName());
         }
 
         onMoreButtonClickListener = (OnMoreButtonClickListener) getActivity();

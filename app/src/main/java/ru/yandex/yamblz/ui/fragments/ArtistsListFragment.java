@@ -117,7 +117,8 @@ public class ArtistsListFragment extends BaseFragment {
         super.onAttach(context);
 
         if (!(getActivity() instanceof OnListItemCLickListener)) {
-            throw new ClassCastException(getActivity().toString() + " must implement OnListItemCLickListener");
+            throw new ClassCastException(getActivity().toString() + " must implement " +
+                    OnListItemCLickListener.class.getName());
         }
 
         onListItemCLickListener = (OnListItemCLickListener) getActivity();
