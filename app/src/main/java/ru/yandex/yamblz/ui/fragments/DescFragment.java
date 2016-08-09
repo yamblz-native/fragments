@@ -63,6 +63,7 @@ public class DescFragment extends BaseDialogFragment {
     public static DescFragment newInstance(Singer singer) {
         Bundle bundle = new Bundle();
         bundle.putParcelable(SINGER_EXTRA, singer);
+        bundle.putInt(SINGER_ID_EXTRA, singer.getId());
 
         DescFragment descFragment = new DescFragment();
         descFragment.setArguments(bundle);
@@ -78,7 +79,8 @@ public class DescFragment extends BaseDialogFragment {
         if(bundle != null) {
             if(bundle.containsKey(SINGER_EXTRA)) {
                 mSinger = bundle.getParcelable(SINGER_EXTRA);
-            } else if(bundle.containsKey(SINGER_ID_EXTRA)) {
+            }
+            if(bundle.containsKey(SINGER_ID_EXTRA)) {
                 mSingerId = bundle.getInt(SINGER_ID_EXTRA);
             }
         }
@@ -103,8 +105,6 @@ public class DescFragment extends BaseDialogFragment {
         if(mSinger == null) {
             if(mSingerId != NO_SINGER) {
                 dataProvider.getSinger(mSingerId, mSingerCallback);
-            } else {
-                throw new RuntimeException("No data was passed");
             }
         } else {
             onSingerSet();
@@ -117,7 +117,8 @@ public class DescFragment extends BaseDialogFragment {
 
         if(mSinger != null) {
             outState.putParcelable(SINGER_EXTRA, mSinger);
-        } else if(mSingerId != NO_SINGER) {
+        }
+        if(mSingerId != NO_SINGER) {
             outState.putInt(SINGER_ID_EXTRA, mSingerId);
         }
     }

@@ -2,6 +2,7 @@ package ru.yandex.yamblz.ui.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
@@ -57,6 +58,7 @@ public class PreviewFragment extends BaseFragment {
     public static PreviewFragment newInstance(Singer singer) {
         Bundle bundle = new Bundle();
         bundle.putParcelable(SINGER_EXTRA, singer);
+        bundle.putInt(SINGER_ID_EXTRA, singer.getId());
 
         PreviewFragment previewFragment = new PreviewFragment();
         previewFragment.setArguments(bundle);
@@ -95,7 +97,8 @@ public class PreviewFragment extends BaseFragment {
         if(bundle != null) {
             if (bundle.containsKey(SINGER_EXTRA)) {
                 mSinger = bundle.getParcelable(SINGER_EXTRA);
-            } else {
+            }
+            if(bundle.containsKey(SINGER_ID_EXTRA)) {
                 mSingerId = bundle.getInt(SINGER_ID_EXTRA);
             }
         }
@@ -106,7 +109,8 @@ public class PreviewFragment extends BaseFragment {
         super.onSaveInstanceState(outState);
         if(mSinger != null) {
             outState.putParcelable(SINGER_EXTRA, mSinger);
-        } else if(mSingerId != NO_SINGER) {
+        }
+        if(mSingerId != NO_SINGER) {
             outState.putInt(SINGER_ID_EXTRA, mSingerId);
         }
     }
@@ -131,10 +135,16 @@ public class PreviewFragment extends BaseFragment {
         }
     }
 
-    public void setSinger(@Nullable Singer singer) {
+    public void setSinger(@NonNull Singer singer) {
         mSinger = singer;
+        mSingerId = singer.getId();
         onSingerSet();
     }
+
+    public boolean hasSinger() {
+        return mSingerId != NO_SINGER;
+    }
+
 
     @OnClick(R.id.more)
     void onMoreClick() {

@@ -9,6 +9,9 @@ import java.util.List;
 
 import ru.yandex.yamblz.singerscontracts.Singer;
 
+/**
+ * Transforms data from Cursor formed by {@link ru.yandex.yamblz.singerscontracts.SingersContract}
+ */
 public class CPDataTransformer implements DataTransformer {
 
     @Override

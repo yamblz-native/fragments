@@ -16,7 +16,8 @@ import ru.yandex.yamblz.singerscontracts.Singer;
 import static ru.yandex.yamblz.singerscontracts.SingersContract.Singers;
 
 /**
- * Content provider based {@link DataProvider}
+ * Content provider based {@link DataProvider}.
+ * Executes long methods on a background thread, posts result back to the main thread
  */
 public class CPDataProvider implements DataProvider {
 

@@ -76,6 +76,8 @@ public class MainActivity extends BaseActivity implements PreviewFragment.Callba
     public void onSingersShown(@NonNull List<Singer> singers) {
         PreviewFragment previewFragment = (PreviewFragment)getSupportFragmentManager()
                 .findFragmentById(R.id.preview_fragment);
-        previewFragment.setSinger(singers.get(0));
+        if(!previewFragment.hasSinger()) {
+            previewFragment.setSinger(singers.get(0));
+        }
     }
 }

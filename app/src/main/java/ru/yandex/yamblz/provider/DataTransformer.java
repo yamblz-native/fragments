@@ -8,6 +8,9 @@ import java.util.List;
 
 import ru.yandex.yamblz.singerscontracts.Singer;
 
+/**
+ * Transforms data from Cursor formed by some contract
+ */
 public interface DataTransformer {
 
     @NonNull
