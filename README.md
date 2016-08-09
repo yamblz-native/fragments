@@ -13,3 +13,7 @@
 Примерный набросок, как это должно выглядеть: https://github.com/yamblz-native/fragments/blob/master/Homework.pdf
 
 Любые дополнительные детали приветствуются.
+
+# Done
+https://github.com/artemohanjanyan/CPClient
+https://github.com/artemohanjanyan/CPServer
