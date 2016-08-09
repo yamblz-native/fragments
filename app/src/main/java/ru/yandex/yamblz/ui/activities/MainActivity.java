@@ -90,13 +90,13 @@ public class MainActivity extends BaseActivity implements OnArtistMoreClickListe
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
+        outState.putInt(SELECTED_ARTIST_ID, selectedArtistId);
         if (isOrientationPortrait()) {
             Fragment pagerFragment = getSupportFragmentManager().findFragmentByTag(ViewPagerFragment.TAG);
             ArtistSelectedInterface selectedInterface = (ArtistSelectedInterface) pagerFragment;
-            outState.putInt(SELECTED_ARTIST_ID, selectedInterface.getSelectedArtistId());
-        } else {
-            outState.putInt(SELECTED_ARTIST_ID, selectedArtistId);
+            int id = selectedInterface.getSelectedArtistId();
+            if (id > 0)
+                outState.putInt(SELECTED_ARTIST_ID, selectedInterface.getSelectedArtistId());
         }
     }
 
@@ -155,6 +155,7 @@ public class MainActivity extends BaseActivity implements OnArtistMoreClickListe
         } else {
             showArtistDialog(dialogFragment);
         }
+        selectedArtistId = id;
     }
 
     private void showArtistDialog(DialogFragment dialogFragment) {

@@ -81,6 +81,9 @@ public class ViewPagerFragment extends BaseFragment implements UpdateArtistsList
 
     @Override
     public int getSelectedArtistId() {
-        return adapter.getArtist(pager.getCurrentItem()).getId();
+        if (pager != null)
+            return adapter.getArtist(pager.getCurrentItem()).getId();
+        else
+            return -1;
     }
 }
