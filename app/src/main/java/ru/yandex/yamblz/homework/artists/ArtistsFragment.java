@@ -1,6 +1,8 @@
 package ru.yandex.yamblz.homework.artists;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -24,6 +26,7 @@ public class ArtistsFragment extends BaseFragment
 
     @BindView(R.id.btn_artist_details)
     Button details;
+
 
     public static ArtistsFragment newInstance(Artist artist)
     {
@@ -59,11 +62,7 @@ public class ArtistsFragment extends BaseFragment
         boolean isLargeLayout = getResources().getBoolean(R.bool.large_layout);
 
         if (isLargeLayout) DetailsFragment.newInstance(artist).show(getChildFragmentManager(), "details");
-        else
-        {
-            FragmentTransactionManager fragmentTransactionManager = getFragmentTransactionManager();
-            if (fragmentTransactionManager != null)
-                fragmentTransactionManager.showFragment(DetailsFragment.newInstance(artist), true);
-        }
+
+        else getFragmentTransactionManager().addFragment(DetailsFragment.newInstance(artist), true);
     }
 }

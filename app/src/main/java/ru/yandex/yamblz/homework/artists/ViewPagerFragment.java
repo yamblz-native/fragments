@@ -47,13 +47,6 @@ public class ViewPagerFragment extends BaseFragment implements ArtistsView, Swip
         return R.layout.fragment_view_pager;
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState)
-    {
-        super.onActivityCreated(savedInstanceState);
-        ToolbarProvider toolbarProvider = getToolbarProvider();
-        if (toolbarProvider != null) toolbarProvider.updateToolbar(getString(R.string.app_name));
-    }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState)
@@ -75,6 +68,7 @@ public class ViewPagerFragment extends BaseFragment implements ArtistsView, Swip
         super.onResume();
         presenter.bind(this);
         presenter.fetchArtists();
+        getToolbarProvider().updateToolbar(getString(R.string.app_name));
     }
 
     @Override

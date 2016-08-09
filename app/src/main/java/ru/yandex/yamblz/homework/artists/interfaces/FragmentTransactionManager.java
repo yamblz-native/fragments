@@ -7,7 +7,8 @@ import android.support.v4.app.Fragment;
  */
 public interface FragmentTransactionManager
 {
-    void showFragment(Fragment fragment, boolean toBackStack);
-    void showFragment(Fragment fragment);
+    void addFragment(Fragment fragment, boolean toBackStack);
+    void addFragment(Fragment fragment);
+    void replaceFragment(Fragment fragment, boolean toBackStack);
     void removeFragment(Fragment fragment);
 }

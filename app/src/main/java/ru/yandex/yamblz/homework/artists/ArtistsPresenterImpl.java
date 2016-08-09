@@ -8,6 +8,7 @@ import ru.yandex.yamblz.homework.data.entity.Artist;
 import ru.yandex.yamblz.homework.data.source.IDataSource;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 

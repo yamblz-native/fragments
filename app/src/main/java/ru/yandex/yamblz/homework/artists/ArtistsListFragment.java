@@ -115,8 +115,6 @@ public class ArtistsListFragment extends BaseFragment implements ArtistsView,
     public void onItemClick(View view, int position)
     {
         Artist artist = artistsAdapter.getList().get(position);
-        FragmentTransactionManager fragmentTransactionManager = getFragmentTransactionManager();
-        if (fragmentTransactionManager != null)
-            fragmentTransactionManager.showFragment(ArtistsFragment.newInstance(artist), false);
+        getFragmentTransactionManager().replaceFragment(ArtistsFragment.newInstance(artist), false);
     }
 }

@@ -31,12 +31,30 @@ public class ArtistsActivity extends AppCompatActivity implements ToolbarProvide
 
         if (savedInstanceState == null)
         {
-            if (!twoPanel) showFragment(ViewPagerFragment.newInstance());
+            if (!twoPanel) addFragment(ViewPagerFragment.newInstance());
         }
     }
 
+
     @Override
-    public void showFragment(Fragment fragment, boolean toBackStack)
+    public void addFragment(Fragment fragment, boolean toBackStack)
+    {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.add(R.id.content_fragment, fragment);
+        if (toBackStack) transaction.addToBackStack(null);
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        transaction.commit();
+    }
+
+    @Override
+    public void addFragment(Fragment fragment)
+    {
+        addFragment(fragment, false);
+    }
+
+    @Override
+    public void replaceFragment(Fragment fragment, boolean toBackStack)
     {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -44,12 +62,6 @@ public class ArtistsActivity extends AppCompatActivity implements ToolbarProvide
         if (toBackStack) transaction.addToBackStack(null);
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         transaction.commit();
-    }
-
-    @Override
-    public void showFragment(Fragment fragment)
-    {
-        showFragment(fragment, false);
     }
 
     @Override
