@@ -112,6 +112,12 @@ public class DescFragment extends BaseDialogFragment {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        dataProvider.cancel(mSingerCallback);
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 

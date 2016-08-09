@@ -135,6 +135,12 @@ public class PreviewFragment extends BaseFragment {
         }
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        dataProvider.cancel(mSingerCallback);
+    }
+
     public void setSinger(@NonNull Singer singer) {
         mSinger = singer;
         mSingerId = singer.getId();

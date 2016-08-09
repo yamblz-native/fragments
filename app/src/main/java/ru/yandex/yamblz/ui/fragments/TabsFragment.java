@@ -63,6 +63,13 @@ public class TabsFragment extends BaseFragment {
         mDataProvider.getSingers(mSingersCallback);
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        mDataProvider.cancel(mSingersCallback);
+    }
+
     private DataProvider.Callback<List<Singer>> mSingersCallback = new DataProvider.Callback<List<Singer>>() {
         @Override
         public void postResult(List<Singer> result) {
