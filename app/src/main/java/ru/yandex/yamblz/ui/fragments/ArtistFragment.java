@@ -3,6 +3,7 @@ package ru.yandex.yamblz.ui.fragments;
 
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -79,7 +80,8 @@ public class ArtistFragment extends Fragment implements LoaderManager.LoaderCall
 
     public void update(String name) {
         this.name = name;
-        getLoaderManager().initLoader(1, null, this);
+      //  getLoaderManager().initLoader(1, null, this);
+        getLoaderManager().restartLoader(1,null,this);
         //ArtistModel artistModel = DataSingleton.get().getArtists().get(position);
     }
 
@@ -99,7 +101,7 @@ public class ArtistFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         data.moveToFirst();
-        Picasso.with(getContext()).load(data.getString(data.getColumnIndex(ContentProviderContract.Artists.IMAGE_BIG))).into(imageView);
+        Picasso.with(getContext()).load(data.getString(data.getColumnIndex(ContentProviderContract.Artists.IMAGE_BIG))).placeholder(new ColorDrawable(Color.WHITE)).into(imageView);
 
     }
 

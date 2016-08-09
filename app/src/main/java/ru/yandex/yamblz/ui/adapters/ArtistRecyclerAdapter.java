@@ -1,6 +1,7 @@
 package ru.yandex.yamblz.ui.adapters;
 
 
+import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,21 +11,19 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.yandex.yamblz.R;
-import ru.yandex.yamblz.lib.ArtistModel;
+import ru.yandex.yamblz.lib.ContentProviderContract;
 import ru.yandex.yamblz.ui.fragments.ContentFragment;
 
 public class ArtistRecyclerAdapter extends RecyclerView.Adapter<ArtistRecyclerAdapter.MyViewHolder> {
-    private List<ArtistModel> artistModels;
+    private Cursor cursor;
     private ContentFragment.OnItemClicked onItemClicked;
 
-    public ArtistRecyclerAdapter(ContentFragment.OnItemClicked onItemClicked) {
+    public ArtistRecyclerAdapter(ContentFragment.OnItemClicked onItemClicked,Cursor cursor) {
         this.onItemClicked = onItemClicked;
-        artistModels = null;
+        this.cursor = cursor;
 
     }
 
@@ -35,27 +34,32 @@ public class ArtistRecyclerAdapter extends RecyclerView.Adapter<ArtistRecyclerAd
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        holder.bind(artistModels.get(position));
+        cursor.moveToPosition(position);
+        holder.bind(cursor);
     }
 
     @Override
     public int getItemCount() {
-        return artistModels.size();
+        return cursor.getCount();
     }
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.text_view) TextView textView;
         @BindView(R.id.image_view) ImageView imageView;
+        private String name;
 
         MyViewHolder(View itemView, ContentFragment.OnItemClicked onItemClicked) {
             super(itemView);
-            //itemView.setOnClickListener(v -> onItemClicked.itemClicked();
+            itemView.setOnClickListener(v ->
+                    onItemClicked.itemClicked(name));
             ButterKnife.bind(this,itemView);
         }
 
-        void bind(ArtistModel artistModel) {
-            Picasso.with(imageView.getContext()).load(artistModel.getBigImage()).into(imageView);
-            textView.setText(artistModel.getName());
+        void bind(Cursor cursor) {
+            name=cursor.getString(cursor.getColumnIndex(ContentProviderContract.Artists.NAME));
+            String imageBig=cursor.getString(cursor.getColumnIndex(ContentProviderContract.Artists.IMAGE_BIG));
+            Picasso.with(imageView.getContext()).load(imageBig).into(imageView);
+            textView.setText(name);
         }
 
     }

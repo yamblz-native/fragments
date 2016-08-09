@@ -36,11 +36,9 @@ public class ContentFragment extends BaseFragment implements LoaderManager.Loade
         super.onViewCreated(view, savedInstanceState);
         getLoaderManager().initLoader(1, null, this);
         if (savedInstanceState == null) {
-            //artistFragment = ArtistFragmentBuilder.newArtistFragment(0);
-//            getChildFragmentManager().beginTransaction().replace(R.id.container, artistFragment, "artist")
-                    //.commit();
+            //
         } else {
-           // artistFragment = (ArtistFragment) getChildFragmentManager().findFragmentByTag("artist");
+
         }
         if (getResources().getBoolean(R.bool.is_tablet)) {
             recyclerView = (RecyclerView) getView().findViewById(R.id.recycler);
@@ -69,10 +67,17 @@ public class ContentFragment extends BaseFragment implements LoaderManager.Loade
 
     private void setCursor(Cursor data) {
         if (getResources().getBoolean(R.bool.is_tablet)) {
+            artistFragment = (ArtistFragment) getChildFragmentManager().findFragmentByTag("artist");
+            if (artistFragment == null) {
+                data.moveToFirst();
+                artistFragment = ArtistFragmentBuilder.newArtistFragment(data.getString(data.getColumnIndex(ContentProviderContract.Artists.NAME)));
+                getChildFragmentManager().beginTransaction().replace(R.id.container, artistFragment, "artist").commit();
+            }
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-            recyclerView.setAdapter(new ArtistRecyclerAdapter(position -> {
-                artistFragment.update(position);
-            }));
+            recyclerView.setAdapter(new ArtistRecyclerAdapter(name -> {
+                artistFragment.update(name);
+            }, data));
+
         } else {
             ViewPager viewPager = (ViewPager) getView().findViewById(R.id.view_pager);
             viewPager.setAdapter(new ArtistsPagerAdapter(getChildFragmentManager(), data));
