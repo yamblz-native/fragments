@@ -12,6 +12,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import ru.yandex.yamblz.R;
 import ru.yandex.yamblz.provider.DataProvider;
 import ru.yandex.yamblz.singerscontracts.Singer;
@@ -42,6 +43,8 @@ public class DescFragment extends BaseDialogFragment {
 
     @BindView(R.id.more)
     TextView more;
+
+    private Unbinder mUnbinder;
 
     private DataProvider.Callback<Singer> mSingerCallback = new DataProvider.Callback<Singer>() {
         @Override
@@ -91,11 +94,15 @@ public class DescFragment extends BaseDialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.desc_fragment, container, false);
+        return inflater.inflate(R.layout.desc_fragment, container, false);
+    }
 
-        ButterKnife.bind(this, view);
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-        return view;
+        mUnbinder = ButterKnife.bind(this, view);
+
     }
 
     @Override
@@ -115,6 +122,12 @@ public class DescFragment extends BaseDialogFragment {
     public void onPause() {
         super.onPause();
         dataProvider.cancel(mSingerCallback);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mUnbinder.unbind();
     }
 
     @Override

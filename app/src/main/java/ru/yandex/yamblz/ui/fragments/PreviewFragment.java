@@ -18,6 +18,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import ru.yandex.yamblz.R;
 import ru.yandex.yamblz.provider.DataProvider;
 import ru.yandex.yamblz.singerscontracts.Singer;
@@ -39,6 +40,8 @@ public class PreviewFragment extends BaseFragment {
     DataProvider dataProvider;
 
     private Callbacks mCallbacks;
+
+    private Unbinder mUnbinder;
 
     public interface Callbacks {
         void onMoreChosen(Singer singer);
@@ -118,11 +121,14 @@ public class PreviewFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.preview_fragment, container, false);
+        return inflater.inflate(R.layout.preview_fragment, container, false);
+    }
 
-        ButterKnife.bind(this, view);
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-        return view;
+        mUnbinder = ButterKnife.bind(this, view);
     }
 
     @Override
@@ -139,6 +145,12 @@ public class PreviewFragment extends BaseFragment {
     public void onPause() {
         super.onPause();
         dataProvider.cancel(mSingerCallback);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mUnbinder.unbind();
     }
 
     public void setSinger(@NonNull Singer singer) {

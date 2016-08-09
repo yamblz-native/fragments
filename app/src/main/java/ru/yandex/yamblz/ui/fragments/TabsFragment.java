@@ -15,6 +15,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import ru.yandex.yamblz.R;
 import ru.yandex.yamblz.provider.DataProvider;
 import ru.yandex.yamblz.singerscontracts.Singer;
@@ -30,6 +31,8 @@ public class TabsFragment extends BaseFragment {
 
     @Inject
     DataProvider mDataProvider;
+
+    private Unbinder mUnbinder;
 
     public static TabsFragment newInstance() {
 
@@ -49,11 +52,14 @@ public class TabsFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.tabs_fragment, container, false);
+        return inflater.inflate(R.layout.tabs_fragment, container, false);
+    }
 
-        ButterKnife.bind(this, view);
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-        return view;
+        mUnbinder = ButterKnife.bind(this, view);
     }
 
     @Override
@@ -68,6 +74,12 @@ public class TabsFragment extends BaseFragment {
         super.onPause();
 
         mDataProvider.cancel(mSingersCallback);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mUnbinder.unbind();
     }
 
     private DataProvider.Callback<List<Singer>> mSingersCallback = new DataProvider.Callback<List<Singer>>() {
