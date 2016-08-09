@@ -2,6 +2,7 @@ package ru.yandex.yamblz.ui.fragments;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -97,8 +98,14 @@ public class ArtistDetailDialogFragment extends DialogFragment {
         Artist artist = getArguments().getParcelable(ARTIST_ARG);
         mName.setText(artist.getName());
         mGenre.setText(artist.getGenresAsString());
-        // TODO: Сделать строки нормально
-        mCount.setText(artist.getCountOfAlbums() + " альбомов, " + artist.getCountOfTracks() + " треков");
+
+        Resources resources = getResources();
+        int countOfAlbums = artist.getCountOfAlbums();
+        int countOfTracks = artist.getCountOfTracks();
+        String albumTracks = resources.getQuantityString(R.plurals.count_of_albums, countOfAlbums, countOfAlbums) +
+                ", " + resources.getQuantityString(R.plurals.count_of_songs, countOfTracks, countOfTracks);
+        mCount.setText(albumTracks);
+
         mUrl.setText(artist.getSiteUrl());
         mDescription.setText(artist.getDescription());
     }
