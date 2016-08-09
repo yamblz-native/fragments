@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
-import android.view.WindowManager;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -21,7 +20,10 @@ import ru.yandex.yamblz.ui.fragments.ArtistPhotoFragment;
 import ru.yandex.yamblz.ui.fragments.ArtistViewPagerFragment;
 import ru.yandex.yamblz.ui.other.ViewModifier;
 
-public class MainActivity extends BaseActivity implements ArtistPhotoFragment.Callbacks, ArtistListFragment.Callbacks, ArtistViewPagerFragment.Callbacks {
+public class MainActivity extends BaseActivity implements
+        ArtistPhotoFragment.Callbacks,
+        ArtistListFragment.Callbacks,
+        ArtistViewPagerFragment.Callbacks {
 
     @Inject
     @Named(DeveloperSettingsModule.MAIN_ACTIVITY_VIEW_MODIFIER)

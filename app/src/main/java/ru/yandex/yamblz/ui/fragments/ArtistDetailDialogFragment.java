@@ -16,12 +16,16 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import ru.yandex.yamblz.R;
 import ru.yandex.yamblz.model.Artist;
 
 public class ArtistDetailDialogFragment extends DialogFragment {
     private static final String ARTIST_ARG = "artist_arg";
     private static final String FULLSCREEN_ARG = "fullscreen_arg";
+
+    private boolean mFullscreen;
+    private Unbinder mUnbinder;
 
     @BindView(R.id.fragment_artist_detail_name)
     TextView mName;
@@ -37,7 +41,6 @@ public class ArtistDetailDialogFragment extends DialogFragment {
 
     @BindView(R.id.fragment_artist_detail_description)
     TextView mDescription;
-    private boolean mFullscreen;
 
     @NonNull
     @Override
@@ -89,7 +92,7 @@ public class ArtistDetailDialogFragment extends DialogFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind(this, view); // Не от BaseFragment наследуемся
+        mUnbinder = ButterKnife.bind(this, view); // Не от BaseFragment наследуемся
 
         Artist artist = getArguments().getParcelable(ARTIST_ARG);
         mName.setText(artist.getName());
@@ -98,5 +101,13 @@ public class ArtistDetailDialogFragment extends DialogFragment {
         mCount.setText(artist.getCountOfAlbums() + " альбомов, " + artist.getCountOfTracks() + " треков");
         mUrl.setText(artist.getSiteUrl());
         mDescription.setText(artist.getDescription());
+    }
+
+    @Override
+    public void onDestroyView() {
+        if (mUnbinder != null) {
+            mUnbinder.unbind();
+        }
+        super.onDestroyView();
     }
 }
