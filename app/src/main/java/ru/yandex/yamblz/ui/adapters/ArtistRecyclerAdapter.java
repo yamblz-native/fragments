@@ -15,7 +15,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.yandex.yamblz.R;
-import ru.yandex.yamblz.artists.DataSingleton;
 import ru.yandex.yamblz.lib.ArtistModel;
 import ru.yandex.yamblz.ui.fragments.ContentFragment;
 
@@ -25,7 +24,7 @@ public class ArtistRecyclerAdapter extends RecyclerView.Adapter<ArtistRecyclerAd
 
     public ArtistRecyclerAdapter(ContentFragment.OnItemClicked onItemClicked) {
         this.onItemClicked = onItemClicked;
-        artistModels = DataSingleton.get().getArtists();
+        artistModels = null;
 
     }
 
@@ -50,7 +49,7 @@ public class ArtistRecyclerAdapter extends RecyclerView.Adapter<ArtistRecyclerAd
 
         MyViewHolder(View itemView, ContentFragment.OnItemClicked onItemClicked) {
             super(itemView);
-            itemView.setOnClickListener(v -> onItemClicked.itemClicked(getAdapterPosition()));
+            //itemView.setOnClickListener(v -> onItemClicked.itemClicked();
             ButterKnife.bind(this,itemView);
         }
 

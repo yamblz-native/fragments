@@ -1,5 +1,6 @@
 package ru.yandex.yamblz.lib;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 
 import java.util.ArrayList;
@@ -91,6 +92,63 @@ public class ArtistModel {
     private static class Cover {
         public String small;
         public String big;
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            Cover cover = (Cover) o;
+
+            if (small != null ? !small.equals(cover.small) : cover.small != null) return false;
+            return big != null ? big.equals(cover.big) : cover.big == null;
+
+        }
+
+        @Override
+        public int hashCode() {
+            int result = small != null ? small.hashCode() : 0;
+            result = 31 * result + (big != null ? big.hashCode() : 0);
+            return result;
+        }
+    }
+
+    @Override
+
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ArtistModel that = (ArtistModel) o;
+
+        if (id != that.id) return false;
+        if (tracks != that.tracks) return false;
+        if (albums != that.albums) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (cover!=that.cover){//if null
+            if(cover==null || that.cover==null)return false;
+            if(!cover.equals(that.cover))return false;
+        }
+        if (genres!=that.genres){//if null
+            if(genres==null || that.genres==null)return false;
+            if(!genres.containsAll(that.genres) && !that.genres.containsAll(genres))return false;
+        }
+        if (link != null ? !link.equals(that.link) : that.link != null) return false;
+        return description != null ? description.equals(that.description) : that.description == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (cover != null ? cover.hashCode() : 0);
+        result = 31 * result + (genres != null ? genres.hashCode() : 0);
+        result = 31 * result + tracks;
+        result = 31 * result + albums;
+        result = 31 * result + (link != null ? link.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        return result;
     }
 
     public static ArtistModel cursorToModel(Cursor cursor) {
@@ -111,4 +169,31 @@ public class ArtistModel {
         }
         return new ArtistModel(id, name, imageBig, imageSmall, genresList, tracks, albums, link, description);
     }
+
+    public static ContentValues artistModelToValues(ArtistModel model){
+        ContentValues values = new ContentValues();
+        values.put(ContentProviderContract.Artists.ID, model.getId());
+        values.put(ContentProviderContract.Artists.NAME, model.getName());
+        values.put(ContentProviderContract.Artists.TRACKS, model.getTracks());
+        values.put(ContentProviderContract.Artists.ALBUMS, model.getAlbums());
+        values.put(ContentProviderContract.Artists.LINK, model.getLink());
+        values.put(ContentProviderContract.Artists.DESCRIPTION, model.getDescription());
+        values.put(ContentProviderContract.Artists.IMAGE_BIG, model.getBigImage());
+        values.put(ContentProviderContract.Artists.IMAGE_SMALL, model.getSmallImage());
+        String genres="";
+        for (String genre : model.getGenres()) {
+           // int genreId = getGenreId(db, genre);
+         //   values.clear();
+         //   values.put(ContentProviderContract.ArtistGenres.ARTIST_ID, id);
+          //  values.put(ContentProviderContract.ArtistGenres.GENRE_ID, genreId);
+          //  db.insert(ARTIST_GENRES, null, values);
+            genres+=genre+" ";
+        }
+        values.put(ContentProviderContract.Artists.GENRES,genres);
+        //db.insert(ARTISTS, null, values);
+        return values;
+
+    }
+
+
 }

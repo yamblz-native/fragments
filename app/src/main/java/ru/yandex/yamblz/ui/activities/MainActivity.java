@@ -9,10 +9,8 @@ import javax.inject.Named;
 
 import ru.yandex.yamblz.App;
 import ru.yandex.yamblz.R;
-import ru.yandex.yamblz.artists.DataSingleton;
 import ru.yandex.yamblz.developer_settings.DeveloperSettingsModule;
 import ru.yandex.yamblz.ui.fragments.ContentFragment;
-import ru.yandex.yamblz.ui.fragments.LoadFragment;
 import ru.yandex.yamblz.ui.other.ViewModifier;
 
 public class MainActivity extends BaseActivity {
@@ -25,21 +23,12 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         App.get(this).applicationComponent().inject(this);
-
         setContentView(viewModifier.modify(getLayoutInflater().inflate(R.layout.activity_main, null)));
-
         if (savedInstanceState == null) {
-            if(DataSingleton.get().hasData()){
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.main_frame_layout, new ContentFragment())
-                        .commit();
-            }else{
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.main_frame_layout, new LoadFragment())
-                        .commit();
-            }
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.main_frame_layout, new ContentFragment())
+                    .commit();
 
         }
     }

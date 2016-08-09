@@ -1,10 +1,15 @@
 package ru.yandex.yamblz.ui.fragments;
 
 
+import android.database.Cursor;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,15 +25,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import ru.yandex.yamblz.R;
-import ru.yandex.yamblz.artists.DataSingleton;
-import ru.yandex.yamblz.lib.ArtistModel;
+import ru.yandex.yamblz.lib.ContentProviderContract;
 
 @FragmentWithArgs
-public class ArtistFragment extends Fragment {
+public class ArtistFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     @BindView(R.id.artist_image) ImageView imageView;
     @BindView(R.id.btn_more) Button btnMore;
     @Arg
-    int position;
+    String name;
     private Unbinder unbinder;
 
     @Override
@@ -49,19 +53,19 @@ public class ArtistFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
         imageView.setBackgroundColor(Color.BLACK);
         if (savedInstanceState != null) {
-            position = savedInstanceState.getInt("position");
+            name = savedInstanceState.getString("name");
         }
-        update(position);
+        update(name);
         if (getContext().getResources().getBoolean(R.bool.is_tablet)) {
             btnMore.setOnClickListener(v -> {
-                ArtistMoreDialogFragment dialogFragment = ArtistMoreDialogFragmentBuilder.newArtistMoreDialogFragment(position);
-                dialogFragment.show(getChildFragmentManager(), null);
+            //    ArtistMoreDialogFragment dialogFragment = ArtistMoreDialogFragmentBuilder.newArtistMoreDialogFragment(name);
+              //  dialogFragment.show(getChildFragmentManager(), null);
             });
         } else {
             btnMore.setOnClickListener(v -> {
-                ArtistMoreDialogFragment dialogFragment = ArtistMoreDialogFragmentBuilder.newArtistMoreDialogFragment(position);
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout,
-                        dialogFragment).addToBackStack(null).commit();
+               // ArtistMoreDialogFragment dialogFragment = ArtistMoreDialogFragmentBuilder.newArtistMoreDialogFragment(name);
+               // getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout,
+                //        dialogFragment).addToBackStack(null).commit();
             });
         }
     }
@@ -73,15 +77,35 @@ public class ArtistFragment extends Fragment {
 
     }
 
-    public void update(int position) {
-        this.position = position;
-        ArtistModel artistModel = DataSingleton.get().getArtists().get(position);
-        Picasso.with(getContext()).load(artistModel.getBigImage()).into(imageView);
+    public void update(String name) {
+        this.name = name;
+        getLoaderManager().initLoader(1, null, this);
+        //ArtistModel artistModel = DataSingleton.get().getArtists().get(position);
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt("position", position);
+        outState.putString("name", name);
     }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new CursorLoader(getContext(),
+                Uri.parse(ContentProviderContract.URL+"/"+name)
+                , null, null, null, null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        data.moveToFirst();
+        Picasso.with(getContext()).load(data.getString(data.getColumnIndex(ContentProviderContract.Artists.IMAGE_BIG))).into(imageView);
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
+    }
+
 }

@@ -18,7 +18,6 @@ import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs;
 import com.squareup.picasso.Picasso;
 
 import ru.yandex.yamblz.R;
-import ru.yandex.yamblz.artists.DataSingleton;
 import ru.yandex.yamblz.lib.ArtistModel;
 
 @FragmentWithArgs
@@ -48,7 +47,7 @@ public class ArtistMoreDialogFragment extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
         ImageView imageView= (ImageView) view.findViewById(R.id.artist_image);
         imageView.setBackgroundColor(Color.BLACK);
-        ArtistModel artistModel=DataSingleton.get().getArtists().get(artistPosition);
+        ArtistModel artistModel=null;
         Picasso.with(getContext()).load(artistModel.getBigImage()).into(imageView);
 
         StringBuilder genres=new StringBuilder();
