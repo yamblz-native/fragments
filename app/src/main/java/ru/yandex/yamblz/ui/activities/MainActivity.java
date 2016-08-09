@@ -14,16 +14,19 @@ import ru.yandex.yamblz.developer_settings.DeveloperSettingsModule;
 import ru.yandex.yamblz.model.Artist;
 import ru.yandex.yamblz.model.ArtistProvider;
 import ru.yandex.yamblz.model.ArtistProviderImpl;
+import ru.yandex.yamblz.ui.adapters.ArtistListAdapterCallbacks;
 import ru.yandex.yamblz.ui.fragments.ArtistDetailDialogFragment;
 import ru.yandex.yamblz.ui.fragments.ArtistListFragment;
 import ru.yandex.yamblz.ui.fragments.ArtistPhotoFragment;
 import ru.yandex.yamblz.ui.fragments.ArtistViewPagerFragment;
+import ru.yandex.yamblz.Provider;
 import ru.yandex.yamblz.ui.other.ViewModifier;
 
 public class MainActivity extends BaseActivity implements
         ArtistPhotoFragment.Callbacks,
-        ArtistListFragment.Callbacks,
-        ArtistViewPagerFragment.Callbacks {
+        ArtistViewPagerFragment.Callbacks,
+        Provider,
+        ArtistListAdapterCallbacks {
 
     @Inject
     @Named(DeveloperSettingsModule.MAIN_ACTIVITY_VIEW_MODIFIER)
@@ -41,27 +44,31 @@ public class MainActivity extends BaseActivity implements
 
         mArtistProvider = new ArtistProviderImpl(getResources());
 
-        mArtistViewPagerFragment = ArtistViewPagerFragment.newInstance(0);
-        if (isPhone()) {
-            if (savedInstanceState == null) {
-                getSupportFragmentManager()
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if (savedInstanceState == null) {
+            // Значит запустились первый раз
+            mArtistViewPagerFragment = ArtistViewPagerFragment.newInstance(0);
+            if (isPhone()) {
+                fragmentManager
                         .beginTransaction()
                         .replace(R.id.main_frame_layout, mArtistViewPagerFragment)
                         .commit();
-            }
-        } else {
-            if (savedInstanceState == null) {
+            } else {
                 mArtistListFragment = new ArtistListFragment();
-                getSupportFragmentManager()
+                fragmentManager
                         .beginTransaction()
                         .replace(R.id.main_frame_layout, mArtistListFragment)
                         .commit();
 
-                getSupportFragmentManager()
+                fragmentManager
                         .beginTransaction()
                         .replace(R.id.photo_frame_layout, mArtistViewPagerFragment)
                         .commit();
             }
+        } else {
+            // Значит конфигурация изменилась
+            mArtistViewPagerFragment = (ArtistViewPagerFragment) fragmentManager.findFragmentById(R.id.photo_frame_layout);
+            mArtistListFragment = (ArtistListFragment) fragmentManager.findFragmentById(R.id.main_frame_layout);
         }
     }
 
@@ -77,8 +84,10 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public void onArtistInListSelected(Artist artist) {
-        int position = mArtistProvider.getPositionForArtist(artist);
-        mArtistViewPagerFragment.setCurrentItem(position);
+        if (mArtistViewPagerFragment != null) {
+            int position = mArtistProvider.getPositionForArtist(artist);
+            mArtistViewPagerFragment.setCurrentItem(position);
+        }
     }
 
     @Override

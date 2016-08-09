@@ -12,8 +12,8 @@ import android.view.ViewGroup;
 import java.lang.ref.WeakReference;
 
 import butterknife.BindView;
+import ru.yandex.yamblz.Provider;
 import ru.yandex.yamblz.R;
-import ru.yandex.yamblz.model.ArtistProvider;
 import ru.yandex.yamblz.ui.adapters.ArtistPhotoPagerAdapter;
 
 public class ArtistViewPagerFragment extends BaseFragment {
@@ -32,8 +32,6 @@ public class ArtistViewPagerFragment extends BaseFragment {
 
     public interface Callbacks {
         void onScrollViewPager(int position);
-
-        ArtistProvider provideArtistProvider();
     }
 
     @NonNull
@@ -47,8 +45,11 @@ public class ArtistViewPagerFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
 
         Callbacks callbacks = (Callbacks) getActivity(); // Можно положить в onAttach(Activity), но оно deprecated
+        Provider provider = (Provider) getActivity();
+
         FragmentManager fragmentManager = getFragmentManager();
-        ArtistPhotoPagerAdapter pagerAdapter = new ArtistPhotoPagerAdapter(fragmentManager, callbacks.provideArtistProvider());
+        ArtistPhotoPagerAdapter pagerAdapter = new ArtistPhotoPagerAdapter(fragmentManager, provider.provideArtistProvider());
+
         mViewPager.setAdapter(pagerAdapter);
         mViewPager.addOnPageChangeListener(new CallbacksPageChangeListener(callbacks));
 
@@ -57,7 +58,9 @@ public class ArtistViewPagerFragment extends BaseFragment {
     }
 
     public void setCurrentItem(int position) {
-        mViewPager.setCurrentItem(position);
+        if (mViewPager != null) {
+            mViewPager.setCurrentItem(position);
+        }
     }
 
     private class CallbacksPageChangeListener implements ViewPager.OnPageChangeListener {

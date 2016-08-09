@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Yamblz</string>
+    <string name="fragment_artist_photo_image_cover_description">Cover</string>
+    <string name="fragment_artist_photo_button_more">More</string>
 
     <plurals name="count_of_songs">
         <item quantity="one">%1$s song</item>

@@ -13,24 +13,17 @@ import com.squareup.picasso.Picasso;
 import butterknife.BindView;
 import icepick.Icepick;
 import icepick.State;
+import ru.yandex.yamblz.Provider;
 import ru.yandex.yamblz.R;
-import ru.yandex.yamblz.model.Artist;
-import ru.yandex.yamblz.model.ArtistProvider;
+import ru.yandex.yamblz.ui.adapters.ArtistListAdapterCallbacks;
 import ru.yandex.yamblz.ui.adapters.ArtistListRecyclerAdapter;
 
 public class ArtistListFragment extends BaseFragment {
-
     @State
     int mPosition;
 
     @BindView(R.id.fragment_artist_list_recycler_view)
     RecyclerView mRecyclerView;
-
-    public interface Callbacks {
-        void onArtistInListSelected(Artist artist);
-
-        ArtistProvider provideArtistProvider();
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,19 +47,23 @@ public class ArtistListFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Callbacks callbacks = (Callbacks) getActivity();
+        ArtistListAdapterCallbacks listCallbacks = (ArtistListAdapterCallbacks) getActivity();
+        Provider provider = (Provider) getActivity();
+
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecyclerView.setAdapter(new ArtistListRecyclerAdapter(callbacks.provideArtistProvider(), Picasso.with(getContext()), callbacks));
+        mRecyclerView.setAdapter(new ArtistListRecyclerAdapter(provider.provideArtistProvider(), Picasso.with(getContext()), listCallbacks));
+
         internalScrollTo(mPosition);
     }
 
     public void scrollTo(int position) {
         mPosition = position;
         internalScrollTo(mPosition);
-
     }
 
     private void internalScrollTo(int position) {
-        mRecyclerView.smoothScrollToPosition(position);
+        if (mRecyclerView != null) {
+            mRecyclerView.smoothScrollToPosition(position);
+        }
     }
 }

@@ -23,9 +23,6 @@ public class ArtistPhotoFragment extends BaseFragment {
     @BindView(R.id.fragment_artist_photo_image_cover)
     ImageView mCover;
 
-    @BindView(R.id.fragment_artist_photo_blur_image_cover)
-    ImageView mBlurredCover;
-
     public static ArtistPhotoFragment newInstance(Artist artist) {
         Bundle args = new Bundle();
         args.putParcelable(ARTIST_ARG, artist);

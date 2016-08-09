@@ -9,31 +9,27 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.lang.ref.WeakReference;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.yandex.yamblz.R;
 import ru.yandex.yamblz.model.Artist;
 import ru.yandex.yamblz.model.ArtistProvider;
-import ru.yandex.yamblz.ui.fragments.ArtistListFragment;
-
 
 public class ArtistListRecyclerAdapter extends RecyclerView.Adapter<ArtistListRecyclerAdapter.ArtistHolder> {
     private ArtistProvider mArtistProvider;
     private Picasso mPicasso;
-    private WeakReference<ArtistListFragment.Callbacks> mCallbacks;
+    private ArtistListAdapterCallbacks mCallbacks;
 
-    public ArtistListRecyclerAdapter(ArtistProvider artistProvider, Picasso picasso, ArtistListFragment.Callbacks callbacks) {
+    public ArtistListRecyclerAdapter(ArtistProvider artistProvider, Picasso picasso, ArtistListAdapterCallbacks callbacks) {
         mArtistProvider = artistProvider;
         mPicasso = picasso;
-        mCallbacks = new WeakReference<>(callbacks);
+        mCallbacks = callbacks;
     }
 
     @Override
     public ArtistHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_artist_item, parent, false);
-        return new ArtistHolder(view, mPicasso, mCallbacks.get());
+        return new ArtistHolder(view, mPicasso, mCallbacks);
     }
 
     @Override
@@ -49,7 +45,7 @@ public class ArtistListRecyclerAdapter extends RecyclerView.Adapter<ArtistListRe
     public static class ArtistHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private Picasso mPicasso;
         private Artist mArtist;
-        private WeakReference<ArtistListFragment.Callbacks> mCallbacks;
+        private ArtistListAdapterCallbacks mCallbacks;
 
         @BindView(R.id.artist_list_item_name)
         TextView mName;
@@ -57,10 +53,10 @@ public class ArtistListRecyclerAdapter extends RecyclerView.Adapter<ArtistListRe
         @BindView(R.id.artist_list_item_cover)
         ImageView mCover;
 
-        public ArtistHolder(View itemView, Picasso picasso, ArtistListFragment.Callbacks callbacks) {
+        public ArtistHolder(View itemView, Picasso picasso, ArtistListAdapterCallbacks callbacks) {
             super(itemView);
             mPicasso = picasso;
-            mCallbacks = new WeakReference<>(callbacks);
+            mCallbacks = callbacks;
 
             ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
@@ -74,9 +70,8 @@ public class ArtistListRecyclerAdapter extends RecyclerView.Adapter<ArtistListRe
 
         @Override
         public void onClick(View v) {
-            ArtistListFragment.Callbacks callbacks = mCallbacks.get();
-            if (callbacks != null) {
-                callbacks.onArtistInListSelected(mArtist);
+            if (mCallbacks != null) {
+                mCallbacks.onArtistInListSelected(mArtist);
             }
         }
     }
