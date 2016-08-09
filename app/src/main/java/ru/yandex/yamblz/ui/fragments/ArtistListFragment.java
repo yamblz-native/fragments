@@ -11,20 +11,31 @@ import android.view.ViewGroup;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
+import icepick.Icepick;
+import icepick.State;
 import ru.yandex.yamblz.R;
 import ru.yandex.yamblz.model.Artist;
-import ru.yandex.yamblz.model.ArtistLab;
 import ru.yandex.yamblz.model.ArtistProvider;
 import ru.yandex.yamblz.ui.adapters.ArtistListRecyclerAdapter;
 
 public class ArtistListFragment extends BaseFragment {
-    private ArtistProvider mArtistProvider;
+
+    @State
+    int mPosition;
 
     @BindView(R.id.fragment_artist_list_recycler_view)
     RecyclerView mRecyclerView;
 
     public interface Callbacks {
         void onArtistInListSelected(Artist artist);
+
+        ArtistProvider provideArtistProvider();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Icepick.restoreInstanceState(this, savedInstanceState);
     }
 
     @Nullable
@@ -34,10 +45,28 @@ public class ArtistListFragment extends BaseFragment {
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Icepick.saveInstanceState(this, outState);
+    }
+
+    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        Callbacks callbacks = (Callbacks) getActivity();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        // TODO: Ещё раз посмотреть все зависимости
-        mRecyclerView.setAdapter(new ArtistListRecyclerAdapter(ArtistLab.get(getContext()), Picasso.with(getContext()), (Callbacks) getActivity()));
+        mRecyclerView.setAdapter(new ArtistListRecyclerAdapter(callbacks.provideArtistProvider(), Picasso.with(getContext()), callbacks));
+        internalScrollTo(mPosition);
+    }
+
+    public void scrollTo(int position) {
+        mPosition = position;
+        internalScrollTo(mPosition);
+
+    }
+
+    private void internalScrollTo(int position) {
+        mRecyclerView.smoothScrollToPosition(position);
     }
 }

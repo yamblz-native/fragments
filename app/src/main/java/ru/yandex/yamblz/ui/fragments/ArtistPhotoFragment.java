@@ -1,15 +1,7 @@
 package ru.yandex.yamblz.ui.fragments;
 
 
-import android.annotation.TargetApi;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.renderscript.Allocation;
-import android.renderscript.Element;
-import android.renderscript.RenderScript;
-import android.renderscript.ScriptIntrinsicBlur;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -18,10 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.yandex.yamblz.R;
 import ru.yandex.yamblz.model.Artist;
@@ -59,29 +49,11 @@ public class ArtistPhotoFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
 
         mArtist = getArguments().getParcelable(ARTIST_ARG);
-        Picasso.with(getContext()) // TODO: Glide?
-                .load(mArtist.getUrlOfSmallCover())
+        Picasso.with(getContext())
+                .load(mArtist.getUrlOfBigCover())
                 .placeholder(R.drawable.ic_album_black_400dp)
                 .error(R.drawable.ic_album_black_400dp)
-                .into(new Target() {
-                    @Override
-                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                        mCover.setImageBitmap(bitmap);
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                            mBlurredCover.setImageBitmap(blurBitmap(bitmap));
-                        }
-                    }
-
-                    @Override
-                    public void onBitmapFailed(Drawable errorDrawable) {
-                        mCover.setImageDrawable(errorDrawable);
-                    }
-
-                    @Override
-                    public void onPrepareLoad(Drawable placeHolderDrawable) {
-                        mCover.setImageDrawable(placeHolderDrawable);
-                    }
-                });
+                .into(mCover);
     }
 
     @OnClick(R.id.fragment_artist_photo_button_more)
@@ -90,29 +62,5 @@ public class ArtistPhotoFragment extends BaseFragment {
         if (callbacks != null) {
             callbacks.onClickMoreInformation(mArtist);
         }
-    }
-
-    // TODO: Подумать, где место блюрингу
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-    public Bitmap blurBitmap(Bitmap bitmap) {
-        Bitmap outBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-        RenderScript rs = RenderScript.create(getContext().getApplicationContext());
-
-        ScriptIntrinsicBlur blurScript = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));
-
-        Allocation allIn = Allocation.createFromBitmap(rs, bitmap);
-        Allocation allOut = Allocation.createFromBitmap(rs, outBitmap);
-
-        blurScript.setRadius(25.0f);
-
-        blurScript.setInput(allIn);
-        blurScript.forEach(allOut);
-
-        allOut.copyTo(outBitmap);
-
-        rs.destroy();
-
-        return outBitmap;
-
     }
 }

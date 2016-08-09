@@ -20,6 +20,10 @@ ext.versions = [
 
         dagger                       : '2.4',
 
+        gson                         : '2.6.2',
+        picasso                      : '2.5.2',
+        icepick                      : '3.2.0',
+
         supportLibs                  : '23.1.1',
         butterKnife                  : '8.0.1',
         timber                       : '4.1.2',
@@ -62,6 +66,12 @@ ext.libraries = [
         supportDesign           : "com.android.support:design:$versions.supportLibs",
         supportRecyclerView     : "com.android.support:recyclerview-v7:$versions.supportLibs",
         supportCardView         : "com.android.support:cardview-v7:$versions.supportLibs",
+
+        gson                    : "com.google.code.gson:gson:$versions.gson",
+        picasso                 : "com.squareup.picasso:picasso:$versions.picasso",
+
+        icepick                 : "frankiesardo:icepick:$versions.icepick",
+        icepickProcessor        : "frankiesardo:icepick-processor:$versions.icepick",
 
         butterKnife             : "com.jakewharton:butterknife:$versions.butterKnife",
         butterKnifeCompiler     : "com.jakewharton:butterknife-compiler:$versions.butterKnife",

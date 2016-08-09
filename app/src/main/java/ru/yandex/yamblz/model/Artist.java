@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Artist implements Comparable<Artist>, Parcelable, Serializable {
@@ -24,7 +25,7 @@ public class Artist implements Comparable<Artist>, Parcelable, Serializable {
         }
     };
     @SerializedName("id")
-    private int mId;
+    private long mId;
     @SerializedName("name")
     private String mName;
     @SerializedName("genres")
@@ -42,8 +43,21 @@ public class Artist implements Comparable<Artist>, Parcelable, Serializable {
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection") // GSON
     private Map<String, String> mCover;
 
+    public Artist(long id, String name, int countOfTracks, int countOfAlbums, String siteUrl, String description, String bigCover, String smallCover, String[] genres) {
+        mId = id;
+        mName = name;
+        mCountOfTracks = countOfTracks;
+        mCountOfAlbums = countOfAlbums;
+        mSiteUrl = siteUrl;
+        mDescription = description;
+        mCover = new HashMap<>();
+        mCover.put("big", bigCover);
+        mCover.put("small", smallCover);
+        mGenres = genres;
+    }
+
     protected Artist(Parcel in) {
-        mId = in.readInt();
+        mId = in.readLong();
         mName = in.readString();
         mGenres = in.createStringArray();
         mCountOfTracks = in.readInt();
@@ -52,7 +66,7 @@ public class Artist implements Comparable<Artist>, Parcelable, Serializable {
         mDescription = in.readString();
     }
 
-    public int getId() {
+    public long getId() {
         return mId;
     }
 
@@ -60,8 +74,12 @@ public class Artist implements Comparable<Artist>, Parcelable, Serializable {
         return mName;
     }
 
-    public String getGenres() {
+    public String getGenresAsString() {
         return TextUtils.join(", ", mGenres);
+    }
+
+    public String[] getGenres() {
+        return mGenres;
     }
 
     public int getCountOfTracks() {
@@ -95,7 +113,7 @@ public class Artist implements Comparable<Artist>, Parcelable, Serializable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(mId);
+        dest.writeLong(mId);
         dest.writeString(mName);
         dest.writeStringArray(mGenres);
         dest.writeInt(mCountOfTracks);
@@ -122,7 +140,7 @@ public class Artist implements Comparable<Artist>, Parcelable, Serializable {
 
     @Override
     public int hashCode() {
-        int result = mId;
+        int result = (int) (mId ^ (mId >>> 32));
         result = 31 * result + (mName != null ? mName.hashCode() : 0);
         return result;
     }

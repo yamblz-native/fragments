@@ -9,17 +9,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.lang.ref.WeakReference;
+
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import ru.yandex.yamblz.R;
-import ru.yandex.yamblz.model.ArtistLab;
 import ru.yandex.yamblz.model.ArtistProvider;
 import ru.yandex.yamblz.ui.adapters.ArtistPhotoPagerAdapter;
 
 public class ArtistViewPagerFragment extends BaseFragment {
     private static final String POSITION_ARG = "position_arg";
-    private ArtistPhotoPagerAdapter mPagerAdapter;
-    private ArtistProvider mArtistProvider;
 
     @BindView(R.id.fragment_artist_view_pager_view_pager)
     ViewPager mViewPager;
@@ -32,6 +30,12 @@ public class ArtistViewPagerFragment extends BaseFragment {
         return fragment;
     }
 
+    public interface Callbacks {
+        void onScrollViewPager(int position);
+
+        ArtistProvider provideArtistProvider();
+    }
+
     @NonNull
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -41,12 +45,12 @@ public class ArtistViewPagerFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // TODO: Даггер-даггер...
-        mArtistProvider = ArtistLab.get(getContext());
 
+        Callbacks callbacks = (Callbacks) getActivity(); // Можно положить в onAttach(Activity), но оно deprecated
         FragmentManager fragmentManager = getFragmentManager();
-        mPagerAdapter = new ArtistPhotoPagerAdapter(fragmentManager, mArtistProvider);
-        mViewPager.setAdapter(mPagerAdapter);
+        ArtistPhotoPagerAdapter pagerAdapter = new ArtistPhotoPagerAdapter(fragmentManager, callbacks.provideArtistProvider());
+        mViewPager.setAdapter(pagerAdapter);
+        mViewPager.addOnPageChangeListener(new CallbacksPageChangeListener(callbacks));
 
         int position = getArguments().getInt(POSITION_ARG);
         mViewPager.setCurrentItem(position);
@@ -54,5 +58,31 @@ public class ArtistViewPagerFragment extends BaseFragment {
 
     public void setCurrentItem(int position) {
         mViewPager.setCurrentItem(position);
+    }
+
+    private class CallbacksPageChangeListener implements ViewPager.OnPageChangeListener {
+        private WeakReference<Callbacks> mCallbacks;
+
+        public CallbacksPageChangeListener(Callbacks callbacks) {
+            mCallbacks = new WeakReference<>(callbacks);
+        }
+
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            Callbacks callbacks = mCallbacks.get();
+            if (callbacks != null) {
+                callbacks.onScrollViewPager(position);
+            }
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+
+        }
     }
 }
