@@ -43,35 +43,8 @@ public class DbBackend {
     @Nullable
     public Cursor getSingers(@Nullable String[] projection, @Nullable String selection,
                              @Nullable String[] selectionArgs, @Nullable String sortOrder) {
-        String from = "(SELECT %s, %s, group_concat(%s, ',') AS %s, %s, %s, %s, %s, %s FROM %s LEFT JOIN " +
-                "%s on %s=%s LEFT JOIN %s ON %s=%s GROUP BY %s)";
-        /*
-            (SELECT singers.id AS id, singers.name AS name, group_concat(genres.name, ',') AS genres,
-             singers.tracks AS tracks, singers.albums AS albums, singers.description AS description,
-             singers.cover_small AS cover_small, singers.cover_big AS cover_big FROM singers
-             LEFT JOIN singers_genres on singers.id=singers_genres.singer_id LEFT JOIN genres
-             ON singers_genres.genre_id=genres.id GROUP BY singers.id)
-         */
-        String fromFormatted = String.format(from,
-                Singers.TABLE_NAME + "." + Singers.ID + " AS " + SingersContract.Singers.ID,
-                Singers.TABLE_NAME + "." + Singers.NAME + " AS " + SingersContract.Singers.NAME,
-                Genres.TABLE_NAME + "." + Genres.NAME,
-                SingersContract.Singers.GENRES,
-                Singers.TABLE_NAME + "." + Singers.TRACKS + " AS " + SingersContract.Singers.TRACKS,
-                Singers.TABLE_NAME + "." + Singers.ALBUMS + " AS " + SingersContract.Singers.ALBUMS,
-                Singers.TABLE_NAME + "." + Singers.DESCRIPTION + " AS " + SingersContract.Singers.DESCRIPTION,
-                Singers.TABLE_NAME + "." + Singers.COVER_SMALL + " AS " + SingersContract.Singers.COVER_SMALL,
-                Singers.TABLE_NAME + "." + Singers.COVER_BIG + " AS " + SingersContract.Singers.COVER_BIG,
-                Singers.TABLE_NAME,
-                SingersGenres.TABLE_NAME,
-                Singers.TABLE_NAME + "." + Singers.ID,
-                SingersGenres.TABLE_NAME + "." + SingersGenres.SINGER_ID,
-                Genres.TABLE_NAME,
-                SingersGenres.TABLE_NAME + "." + SingersGenres.GENRE_ID,
-                Genres.TABLE_NAME + "." + Genres.ID,
-                Singers.TABLE_NAME + "." + Singers.ID);
         SQLiteDatabase database = mDbOpenHelper.getReadableDatabase();
-        Cursor cursor = database.query(fromFormatted, projection, selection, selectionArgs, null,
+        Cursor cursor = database.query(Singers.CONTRACT_VIEW, projection, selection, selectionArgs, null,
                 null, sortOrder);
 
         if(cursor != null) {

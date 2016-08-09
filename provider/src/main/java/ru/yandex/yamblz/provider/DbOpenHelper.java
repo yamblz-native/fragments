@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import ru.yandex.yamblz.singerscontracts.SingersContract;
+
 import static ru.yandex.yamblz.provider.DbContract.DB_NAME;
 import static ru.yandex.yamblz.provider.DbContract.Genres;
 import static ru.yandex.yamblz.provider.DbContract.Singers;
@@ -11,7 +13,7 @@ import static ru.yandex.yamblz.provider.DbContract.SingersGenres;
 
 public class DbOpenHelper extends SQLiteOpenHelper {
 
-    public static final int DB_VERSION = 1;
+    public static final int DB_VERSION = 2;
 
     public DbOpenHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -22,7 +24,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
         createSingersTable(db);
         createGenresTable(db);
         createSingersGenresTable(db);
-        addIndexes(db);
+        createSingersView(db);
     }
 
     @Override
@@ -56,6 +58,30 @@ public class DbOpenHelper extends SQLiteOpenHelper {
                 "(" + Genres.ID + ") ON UPDATE CASCADE ON DELETE CASCADE)");
     }
 
+    private void createSingersView(SQLiteDatabase db) {
+        String table = String.format(
+                "SELECT %s, %s, group_concat(%s, ',') AS %s, %s, %s, %s, %s, %s FROM %s LEFT JOIN " +
+                "%s on %s=%s LEFT JOIN %s ON %s=%s GROUP BY %s",
+                Singers.TABLE_NAME + "." + Singers.ID + " AS " + SingersContract.Singers.ID,
+                Singers.TABLE_NAME + "." + Singers.NAME + " AS " + SingersContract.Singers.NAME,
+                Genres.TABLE_NAME + "." + Genres.NAME,
+                SingersContract.Singers.GENRES,
+                Singers.TABLE_NAME + "." + Singers.TRACKS + " AS " + SingersContract.Singers.TRACKS,
+                Singers.TABLE_NAME + "." + Singers.ALBUMS + " AS " + SingersContract.Singers.ALBUMS,
+                Singers.TABLE_NAME + "." + Singers.DESCRIPTION + " AS " + SingersContract.Singers.DESCRIPTION,
+                Singers.TABLE_NAME + "." + Singers.COVER_SMALL + " AS " + SingersContract.Singers.COVER_SMALL,
+                Singers.TABLE_NAME + "." + Singers.COVER_BIG + " AS " + SingersContract.Singers.COVER_BIG,
+                Singers.TABLE_NAME,
+                SingersGenres.TABLE_NAME,
+                Singers.TABLE_NAME + "." + Singers.ID,
+                SingersGenres.TABLE_NAME + "." + SingersGenres.SINGER_ID,
+                Genres.TABLE_NAME,
+                SingersGenres.TABLE_NAME + "." + SingersGenres.GENRE_ID,
+                Genres.TABLE_NAME + "." + Genres.ID,
+                Singers.TABLE_NAME + "." + Singers.ID);
+        db.execSQL("CREATE VIEW " + Singers.CONTRACT_VIEW + " AS " + table);
+    }
+
     private void addIndexes(SQLiteDatabase db) {
         db.execSQL("CREATE INDEX " + Singers.NAME_INDEX + " ON " + Singers.TABLE_NAME +
                 "(" + Singers.NAME + ")");
@@ -63,6 +89,8 @@ public class DbOpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        if(newVersion == 2) {
+            createSingersView(db);
+        }
     }
 }

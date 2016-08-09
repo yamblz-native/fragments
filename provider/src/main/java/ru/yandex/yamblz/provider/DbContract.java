@@ -30,6 +30,8 @@ public final class DbContract {
         //TYPE: TEXT
         public static final String COVER_BIG = "cover_big";
 
+        public static final String CONTRACT_VIEW = "singers_view";
+
         public static final String NAME_INDEX = TABLE_NAME + "_name_index";
     }
 
