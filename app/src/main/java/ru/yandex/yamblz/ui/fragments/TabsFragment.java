@@ -65,7 +65,6 @@ public class TabsFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-
         mDataProvider.getSingers(mSingersCallback);
     }
 
@@ -79,8 +78,10 @@ public class TabsFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+
         mUnbinder.unbind();
     }
+
 
     private DataProvider.Callback<List<Singer>> mSingersCallback = new DataProvider.Callback<List<Singer>>() {
         @Override
