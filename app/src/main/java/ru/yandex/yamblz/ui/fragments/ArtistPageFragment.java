@@ -65,11 +65,11 @@ public class ArtistPageFragment extends BaseFragment {
     }
 
     /**
-     * Artist's setter
+     * Artist's setter for FragmentArgs
      *
      * @param artist artist
      */
-    public void setArtist(Artist artist) {
+    void setArtist(Artist artist) {
         this.artist = artist;
     }
 

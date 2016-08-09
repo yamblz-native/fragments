@@ -83,7 +83,12 @@ public class ArtistDetailFragment extends DialogFragment {
         }
     }
 
-    public void setArtist(Artist artist) {
+    /**
+     * Artist's setter for FragmentArgs
+     *
+     * @param artist artist
+     */
+    void setArtist(Artist artist) {
         this.artist = artist;
     }
 
