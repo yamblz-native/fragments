@@ -9,5 +9,6 @@
     <dimen name="artist_preview_item_padding">16dp</dimen>
     <dimen name="artist_img_right_margin">16dp</dimen>
 
-
+    <dimen name="artist_detail_padding">14dp</dimen>
+    <dimen name="artist_detail_padding_biography">12dp</dimen>
 </resources>

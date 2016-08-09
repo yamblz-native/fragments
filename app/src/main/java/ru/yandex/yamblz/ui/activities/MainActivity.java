@@ -19,9 +19,11 @@ import ru.yandex.yamblz.model.Artist;
 import ru.yandex.yamblz.ui.background.MyLoader;
 import ru.yandex.yamblz.ui.fragments.ArtistsListFragment;
 import ru.yandex.yamblz.ui.fragments.CoverFragment;
-import ru.yandex.yamblz.ui.fragments.DetailedInformationDialogFragment;
+import ru.yandex.yamblz.ui.fragments.DetailedFragment;
 import ru.yandex.yamblz.ui.fragments.PagerFragment;
+import ru.yandex.yamblz.ui.fragments.StubFragment;
 import ru.yandex.yamblz.ui.other.ViewModifier;
+import timber.log.Timber;
 
 public class MainActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<List<Artist>> {
     public static final String DEBUG_TAG = MainActivity.class.getName();
@@ -46,7 +48,7 @@ public class MainActivity extends BaseActivity implements LoaderManager.LoaderCa
                         .commit();
                 getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.detail_container, new CoverFragment(), CoverFragment.FRAGMENT_TAG)
+                        .replace(R.id.detail_container, new StubFragment(), CoverFragment.FRAGMENT_TAG)
                         .commit();
             } else {
                 getSupportFragmentManager()
@@ -60,6 +62,7 @@ public class MainActivity extends BaseActivity implements LoaderManager.LoaderCa
     }
 
     public void onArtistSelected(Artist artist) {
+        Timber.d("in main's onArtist selected");
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.detail_container, CoverFragment.newInstance(artist), CoverFragment.FRAGMENT_TAG)
@@ -89,8 +92,18 @@ public class MainActivity extends BaseActivity implements LoaderManager.LoaderCa
     }
 
     public void showDetailedFragment(Artist artist) {
-        DetailedInformationDialogFragment fragment = new DetailedInformationDialogFragment();
-        fragment.show(getSupportFragmentManager(), "dialog");
+        DetailedFragment fragment = (DetailedFragment) DetailedFragment.newInstance(artist);
+
+        if (isTablet()) {
+            fragment.show(getSupportFragmentManager(), DetailedFragment.TAG);
+        } else {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    //because replacing is too slow
+                    .add(R.id.detail_container, fragment, DetailedFragment.TAG)
+                    .addToBackStack(DetailedFragment.TAG)
+                    .commit();
+        }
     }
 
     public boolean isTablet() {

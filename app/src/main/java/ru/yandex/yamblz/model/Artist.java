@@ -17,8 +17,8 @@ abstract public class Artist implements Parcelable {
         return new AutoValue_Artist.Builder();
     }
 
-    public static Artist create(long id, String name, List<String> genres, long tracks,
-                                long albums, @Nullable String link, String description, Cover cover) {
+    public static Artist create(long id, String name, List<String> genres, int tracks,
+                                int albums, @Nullable String link, String description, Cover cover) {
         return builder()
                 .id(id)
                 .name(name)
@@ -38,9 +38,9 @@ abstract public class Artist implements Parcelable {
 
     public abstract List<String> genres();
 
-    public abstract long tracks();
+    public abstract int tracks();
 
-    public abstract long albums();
+    public abstract int albums();
 
     @Nullable
     public abstract String link();
@@ -58,9 +58,9 @@ abstract public class Artist implements Parcelable {
 
         public abstract Builder genres(List<String> genres);
 
-        public abstract Builder tracks(long tracks);
+        public abstract Builder tracks(int tracks);
 
-        public abstract Builder albums(long albums);
+        public abstract Builder albums(int albums);
 
         public abstract Builder link(String link);
 

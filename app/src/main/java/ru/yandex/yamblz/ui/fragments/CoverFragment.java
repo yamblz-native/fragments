@@ -12,9 +12,7 @@ import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 import ru.yandex.yamblz.R;
 import ru.yandex.yamblz.model.Artist;
 import ru.yandex.yamblz.ui.activities.MainActivity;
@@ -32,8 +30,6 @@ public class CoverFragment extends BaseFragment {
     @BindView(R.id.button_more)
     Button buttonMore;
 
-    private Unbinder unbinder;
-
     private Artist artist;
 
     public static Fragment newInstance(Artist artist) {
@@ -48,24 +44,23 @@ public class CoverFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_cover, container, false);
-        unbinder = ButterKnife.bind(this, v);
+        return inflater.inflate(R.layout.fragment_cover, container, false);
+    }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        fillView();
+    }
+
+    private void fillView() {
         Bundle args = getArguments();
         if (args != null) {
             artist = args.getParcelable(ARTIST_EXTRA);
             Picasso.with(getActivity())
                     .load(artist.cover().bigCover())
-                    .error(R.drawable.leak_canary_icon) //TODO: delete canary icon
                     .into(cover);
         }
-        return v;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
     }
 
     @OnClick(R.id.button_more)

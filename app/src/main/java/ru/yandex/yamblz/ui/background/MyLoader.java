@@ -59,17 +59,15 @@ public class MyLoader extends AsyncTaskLoader<List<Artist>> {
                 .bigCover(c.getString(c.getColumnIndex(Contract.ArtistEntry.COLUMN_NAME_COVER_BIG)))
                 .build();
 
-        Artist artist = Artist.builder()
+        return Artist.builder()
                 .id(c.getLong(c.getColumnIndex(Contract.ArtistEntry._ID)))
                 .name(c.getString(c.getColumnIndex(Contract.ArtistEntry.COLUMN_NAME_ARTIST_NAME)))
                 .genres(Arrays.asList(genres))
-                .tracks(c.getLong(c.getColumnIndex(Contract.ArtistEntry.COLUMN_NAME_TRACKS)))
-                .albums(c.getLong(c.getColumnIndex(Contract.ArtistEntry.COLUMN_NAME_ALBUMS)))
+                .tracks(c.getInt(c.getColumnIndex(Contract.ArtistEntry.COLUMN_NAME_TRACKS)))
+                .albums(c.getInt(c.getColumnIndex(Contract.ArtistEntry.COLUMN_NAME_ALBUMS)))
                 .link(c.getString(c.getColumnIndex(Contract.ArtistEntry.COLUMN_NAME_LINK)))
                 .description(c.getString(c.getColumnIndex(Contract.ArtistEntry.COLUMN_NAME_DESCRIPTION)))
                 .cover(cover)
                 .build();
-
-        return artist;
     }
 }

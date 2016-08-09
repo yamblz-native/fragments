@@ -1,4 +1,4 @@
-package ru.yandex.yamblz.ui.recycler_view;
+package ru.yandex.yamblz.ui.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +11,8 @@ import java.util.List;
 import ru.yandex.yamblz.R;
 import ru.yandex.yamblz.model.Artist;
 import ru.yandex.yamblz.ui.activities.MainActivity;
+import ru.yandex.yamblz.ui.recycler_view.ArtistPreviewViewHolder;
+import timber.log.Timber;
 
 /**
  * Created by Aleksandra on 06/08/16.

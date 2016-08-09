@@ -5,6 +5,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.yandex.yamblz.R;
@@ -28,6 +30,8 @@ public class ArtistPreviewViewHolder extends RecyclerView.ViewHolder {
     public void bind(Artist artist) {
         artistName.setText(artist.name());
 
-        //TODO: add downloading image
+        Picasso.with(cover.getContext())
+                .load(artist.cover().smallCover())
+                .into(cover);
     }
 }

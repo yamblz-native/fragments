@@ -11,11 +11,9 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import ru.yandex.yamblz.R;
 import ru.yandex.yamblz.model.Artist;
-import ru.yandex.yamblz.ui.recycler_view.ArtistAdapter;
+import ru.yandex.yamblz.ui.adapters.ArtistAdapter;
 
 /**
  * Created by Aleksandra on 06/08/16.
@@ -28,30 +26,27 @@ public class ArtistsListFragment extends BaseFragment {
 
     private ArtistAdapter adapter = new ArtistAdapter();
 
-    private Unbinder unbinder;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_list, container, false);
-        unbinder = ButterKnife.bind(this, v);
+        return inflater.inflate(R.layout.fragment_list, container, false);
+    }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         rw.setLayoutManager(new LinearLayoutManager(getActivity()));
         rw.setAdapter(adapter);
-
-        return v;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
     }
 
 
     public void onNewDatasetAvailable(List<Artist> artistList) {
         adapter.setDataset(artistList);
     }
-
 
 }

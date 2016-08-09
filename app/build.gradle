@@ -119,6 +119,8 @@ dependencies {
 
     compile 'com.squareup.picasso:picasso:2.5.2'
 
+    compile 'frankiesardo:icepick:3.2.0'
+    apt 'frankiesardo:icepick-processor:3.2.0'
 
     testCompile libraries.junit
     testCompile libraries.robolectric

@@ -4,20 +4,19 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.yandex.yamblz.R;
 import ru.yandex.yamblz.model.Artist;
+import ru.yandex.yamblz.ui.adapters.PagerAdapter;
 import timber.log.Timber;
 
 /**
@@ -32,7 +31,9 @@ public class PagerFragment extends Fragment {
     @BindView(R.id.pager)
     ViewPager pager;
 
-    private MuAdapter adapter;
+    PagerAdapter adapter;
+
+    private List<Artist> artists = new LinkedList<>();
 
     @Nullable
     @Override
@@ -40,7 +41,8 @@ public class PagerFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_pager, container, false);
         ButterKnife.bind(this, v);
 
-        adapter = new MuAdapter(getChildFragmentManager());
+        adapter = new PagerAdapter(getChildFragmentManager());
+        adapter.setDataset(artists);
         pager.setAdapter(adapter);
 
         tabLayout.setupWithViewPager(pager);
@@ -51,40 +53,10 @@ public class PagerFragment extends Fragment {
         return v;
     }
 
-    public class MuAdapter extends FragmentStatePagerAdapter {
-
-        private List<Artist> dataset;
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return dataset.get(position).name();
-        }
-
-        public MuAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return CoverFragment.newInstance(dataset.get(position));
-        }
-
-        @Override
-        public int getCount() {
-            return dataset != null ? dataset.size() : 0;
-        }
-
-        public void setDataset(List<Artist> artists) {
-            Timber.d("In set dataset");
-            dataset = artists;
-            notifyDataSetChanged();
-            tabLayout.setTabsFromPagerAdapter(adapter);
-            Timber.d("Dataset size %d", dataset.size());
-        }
-    }
-
     public void onNewArtistsAvailable(List<Artist> artists) {
         Timber.d("In onNewArtistsAvailable");
+        this.artists = artists;
         adapter.setDataset(artists);
+        tabLayout.setTabsFromPagerAdapter(adapter);
     }
 }
