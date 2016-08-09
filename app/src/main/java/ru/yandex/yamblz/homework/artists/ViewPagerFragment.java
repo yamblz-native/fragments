@@ -60,7 +60,8 @@ public class ViewPagerFragment extends BaseFragment implements ArtistsView, Swip
     {
         super.onViewCreated(view, savedInstanceState);
 
-        presenter = new ArtistsPresenterImpl(Injection.provideDataSource(getContext().getApplicationContext()));
+        presenter = Injection.providePresenter(Injection.provideDataSource(
+                getContext().getApplicationContext()));
         swipeLayout.setOnRefreshListener(this);
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);

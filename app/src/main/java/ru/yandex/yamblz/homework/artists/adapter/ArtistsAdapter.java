@@ -21,7 +21,6 @@ import ru.yandex.yamblz.homework.data.entity.Artist;
 
 public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ArtistsViewHolder>
 {
-    private View emptyView;
     private List<Artist> artists;
     private OnItemClickListener onItemClickListener;
     private Context context;
@@ -31,9 +30,8 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ArtistsV
         void onItemClick(View view, int position);
     }
 
-    public ArtistsAdapter(Context context, View emptyView)
+    public ArtistsAdapter(Context context)
     {
-        this.emptyView = emptyView;
         this.context = context;
     }
 
@@ -62,7 +60,6 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ArtistsV
     {
         artists = newList;
         notifyDataSetChanged();
-        emptyView.setVisibility(getItemCount() == 0 ? View.VISIBLE : View.GONE);
     }
 
     public List<Artist> getList()

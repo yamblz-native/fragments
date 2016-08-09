@@ -59,9 +59,10 @@ public class ArtistsListFragment extends BaseFragment implements ArtistsView,
     {
         super.onViewCreated(view, savedInstanceState);
 
-        presenter = new ArtistsPresenterImpl(Injection.provideDataSource(getContext().getApplicationContext()));
+        presenter = Injection.providePresenter(Injection.provideDataSource(
+                getContext().getApplicationContext()));
 
-        artistsAdapter = new ArtistsAdapter(getContext(), emptyView);
+        artistsAdapter = new ArtistsAdapter(getContext());
         artistsAdapter.setOnItemClickListener(this);
 
         swipeLayout.setOnRefreshListener(this);
@@ -89,6 +90,7 @@ public class ArtistsListFragment extends BaseFragment implements ArtistsView,
     public void showArtists(List<Artist> artists)
     {
         artistsAdapter.changeList(artists);
+        emptyView.setVisibility(artistsAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
     }
 
     @Override
