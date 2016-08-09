@@ -85,7 +85,7 @@ public class PreviewFragment extends BaseFragment {
         if(context instanceof Callbacks) {
             mCallbacks = (Callbacks)context;
         } else {
-            throw new RuntimeException("Should implement PreviewFragment#Callbacks");
+            throw new RuntimeException("Must implement " + Callbacks.class.getName());
         }
     }
 

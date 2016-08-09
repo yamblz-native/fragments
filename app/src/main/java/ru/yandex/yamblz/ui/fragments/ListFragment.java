@@ -44,7 +44,7 @@ public class ListFragment extends BaseFragment {
         if(context instanceof Callbacks) {
             mCallbacks = (Callbacks)context;
         } else {
-            throw new RuntimeException("Must implement ListFragment#Callbacks");
+            throw new RuntimeException("Must implement " + Callbacks.class.getName());
         }
     }
 
