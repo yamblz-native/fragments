@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">Yamblz</string>
     <string name="content">Hello</string>
-    <string name="more">more</string>
     <string name="reload">Обновить</string>
     <string name="no_data">Не удалось загрузить данные</string>
+    <string name="about">Биография</string>
+    <string name="transition_cover_name">cover_transition</string>
 </resources>

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.yandex.yamblz.data.Artist;
-import ru.yandex.yamblz.ui.fragments.ArtistMainFragment;
+import ru.yandex.yamblz.ui.fragments.ArtistContentFragment;
 
 /**
  * Created by Volha on 07.08.2016.
@@ -29,10 +29,14 @@ public class ArtistFragmentsAdapter extends FragmentStatePagerAdapter {
         notifyDataSetChanged();
     }
 
+    public Artist getArtist(int position) {
+        return items.get(position);
+    }
+
     @Override
     public Fragment getItem(int position) {
         Artist artist = items.get(position);
-        return ArtistMainFragment.newInstance(artist.getId(), artist.getCover().getBig());
+        return ArtistContentFragment.newInstance(artist.getId(), artist.getCover().getBig());
     }
 
     @Override
@@ -44,4 +48,5 @@ public class ArtistFragmentsAdapter extends FragmentStatePagerAdapter {
     public int getCount() {
         return items.size();
     }
+
 }

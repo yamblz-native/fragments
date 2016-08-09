@@ -20,7 +20,7 @@ ext.versions = [
 
         dagger                       : '2.4',
 
-        supportLibs                  : '23.1.1',
+        supportLibs                  : '24.1.0',
         butterKnife                  : '8.0.1',
         timber                       : '4.1.2',
 
