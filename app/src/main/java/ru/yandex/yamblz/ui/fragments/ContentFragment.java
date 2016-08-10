@@ -87,6 +87,7 @@ public class ContentFragment extends BaseFragment implements LoaderManager.Loade
     public void onDestroyView() {
         super.onDestroyView();
         artistFragment = null;
+        if(viewPager!=null)pagerPosition=viewPager.getCurrentItem();
         viewPager=null;
         recyclerView = null;
     }
@@ -117,7 +118,8 @@ public class ContentFragment extends BaseFragment implements LoaderManager.Loade
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        if (viewPager != null) outState.putInt("viewPagerPosition", viewPager.getCurrentItem());
+        if(viewPager!=null)pagerPosition=viewPager.getCurrentItem();
+        outState.putInt("viewPagerPosition", pagerPosition);
         super.onSaveInstanceState(outState);
 
     }
