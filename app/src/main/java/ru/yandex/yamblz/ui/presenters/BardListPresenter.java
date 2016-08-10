@@ -7,12 +7,14 @@ import com.fernandocejas.frodo.annotation.RxLogSubscriber;
 
 import java.util.List;
 
+import icepick.State;
 import ru.yandex.yamblz.domain.mapper.Mapper;
 import ru.yandex.yamblz.domain.model.core.Bard;
 import ru.yandex.yamblz.domain.model.presentation.BardUI;
 import ru.yandex.yamblz.domain.repository.BardRepository;
 import ru.yandex.yamblz.domain.repository.IBardRepository;
 import ru.yandex.yamblz.ui.contcract.BardListContract;
+import ru.yandex.yamblz.ui.other.ListBundler;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -29,6 +31,9 @@ public class BardListPresenter extends Presenter<BardListContract.BardListView> 
     private final IBardRepository bardRepository;
     private final Mapper<Bard, BardUI> bardUIMapper;
 
+    @State(value = ListBundler.class )
+    List<BardUI> bardUIs;
+
     public BardListPresenter(IBardRepository bardRepository, Mapper<Bard, BardUI> bardUIMapper) {
         this.bardRepository = bardRepository;
         this.bardUIMapper = bardUIMapper;
@@ -43,6 +48,7 @@ public class BardListPresenter extends Presenter<BardListContract.BardListView> 
     @Override
     public void bindView(@NonNull BardListContract.BardListView view) {
         super.bindView(view);
+        if(bardUIs != null) view().showData(bardUIs);
         cs.add(getBardListObservable().subscribe(new BardListDataSubscriber()));
     }
 
@@ -55,9 +61,9 @@ public class BardListPresenter extends Presenter<BardListContract.BardListView> 
                 .observeOn(Schedulers.io())
                 .flatMap(aVoid -> bardRepository.getAllBards().toObservable())
                 .observeOn(AndroidSchedulers.mainThread())
-                .retryWhen(errors -> errors.doOnNext(t-> view().showRetryError(true))
-                            .flatMap(o -> view().clickRetry())
-                            .flatMap(r -> (r)? Observable.just(r): errors))
+                //.retryWhen(errors -> errors.doOnNext(t-> view().showRetryError(true))
+                //            .flatMap(o -> view().clickRetry())
+                //            .flatMap(r -> (r)? Observable.just(r): errors))
                 .observeOn(Schedulers.computation())
                 .map(bards -> bardUIMapper.improove(bards))
                 .observeOn(AndroidSchedulers.mainThread())
@@ -73,11 +79,12 @@ public class BardListPresenter extends Presenter<BardListContract.BardListView> 
 
         @Override
         public void onError(Throwable e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         @Override
         public void onNext(List<BardUI> bards) {
+            BardListPresenter.this.bardUIs = bards;
             view().showData(bards);
         }
     }

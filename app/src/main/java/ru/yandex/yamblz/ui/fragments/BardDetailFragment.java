@@ -19,6 +19,7 @@ import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import icepick.Icepick;
 import ru.yandex.yamblz.ApplicationComponent;
 import ru.yandex.yamblz.R;
 import ru.yandex.yamblz.di.module.FragmentArgumentModule;
@@ -54,6 +55,12 @@ public class BardDetailFragment extends BaseDialogFragment implements BardDetail
     @BindView(R.id.tv_bard_biography)
     protected TextView tvBiography;
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -72,7 +79,14 @@ public class BardDetailFragment extends BaseDialogFragment implements BardDetail
         if (!getResources().getBoolean(R.bool.is_two_pane)) activity.getSupportActionBar().hide();
         activity.setSupportActionBar(toolbar);
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Icepick.restoreInstanceState(bardDetailPresenter, savedInstanceState);
         bardDetailPresenter.bindView(this);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Icepick.saveInstanceState(bardDetailPresenter, outState);
     }
 
     @Override
@@ -92,7 +106,7 @@ public class BardDetailFragment extends BaseDialogFragment implements BardDetail
         tvBiography.setText(bard.description());
         toolbar.setTitle(bard.name());
         tvCounters.setText(String.format(getResources().getQuantityText(R.plurals.plur_song, bard.tracks()).toString(), bard.tracks()));
-        tvAlbums.setText(getResources().getQuantityText(R.plurals.plur_albums, bard.albums()));
+        tvAlbums.setText(String.format(getResources().getQuantityText(R.plurals.plur_albums, bard.albums()).toString(), bard.albums()));
     }
 
     @Override

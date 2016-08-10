@@ -67,6 +67,7 @@ public class MainActivity extends BaseActivity {
 
     @Subscribe
     public void onEvent(ToBardDetailsEvent event){
+
         if(isTwoPane){
             event.bardDetailFragment().show(getSupportFragmentManager().beginTransaction().addToBackStack(null), BardDetailFragment.TAG);
         }else {

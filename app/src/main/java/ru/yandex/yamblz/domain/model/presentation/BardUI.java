@@ -1,6 +1,7 @@
 package ru.yandex.yamblz.domain.model.presentation;
 
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 
 import com.google.auto.value.AutoValue;
 
@@ -16,7 +17,7 @@ public abstract class BardUI implements Parcelable {
     public abstract List<String> genres();
     public abstract int tracks();
     public abstract int albums();
-    public abstract String link();
+    @Nullable public abstract String link();
     public abstract String description();
     public abstract String smallImage();
     public abstract String bigImage();

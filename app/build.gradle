@@ -100,12 +100,6 @@ dependencies {
     apt 'com.hannesdorfmann.fragmentargs:processor:3.0.2'
     compile 'com.google.code.gson:gson:2.7'
     compile "frankiesardo:auto-parcel:1.0.3"
-    //apt 'com.ryanharter.auto.value:auto-value-parcel:0.2.3-rc2'
-    //compile 'com.ryanharter.auto.value:auto-value-parcel-adapter:0.2.3-rc2'
-    //apt 'com.gabrielittner.auto.value:auto-value-cursor:1.0.0-rc1'
-    //compile 'com.gabrielittner.auto.value:auto-value-cursor-annotations:1.0.0-rc1'
-    apt 'com.ryanharter.auto.value:auto-value-gson:0.3.1'
-    compile 'com.ryanharter.auto.value:auto-value-gson:0.3.1'
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'io.reactivex:rxjava:1.1.8'
     compile 'com.github.pakoito:RxTuples:1.0.0'
@@ -113,7 +107,11 @@ dependencies {
 
     compile'com.android.support.constraint:constraint-layout:1.0.0-alpha4'
     compile 'com.joanzapata.iconify:android-iconify-fontawesome:2.2.2' // (v4.5)
-
+    compile "com.squareup.retrofit2:retrofit:2.0.0"
+    compile "com.squareup.retrofit2:converter-gson:2.0.0"
+    compile "com.squareup.retrofit2:adapter-rxjava:2.0.0"
+    compile 'frankiesardo:icepick:3.2.0'
+    provided 'frankiesardo:icepick-processor:3.2.0'
 
     compile 'com.facebook.fresco:fresco:0.12.0'
     compile 'org.greenrobot:eventbus:3.0.0'

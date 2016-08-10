@@ -12,10 +12,12 @@
         <item quantity="one">%d песня</item>
         <item quantity="many">%d песен</item>
         <item quantity="two">%d песни</item>
+        <item quantity="few">%d песни</item>
     </plurals>
     <plurals name="plur_albums">
         <item quantity="many">%d альбомов</item>
         <item quantity="one">%d альбом</item>
         <item quantity="two">%d альбома</item>
+        <item quantity="few">%d альбома</item>
     </plurals>
 </resources>

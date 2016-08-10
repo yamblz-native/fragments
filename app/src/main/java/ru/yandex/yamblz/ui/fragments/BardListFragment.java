@@ -15,6 +15,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import icepick.Icepick;
 import ru.yandex.yamblz.ApplicationComponent;
 import ru.yandex.yamblz.R;
 import ru.yandex.yamblz.di.module.FragmentArgumentModule;
@@ -59,7 +60,14 @@ public class BardListFragment extends BaseFragment implements BardListContract.B
         rvListBard.setLayoutManager(new LinearLayoutManager(getContext()));
         rvListBard.setAdapter(bardAdapter);
         cs.add(obserClicks());
+        Icepick.restoreInstanceState(presenter, savedInstanceState);
         presenter.bindView(this);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Icepick.saveInstanceState(presenter, outState);
     }
 
     private Subscription obserClicks() {

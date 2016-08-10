@@ -2,6 +2,7 @@ package ru.yandex.yamblz.ui.presenters;
 
 import android.support.annotation.NonNull;
 
+import icepick.State;
 import ru.yandex.yamblz.domain.mapper.Mapper;
 import ru.yandex.yamblz.domain.model.core.Bard;
 import ru.yandex.yamblz.domain.model.presentation.BardUI;
@@ -33,6 +34,9 @@ public class BardDetailPresenter extends Presenter<BardDetailContract.BardDetail
         }
     }
 
+    @State
+    BardUI bardUI;
+
     private final CompositeSubscription cs = new CompositeSubscription();
 
     private final BardDetailPresenterArgument args;
@@ -48,6 +52,7 @@ public class BardDetailPresenter extends Presenter<BardDetailContract.BardDetail
     @Override
     public void bindView(@NonNull BardDetailContract.BardDetailView view) {
         super.bindView(view);
+        if(bardUI != null) view.showBard(bardUI);
         cs.add(bardUpdate().subscribe(new BardSubscriber()));
     }
 
@@ -75,11 +80,12 @@ public class BardDetailPresenter extends Presenter<BardDetailContract.BardDetail
 
         @Override
         public void onError(Throwable e) {
-
+            e.printStackTrace();
         }
 
         @Override
         public void onNext(BardUI bardUI) {
+            BardDetailPresenter.this.bardUI = bardUI;
             view().showBard(bardUI);
         }
     }

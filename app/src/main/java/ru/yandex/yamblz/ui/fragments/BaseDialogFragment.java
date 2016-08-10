@@ -32,8 +32,8 @@ public abstract class BaseDialogFragment extends DialogFragment implements BaseC
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setUpComponent(App.get(getContext()).applicationComponent());
         FragmentArgs.inject(this);
+        setUpComponent(App.get(getContext()).applicationComponent());
     }
 
     protected abstract void setUpComponent(ApplicationComponent applicationComponent);

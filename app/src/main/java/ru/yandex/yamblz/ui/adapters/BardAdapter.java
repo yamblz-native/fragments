@@ -77,8 +77,8 @@ public class BardAdapter extends RecyclerView.Adapter<BardAdapter.BardViewHolder
             sdvPoster.setImageURI(bardUI.smallImage());
             tvName.setText(bardUI.name());
             tvGenres.setText(TextUtils.join(", ", bardUI.genres()));
-            tvAlbums.setText(itemView.getResources().getQuantityString(R.plurals.plur_albums, bardUI.albums()));
-            tvSongs.setText(itemView.getResources().getQuantityText(R.plurals.plur_song, bardUI.tracks()));
+            tvAlbums.setText(String.format(itemView.getResources().getQuantityString(R.plurals.plur_albums, bardUI.albums()), bardUI.albums()));
+            tvSongs.setText(String.format(itemView.getResources().getQuantityString(R.plurals.plur_song, bardUI.tracks()), bardUI.tracks()));
         }
 
         public void onItemClick(){

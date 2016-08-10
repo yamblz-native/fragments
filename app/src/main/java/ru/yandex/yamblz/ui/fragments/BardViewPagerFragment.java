@@ -13,6 +13,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import icepick.Icepick;
 import ru.yandex.yamblz.ApplicationComponent;
 import ru.yandex.yamblz.R;
 import ru.yandex.yamblz.di.module.FragmentArgumentModule;
@@ -47,7 +48,14 @@ public class BardViewPagerFragment extends BaseFragment
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Icepick.restoreInstanceState(bardListPresenter, savedInstanceState);
         bardListPresenter.bindView(this);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Icepick.saveInstanceState(bardListPresenter, outState);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package ru.yandex.yamblz.domain.model.core;
 
+import android.support.annotation.Nullable;
+
 import com.google.auto.value.AutoValue;
 
 import java.util.List;
@@ -14,7 +16,7 @@ public abstract class Bard {
     public abstract List<Genre> getGenres();
     public abstract int getTracks();
     public abstract int getAlbums();
-    public abstract String getLink();
+    @Nullable public abstract String getLink();
     public abstract String getDescription();
     public abstract String getSmallImage();
     public abstract String getBigImage();
