@@ -16,6 +16,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import ru.yandex.yamblz.R;
 import ru.yandex.yamblz.lib.ContentProviderContract;
@@ -64,6 +65,10 @@ public class ContentFragment extends BaseFragment implements LoaderManager.Loade
     }
 
     private void setData() {
+        if(cursor==null || cursor.getCount()==0){
+            Toast.makeText(getContext(),"no data in cursor",Toast.LENGTH_LONG).show();
+            return;
+        }
         if (getResources().getBoolean(R.bool.is_tablet)) {
             artistFragment = (ArtistFragment) getChildFragmentManager().findFragmentByTag("artist");
             if (artistFragment == null) {
