@@ -1,11 +1,14 @@
-package ru.yandex.yamblz.euv.provider;
+package ru.yandex.yamblz;
 
+import android.content.ContentResolver;
+import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.os.AsyncTask;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import ru.yandex.yamblz.euv.shared.contract.DbContract.ArtistTable;
 import ru.yandex.yamblz.euv.shared.model.Artist;
@@ -16,27 +19,56 @@ import static ru.yandex.yamblz.euv.shared.contract.ProviderContract.ARTISTS_PATH
 import static ru.yandex.yamblz.euv.shared.contract.ProviderContract.AUTHORITY;
 import static ru.yandex.yamblz.euv.shared.contract.ProviderContract.SCHEME;
 
-public class DebugActivity extends AppCompatActivity {
+/**
+ * Used to retrieve data from the Content Provider.
+ * {@link AsyncTask} covers our needs and is chosen because of its simplicity.
+ * Loader does return data in form of a {@link List}, not a {@link Cursor}
+ * since such approach provides much more convenient API and *DOES NOT* have
+ * real negative impact on performance (avoid premature optimization).
+ */
+public class ArtistLoader extends AsyncTask<Void, Void, List<Artist>> {
+    private final ArtistLoaderListener callback;
+    private final ContentResolver resolver;
+
+    public interface ArtistLoaderListener {
+        void onArtistListLoaded(List<Artist> artists);
+    }
+
+
+    public ArtistLoader(ArtistLoaderListener callback, Context context) {
+        this.callback = callback;
+        this.resolver = context.getContentResolver();
+    }
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected List<Artist> doInBackground(Void... params) {
+        Uri uri = Uri.withAppendedPath(Uri.parse(SCHEME + AUTHORITY), ARTISTS_PATH);
 
-        Uri uri = Uri.withAppendedPath(Uri.parse(SCHEME + AUTHORITY), ARTISTS_PATH + "/41075");
-
-        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+        Cursor cursor = resolver.query(uri, null, null, null, null);
         if (cursor == null) {
-            throw new RuntimeException("Cursor mustn't be null here!");
+            Timber.e("Failed to retrieve data from Content Provider");
+            return null;
         }
 
+        List<Artist> artists = new ArrayList<>();
         try {
-            cursor.moveToNext();
-            Artist artist = createArtist(cursor);
-            Timber.e(artist.toString());
+            while (cursor.moveToNext()) {
+                artists.add(createArtist(cursor));
+            }
         } finally {
             cursor.close();
         }
+
+        return artists;
     }
+
+
+    @Override
+    protected void onPostExecute(List<Artist> artists) {
+        callback.onArtistListLoaded(artists);
+    }
+
 
     private Artist createArtist(Cursor cursor) {
         Artist artist = new Artist();
@@ -50,6 +82,7 @@ public class DebugActivity extends AppCompatActivity {
         artist.setCover(new Cover(getString(cursor, ArtistTable.COVER_SMALL), getString(cursor, ArtistTable.COVER_BIG)));
         return artist;
     }
+
 
     private int getInt(Cursor cursor, String column) {
         return cursor.getInt(cursor.getColumnIndexOrThrow(column));

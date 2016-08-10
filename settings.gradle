@@ -1,1 +1,1 @@
-include ':client', ':provider'
+include ':client', ':provider', ':shared'
