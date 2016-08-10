@@ -6,11 +6,13 @@ import android.support.annotation.NonNull;
 
 import ru.yandex.yamblz.developer_settings.DevMetricsProxy;
 import ru.yandex.yamblz.developer_settings.DeveloperSettingsModel;
+import ru.yandex.yamblz.net.VolleyInstance;
 import timber.log.Timber;
 
 public class App extends Application {
     private ApplicationComponent applicationComponent;
 
+    private VolleyInstance volleyInstance;
     // Prevent need in a singleton (global) reference to the application object.
     @NonNull
     public static App get(@NonNull Context context) {
@@ -43,4 +45,16 @@ public class App extends Application {
     public ApplicationComponent applicationComponent() {
         return applicationComponent;
     }
+
+    public VolleyInstance getVolley(){
+        if(volleyInstance == null){
+            volleyInstance = new VolleyInstance(this);
+        }
+        return volleyInstance;
+    }
+
+    public static App from(Context context){
+        return (App) context.getApplicationContext();
+    }
+
 }

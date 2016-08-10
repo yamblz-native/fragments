@@ -16,29 +16,17 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     public void setContentView(int layoutResID) {
         super.setContentView(layoutResID);
-        setupToolbar();
     }
 
     @Override
     public void setContentView(View view) {
         super.setContentView(view);
-        setupToolbar();
     }
 
     @Override
     public void setContentView(View view, ViewGroup.LayoutParams params) {
         super.setContentView(view, params);
-        setupToolbar();
     }
 
-    private void setupToolbar() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-    }
-
-    @Nullable
-    protected Toolbar toolbar() {
-        return toolbar;
-    }
 }
 
