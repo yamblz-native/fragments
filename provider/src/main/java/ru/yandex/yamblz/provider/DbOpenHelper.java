@@ -25,6 +25,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
         createGenresTable(db);
         createSingersGenresTable(db);
         createSingersView(db);
+        addIndexes(db);
     }
 
     @Override
@@ -60,6 +61,13 @@ public class DbOpenHelper extends SQLiteOpenHelper {
     }
 
     private void createSingersView(SQLiteDatabase db) {
+        /*
+        (SELECT singers.id AS id, singers.name AS name, group_concat(genres.name, ',') AS genres,
+               singers.tracks AS tracks, singers.albums AS albums, singers.description AS description,
+               singers.cover_small AS cover_small, singers.cover_big AS cover_big FROM singers
+               LEFT JOIN singers_genres on singers.id=singers_genres.singer_id LEFT JOIN genres
+               ON singers_genres.genre_id=genres.id GROUP BY singers.id)
+         */
         String table = String.format(
                 "SELECT %s, %s, group_concat(%s, ',') AS %s, %s, %s, %s, %s, %s FROM %s LEFT JOIN " +
                 "%s on %s=%s LEFT JOIN %s ON %s=%s GROUP BY %s",
@@ -86,6 +94,8 @@ public class DbOpenHelper extends SQLiteOpenHelper {
     private void addIndexes(SQLiteDatabase db) {
         db.execSQL("CREATE INDEX " + Singers.NAME_INDEX + " ON " + Singers.TABLE_NAME +
                 "(" + Singers.NAME + ")");
+        db.execSQL("CREATE INDEX " + SingersGenres.SINGER_ID_INDEX + " ON " + SingersGenres.TABLE_NAME +
+                "(" + SingersGenres.SINGER_ID + ")");
     }
 
     @Override

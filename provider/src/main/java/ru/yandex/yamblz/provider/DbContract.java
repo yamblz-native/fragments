@@ -53,6 +53,8 @@ public final class DbContract {
 
         //TYPE: INTEGER
         public static final String GENRE_ID = "genre_id";
+
+        public static final String SINGER_ID_INDEX = TABLE_NAME + "_singer_index";
     }
 
 }
