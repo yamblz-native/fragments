@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/cover"
+        android:layout_width="@dimen/small_photo"
+        android:layout_height="@dimen/small_photo"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="@dimen/activity_margin"
+        android:contentDescription="@string/artist_photo"
+        tools:src="#a2d4ff" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/cover"
+        android:layout_toEndOf="@+id/cover"
+        android:layout_toRightOf="@+id/cover"
+        android:paddingBottom="@dimen/small_padding"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        tools:text="The Good" />
+
+    <TextView
+        android:id="@+id/genres"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/name"
+        android:layout_toEndOf="@+id/cover"
+        android:layout_toRightOf="@+id/cover"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        tools:text="jazz, funk" />
+
+    <TextView
+        android:id="@+id/music_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/cover"
+        android:layout_toEndOf="@+id/cover"
+        android:layout_toRightOf="@+id/cover"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        tools:text="2 albums, 10 songs" />
+
+
+</RelativeLayout>
