@@ -1,6 +1,7 @@
 package ru.yandex.yamblz.ui.activities;
 
 import android.annotation.SuppressLint;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -27,6 +28,7 @@ public class MainActivity extends BaseActivity implements
     private static final String ARTIST_DETAIL_FRAGMENT_TAG = "ARTIST_DETAIL_FRAGMENT_TAG";
     private FragmentManager supportFragmentManager;
     private boolean hasTwoPanes;
+    private Resources resources;
 
     @Inject
     @Named(DeveloperSettingsModule.MAIN_ACTIVITY_VIEW_MODIFIER)
@@ -38,9 +40,10 @@ public class MainActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         supportFragmentManager = getSupportFragmentManager();
         App.get(this).applicationComponent().inject(this);
+        resources = getResources();
 
         setContentView(viewModifier.modify(getLayoutInflater().inflate(R.layout.activity_main, null)));
-        hasTwoPanes = getResources().getBoolean(R.bool.has_two_panes);
+        hasTwoPanes = resources.getBoolean(R.bool.has_two_panes);
 
         if (savedInstanceState == null) {
             if (!hasTwoPanes) {
@@ -61,6 +64,7 @@ public class MainActivity extends BaseActivity implements
         } else {
             supportFragmentManager
                     .beginTransaction()
+                    .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
                     .replace(R.id.main_frame_layout, artistDetailFragment)
                     .addToBackStack(null)
                     .commit();

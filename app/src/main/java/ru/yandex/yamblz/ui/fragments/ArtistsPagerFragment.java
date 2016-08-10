@@ -29,6 +29,7 @@ import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 public class ArtistsPagerFragment extends BaseFragment {
+    private static final int PAGE_LIMIT = 7;
     private FragmentManager fragmentManager;
     private Subscription subscription;
 
@@ -77,6 +78,7 @@ public class ArtistsPagerFragment extends BaseFragment {
 
                             viewPager.setAdapter(new ArtistsFragmentStatePagerAdapter(fragmentManager, artistsList));
                             tabLayout.setupWithViewPager(viewPager);
+                            viewPager.setOffscreenPageLimit(PAGE_LIMIT);
                         },
                         throwable -> Timber.e(throwable.toString()));
     }

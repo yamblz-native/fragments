@@ -13,7 +13,6 @@ import java.util.Collections;
 import java.util.List;
 
 import ru.yandex.yamblz.utils.AppConfig;
-import timber.log.Timber;
 
 /**
  * Created by shmakova on 12.04.16.
@@ -138,7 +137,6 @@ public class Artist implements Parcelable {
     }
 
     public static Artist convertArtistFields(Artist artist) {
-        Timber.d(artist.getName());
         List<String> genres = new ArrayList<>(Collections.singletonList(artist.getGenresString()));
 
         Cover cover = new Cover(
