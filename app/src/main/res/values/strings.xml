@@ -5,4 +5,7 @@
     <string name="no_data">Не удалось загрузить данные</string>
     <string name="about">Биография</string>
     <string name="transition_cover_name">cover_transition</string>
+    <string name="not_implemented_artist_interface_exception">Not implemented target fragment with ArtistProviderInterface</string>
+    <string name="need_on_artist_click_listener_exception">Need OnArtistListItemClickListener in parent activity</string>
+    <string name="not_implemented_on_artist_more_click_listener">Parent not implemented OnArtistMoreClickListener</string>
 </resources>

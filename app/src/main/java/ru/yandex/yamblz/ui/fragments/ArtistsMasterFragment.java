@@ -1,7 +1,6 @@
 package ru.yandex.yamblz.ui.fragments;
 
-import android.accounts.Account;
-import android.accounts.OnAccountsUpdateListener;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,13 +13,10 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import ru.yandex.yamblz.R;
 import ru.yandex.yamblz.data.Artist;
-import ru.yandex.yamblz.ui.activities.MainActivity;
 import ru.yandex.yamblz.ui.adapters.ArtistsRecyclerAdapter;
 import ru.yandex.yamblz.ui.other.ArtistProviderInterface;
-import ru.yandex.yamblz.ui.other.ArtistSelectedInterface;
 import ru.yandex.yamblz.ui.other.OnArtistListItemClickListener;
 import ru.yandex.yamblz.ui.other.UpdateArtistsListener;
 
@@ -28,7 +24,7 @@ import ru.yandex.yamblz.ui.other.UpdateArtistsListener;
  * Created by Volha on 08.08.2016.
  */
 
-public class ArtistsMasterFragment extends Fragment implements UpdateArtistsListener {
+public class ArtistsMasterFragment extends BaseFragment implements UpdateArtistsListener {
 
     public static final String TAG = "artist_master_tag";
     private static final String TAG_ARTIST_ID = "selectedArtistId";
@@ -55,22 +51,26 @@ public class ArtistsMasterFragment extends Fragment implements UpdateArtistsList
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind(this, view);
-
-        if (!(getActivity() instanceof OnArtistListItemClickListener))
-            throw new ClassCastException("Need OnArtistListItemClickListener in parent activity");
-
         adapter = new ArtistsRecyclerAdapter((OnArtistListItemClickListener) getActivity());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         Fragment target = getTargetFragment();
-        if (target != null && target instanceof ArtistProviderInterface) {
+        if (target instanceof ArtistProviderInterface) {
             ArtistProviderInterface provider = (ArtistProviderInterface) target;
             List<Artist> artists = provider.getArtists();
             adapter.setData(artists);
             scrollToSelectedPosition(artists);
+        } else {
+            throw new ClassCastException(getString(R.string.not_implemented_artist_interface_exception));
         }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (!(getActivity() instanceof OnArtistListItemClickListener))
+            throw new ClassCastException(getString(R.string.need_on_artist_click_listener_exception));
     }
 
     private void scrollToSelectedPosition(List<Artist> artists) {

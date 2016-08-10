@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -22,7 +21,6 @@ import ru.yandex.yamblz.data.Artist;
 import ru.yandex.yamblz.developer_settings.DeveloperSettingsModule;
 import ru.yandex.yamblz.retrofit.ApiServices;
 import ru.yandex.yamblz.ui.fragments.ArtistContentFragment;
-import ru.yandex.yamblz.ui.fragments.ArtistDetailsFragment;
 import ru.yandex.yamblz.ui.fragments.ArtistDialogFragment;
 import ru.yandex.yamblz.ui.fragments.ArtistsMasterFragment;
 import ru.yandex.yamblz.ui.fragments.RetainFragment;
@@ -36,6 +34,7 @@ import ru.yandex.yamblz.ui.other.ViewModifier;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 
 public class MainActivity extends BaseActivity implements OnArtistMoreClickListener, OnArtistListItemClickListener {
 
@@ -45,6 +44,7 @@ public class MainActivity extends BaseActivity implements OnArtistMoreClickListe
     ViewModifier viewModifier;
 
     private int selectedArtistId = -1;
+    private CompositeSubscription subscriptions = new CompositeSubscription();
 
     @SuppressLint("InflateParams") // It's okay in our case.
     @Override
@@ -68,7 +68,6 @@ public class MainActivity extends BaseActivity implements OnArtistMoreClickListe
 
         if (isOrientationPortrait()) {
             ViewPagerFragment pagerFragment = ViewPagerFragment.newInstance(selectedArtistId, retain);
-            pagerFragment.setTargetFragment(retain, 1);
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.main_frame_layout, pagerFragment, ViewPagerFragment.TAG)
@@ -80,8 +79,8 @@ public class MainActivity extends BaseActivity implements OnArtistMoreClickListe
                     .replace(R.id.main_frame_layout, masterFragment, ArtistsMasterFragment.TAG);
             if (retain.getArtists().size() > 0) {
                 String link = retain.getArtistById(selectedArtistId).getCover().getBig();
-                ArtistContentFragment detailsFragment = ArtistContentFragment.newInstance(selectedArtistId, link);
-                transaction.add(R.id.detail_frame_layout, detailsFragment);
+                ArtistContentFragment contentFragment = ArtistContentFragment.newInstance(selectedArtistId, link);
+                transaction.add(R.id.detail_frame_layout, contentFragment);
             }
             transaction.commit();
         }
@@ -104,34 +103,40 @@ public class MainActivity extends BaseActivity implements OnArtistMoreClickListe
     public void onArtistClick(int id) {
         RetainFragment retain = (RetainFragment) getSupportFragmentManager().findFragmentByTag(RetainFragment.TAG);
         String link = retain.getArtistById(id).getCover().getBig();
-        ArtistContentFragment detailsFragment = ArtistContentFragment.newInstance(id, link);
+        ArtistContentFragment contentFragment = ArtistContentFragment.newInstance(id, link);
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.detail_frame_layout, detailsFragment)
+                .replace(R.id.detail_frame_layout, contentFragment)
                 .commit();
         selectedArtistId = id;
     }
 
     public void downloadArtists() {
         ApiServices apiServices = new ApiServices();
-        apiServices.getArtists()
+        subscriptions.add(apiServices.getArtists()
                 .retryWhen(this::showReloadSnackbar)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(artists -> {
                     Fragment retainFragment = getSupportFragmentManager().findFragmentByTag(RetainFragment.TAG);
-                    if (retainFragment != null && retainFragment instanceof ArtistProviderInterface) {
+                    if (retainFragment instanceof ArtistProviderInterface) {
                         ArtistProviderInterface provider = (ArtistProviderInterface) retainFragment;
                         provider.setArtists(artists);
                     }
                     updateArtistsInFragmentsByTag(ViewPagerFragment.TAG, artists);
                     updateArtistsInFragmentsByTag(ArtistsMasterFragment.TAG, artists);
-                });
+                }));
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        subscriptions.unsubscribe();
     }
 
     private void updateArtistsInFragmentsByTag(String tag, List<Artist> artists) {
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
-        if (fragment != null && fragment instanceof UpdateArtistsListener) {
+        if (fragment instanceof UpdateArtistsListener) {
             UpdateArtistsListener update = (UpdateArtistsListener) fragment;
             update.onArtistsUpdate(artists);
         }

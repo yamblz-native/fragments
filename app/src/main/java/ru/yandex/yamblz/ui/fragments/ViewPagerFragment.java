@@ -1,5 +1,6 @@
 package ru.yandex.yamblz.ui.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -54,12 +55,14 @@ public class ViewPagerFragment extends BaseFragment implements UpdateArtistsList
         adapter = new ArtistFragmentsAdapter(getChildFragmentManager());
         pager.setAdapter(adapter);
 
-        if(getTargetFragment() instanceof ArtistProviderInterface) {
+        if (getTargetFragment() instanceof ArtistProviderInterface) {
             ArtistProviderInterface provider = (ArtistProviderInterface) getTargetFragment();
             List<Artist> data = provider.getArtists();
             adapter.setData(data);
             tabLayout.setupWithViewPager(pager);
             scrollToSelectedPosition(data);
+        } else {
+            throw new ClassCastException(getString(R.string.not_implemented_artist_interface_exception));
         }
     }
 

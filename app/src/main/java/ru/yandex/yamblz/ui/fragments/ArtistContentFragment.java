@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +18,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import ru.yandex.yamblz.R;
 import ru.yandex.yamblz.ui.other.OnArtistMoreClickListener;
 
@@ -27,7 +25,7 @@ import ru.yandex.yamblz.ui.other.OnArtistMoreClickListener;
  * Created by Volha on 07.08.2016.
  */
 
-public class ArtistContentFragment extends Fragment {
+public class ArtistContentFragment extends BaseFragment {
 
     public static final String TAG_ARTIST_ID = "artist_id";
     public static final String TAG_ARTIST_IMAGE_LINK = "image_link";
@@ -57,8 +55,6 @@ public class ArtistContentFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind(this, view);
-
         String imageLink = getArguments().getString(TAG_ARTIST_IMAGE_LINK);
         ImageLoader loader = ImageLoader.getInstance();
         int id = getArguments().getInt(TAG_ARTIST_ID);
@@ -94,6 +90,8 @@ public class ArtistContentFragment extends Fragment {
         Activity parent = getActivity();
         if (parent instanceof OnArtistMoreClickListener) {
             ((OnArtistMoreClickListener)parent).onMoreClick(getArguments().getInt(TAG_ARTIST_ID), imageViewCover);
+        } else {
+            throw new ClassCastException(getString(R.string.not_implemented_on_artist_more_click_listener));
         }
     };
 

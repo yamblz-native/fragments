@@ -15,6 +15,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import ru.yandex.yamblz.R;
 import ru.yandex.yamblz.data.Artist;
 import ru.yandex.yamblz.ui.other.ArtistProviderInterface;
@@ -27,6 +28,7 @@ public class ArtistDialogFragment extends AppCompatDialogFragment {
 
     public static final String TAG = "artist_dialog_fragment";
     private static final String TAG_ARTIST_ID = "artist_id";
+    private Unbinder viewBinder;
 
     @BindView(R.id.artist_cover)
     ImageView imageViewCover;
@@ -53,12 +55,12 @@ public class ArtistDialogFragment extends AppCompatDialogFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind(this, view);
+        viewBinder = ButterKnife.bind(this, view);
 
         Fragment targetFragment = getTargetFragment();
         int artistId = getArguments().getInt(TAG_ARTIST_ID);
 
-        if (targetFragment != null && targetFragment instanceof ArtistProviderInterface) {
+        if (targetFragment instanceof ArtistProviderInterface) {
             Artist artist = ((ArtistProviderInterface) targetFragment).getArtistById(artistId);
 
             if (artist != null) {
@@ -69,6 +71,14 @@ public class ArtistDialogFragment extends AppCompatDialogFragment {
                 genres.setText(artist.getGenresString());
                 description.setText(artist.getDescription());
             }
+        } else {
+            throw new ClassCastException(getString(R.string.not_implemented_artist_interface_exception));
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        viewBinder.unbind();
+        super.onDestroyView();
     }
 }
