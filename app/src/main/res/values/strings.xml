@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">Yamblz</string>
     <string name="content">Hello</string>
+    <string name="name_label">Name:</string>
+    <string name="tracks_label">Tracks:</string>
+    <string name="albums_label">Albums:</string>
+    <string name="description_label">More:</string>
+    <string name="more">More</string>
+    <string name="error">Error occurred</string>
+    <string name="more_label">More:</string>
+    <string name="genres">Genres:</string>
 </resources>
