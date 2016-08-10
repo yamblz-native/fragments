@@ -12,7 +12,7 @@ android {
     buildToolsVersion versions.buildTools
 
     defaultConfig {
-        applicationId 'ru.yandex.yamblz'
+        applicationId 'ru.yandex.yamblz1'
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
         versionCode versions.code // Notice that you may want to use BUILD_NUMBER from CI in real project with own CI.
@@ -105,6 +105,9 @@ dependencies {
     compile libraries.lynx
     compile libraries.processPhoenix
 
+    compile libraries.rxJava
+    compile libraries.rxAndroid
+
     testCompile libraries.junit
     testCompile libraries.robolectric
     testCompile libraries.assertJ
@@ -121,6 +124,7 @@ dependencies {
         exclude module: 'recyclerview-v7'
         exclude module: 'support-v4'
     }
+    compile 'com.github.bumptech.glide:glide:3.7.0'
 }
 
 configurations.all {

@@ -1,4 +1,7 @@
 <resources>
-    <string name="app_name">Fragment</string>
+    <string name="app_name">Fragments</string>
     <string name="content">Hello</string>
+    <string name="title_btn">информация</string>
+    <string name="error_link">К сожалению веб сайт отсутствует.</string>
+    <string name="title_biografy">Биография</string>
 </resources>

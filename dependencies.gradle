@@ -20,6 +20,14 @@ ext.versions = [
 
         dagger                       : '2.4',
 
+        retrofit                     : '2.1.0',
+        gson                         : '2.6.2',
+        okhttp                       : '3.4.1',
+        glide                        : '3.7.0',
+
+        rxJava                       : '1.1.8',
+        rxAndroid                    : '1.2.1',
+
         supportLibs                  : '23.1.1',
         butterKnife                  : '8.0.1',
         timber                       : '4.1.2',
@@ -66,6 +74,16 @@ ext.libraries = [
         butterKnife             : "com.jakewharton:butterknife:$versions.butterKnife",
         butterKnifeCompiler     : "com.jakewharton:butterknife-compiler:$versions.butterKnife",
         timber                  : "com.jakewharton.timber:timber:$versions.timber",
+
+        retrofit                : "com.squareup.retrofit2:retrofit:$versions.retrofit",
+        converterGson           : "com.squareup.retrofit2:converter-gson:$versions.retrofit",
+        gson                    : "com.google.code.gson:gson:$versions.gson",
+        okhttp                  : "com.squareup.okhttp3:okhttp:$versions.okhttp",
+        okhttpLogging           : "com.squareup.okhttp3:logging-interceptor:$versions.okhttp",
+        glide                   : "com.github.bumptech.glide:glide:$versions.glide",
+
+        rxJava                  : "io.reactivex:rxjava:$versions.rxJava",
+        rxAndroid               : "io.reactivex:rxandroid:$versions.rxAndroid",
 
         // Developer Tools
         stetho                  : "com.facebook.stetho:stetho:$versions.stetho",
