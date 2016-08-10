@@ -11,6 +11,7 @@ import android.view.View;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import icepick.Icepick;
 import ru.yandex.yamblz.App;
 
 @SuppressWarnings("PMD.AbstractClassWithoutAnyMethod")
@@ -18,6 +19,12 @@ public abstract class BaseFragment extends Fragment {
 
     private Handler mainThreadHandler;
     private Unbinder viewBinder;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Icepick.restoreInstanceState(this, savedInstanceState);
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -46,6 +53,12 @@ public abstract class BaseFragment extends Fragment {
 
     private boolean isFragmentAlive() {
         return getActivity() != null && isAdded() && !isDetached() && getView() != null && !isRemoving();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Icepick.saveInstanceState(this, outState);
     }
 
     @Override

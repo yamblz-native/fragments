@@ -27,8 +27,8 @@ public class ArtistTabFragment extends BaseFragment {
     @BindBool(R.bool.is_tablet) boolean isTablet;
 
     @Arg
-    @NonNull // Студия подчеркивает, что not initialized. Как тут быть?
-            Artist artist;
+    @NonNull
+    Artist artist;  // Студия подчеркивает, что not initialized. Как тут быть?
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,7 +52,7 @@ public class ArtistTabFragment extends BaseFragment {
     public void onMoreButtonClicked() {
         InfoDialogFragment infoFragment = new InfoDialogFragmentBuilder(artist).build();
         if (!isTablet) {
-            getFragmentManager()
+            getParentFragment().getFragmentManager()
                     .beginTransaction()
                     .replace(R.id.fragment_container, infoFragment)
                     .addToBackStack(null)

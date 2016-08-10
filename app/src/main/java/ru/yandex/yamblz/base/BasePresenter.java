@@ -12,7 +12,7 @@ import rx.subscriptions.CompositeSubscription;
  */
 public abstract class BasePresenter<V> {
     private WeakReference<V> view;
-    private CompositeSubscription subs = new CompositeSubscription();
+    private final CompositeSubscription subs = new CompositeSubscription();
 
     public abstract void onStart();
 

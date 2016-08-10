@@ -35,9 +35,9 @@ import static ru.yandex.yamblz.utils.Utils.convertToString;
 @FragmentWithArgs
 public class InfoDialogFragment extends DialogFragment {
     @Arg
-    @NonNull // Студия подчеркивает, что not initialized. Как бороться?
-            Artist artist;
-    Unbinder unbinder;
+    @NonNull
+    Artist artist; // Студия подчеркивает, что not initialized. Как бороться?
+    private Unbinder unbinder;
 
     @BindView(R.id.info_cover)
     ImageView cover;
@@ -48,11 +48,9 @@ public class InfoDialogFragment extends DialogFragment {
     @BindView(R.id.info_bio)
     TextView bio;
 
-
-    int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
-    int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
-    int padding = (int) (Resources.getSystem().getDisplayMetrics().density * 32);
-
+    private final int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
+    private final int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
+    private final int padding = (int) (Resources.getSystem().getDisplayMetrics().density * 32);
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,7 +71,6 @@ public class InfoDialogFragment extends DialogFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setup();
-
     }
 
     public void onResume() {

@@ -11,14 +11,10 @@ import ru.yandex.yamblz.model.Artist;
 import ru.yandex.yamblz.ui.fragments.ArtistClickHandler;
 
 class ArtistsTabsAdapter extends FragmentStatePagerAdapter {
-    private List<Artist> artists = new ArrayList<Artist>();
+    private final List<Artist> artists = new ArrayList<>();
 
-    public ArtistsTabsAdapter(FragmentManager fm, List<Artist> artists, ArtistClickHandler handler) {
+    public ArtistsTabsAdapter(FragmentManager fm, List<Artist> artists) {
         super(fm);
-        this.artists.addAll(artists);
-    }
-
-    public void setArtists(List<Artist> artists) {
         this.artists.addAll(artists);
     }
 

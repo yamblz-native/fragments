@@ -20,7 +20,6 @@ import butterknife.ButterKnife;
 import ru.yandex.yamblz.R;
 import ru.yandex.yamblz.model.Artist;
 import ru.yandex.yamblz.ui.fragments.ArtistClickHandler;
-import ru.yandex.yamblz.ui.fragments.tabs.ArtistsTabsFragment;
 import ru.yandex.yamblz.utils.ImageLoader;
 import ru.yandex.yamblz.utils.Utils;
 
@@ -66,10 +65,6 @@ public class ArtistsRecyclerAdapter extends RecyclerView.Adapter<ArtistsRecycler
     @Override
     public int getItemCount() {
         return artists.size();
-    }
-
-    public void setClickHandler(@Nullable ArtistClickHandler clickHandler) {
-        this.clickHandler = new WeakReference<>(clickHandler);
     }
 
     static class ArtistHolder extends RecyclerView.ViewHolder {
