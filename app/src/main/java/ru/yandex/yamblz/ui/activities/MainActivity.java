@@ -3,6 +3,7 @@ package ru.yandex.yamblz.ui.activities;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.widget.FrameLayout;
@@ -34,6 +35,7 @@ import ru.yandex.yamblz.ui.other.ViewModifier;
 public class MainActivity extends BaseActivity implements ShowDetailsCallback, ArtistsContainer, ShowImageCallback {
 
     private static final String TAG = "MainActivity";
+    private static final String DETAILS_FRAGMENT_TAG = "details_transaction";
 
     @Inject
     @Named(DeveloperSettingsModule.MAIN_ACTIVITY_VIEW_MODIFIER)
@@ -58,10 +60,8 @@ public class MainActivity extends BaseActivity implements ShowDetailsCallback, A
         fm = getSupportFragmentManager();
         isBigscreen = flSideMenu != null;
         if (savedInstanceState == null) {
-            Bundle args = new Bundle();
             if (isBigscreen) {
                 showListAndDetailsFragments();
-                args.putBoolean(ContentFragment.EXTRA_ARTISTS_LIST, false);
             } else {
                 showViewPagerFragment();
             }
@@ -77,12 +77,15 @@ public class MainActivity extends BaseActivity implements ShowDetailsCallback, A
         if(isBigscreen){
             fragment.show(fm, "dialog");
         }else{
-            fm.beginTransaction()
-                    .addToBackStack(null)
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    .hide(contentFragment)
-                    .add(R.id.main_frame_layout, fragment)
-                    .commit();
+            Fragment detailsFragment = fm.findFragmentByTag(DETAILS_FRAGMENT_TAG);
+            if(detailsFragment == null){
+                fm.beginTransaction()
+                        .addToBackStack(null)
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .hide(contentFragment)
+                        .add(R.id.main_frame_layout, fragment, DETAILS_FRAGMENT_TAG)
+                        .commit();
+            }
         }
     }
 
