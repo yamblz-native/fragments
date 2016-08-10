@@ -6,9 +6,13 @@ import android.support.annotation.NonNull;
 
 import ru.yandex.yamblz.developer_settings.DevMetricsProxy;
 import ru.yandex.yamblz.developer_settings.DeveloperSettingsModel;
+import ru.yandex.yamblz.di.ApplicationComponent;
+import ru.yandex.yamblz.di.ApplicationModule;
+import ru.yandex.yamblz.di.DaggerApplicationComponent;
 import timber.log.Timber;
 
 public class App extends Application {
+
     private ApplicationComponent applicationComponent;
 
     // Prevent need in a singleton (global) reference to the application object.

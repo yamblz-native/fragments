@@ -1,4 +1,4 @@
-package ru.yandex.yamblz;
+package ru.yandex.yamblz.di;
 
 import android.app.Application;
 import android.os.Handler;
@@ -10,8 +10,12 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import ru.yandex.yamblz.domain.DataManager;
+import ru.yandex.yamblz.domain.datasources.network.YandexService;
 
-@Module
+@Module(
+        includes = NetworkModule.class
+)
 public class ApplicationModule {
 
     public static final String MAIN_THREAD_HANDLER = "main_thread_handler";
@@ -31,6 +35,12 @@ public class ApplicationModule {
     @Provides @NonNull @Named(MAIN_THREAD_HANDLER) @Singleton
     public Handler provideMainThreadHandler() {
         return new Handler(Looper.getMainLooper());
+    }
+
+    @Singleton
+    @Provides
+    DataManager provideDataManager(YandexService service) {
+        return new DataManager(service);
     }
 
 }
