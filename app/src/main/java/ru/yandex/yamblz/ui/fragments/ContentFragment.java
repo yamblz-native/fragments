@@ -29,7 +29,7 @@ public class ContentFragment extends BaseFragment implements LoaderManager.Loade
     private Cursor cursor;
     private ViewPager viewPager;
 
-    private int pagerPosition;
+    private int viewPosition;
     private Handler handler; //need to set viewpager position
 
     @NonNull
@@ -41,7 +41,7 @@ public class ContentFragment extends BaseFragment implements LoaderManager.Loade
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        handler=new Handler();
+        handler = new Handler();
         getLoaderManager().initLoader(1, null, this);
     }
 
@@ -50,10 +50,12 @@ public class ContentFragment extends BaseFragment implements LoaderManager.Loade
         super.onViewCreated(view, savedInstanceState);
         if (getResources().getBoolean(R.bool.is_tablet)) {
             recyclerView = (RecyclerView) getView().findViewById(R.id.recycler);
+            if (savedInstanceState != null)
+                viewPosition = savedInstanceState.getInt("viewPagerPosition");
         } else {
             viewPager = (ViewPager) getView().findViewById(R.id.view_pager);
             if (savedInstanceState != null)
-                pagerPosition=savedInstanceState.getInt("viewPagerPosition");
+                viewPosition = savedInstanceState.getInt("viewPagerPosition");
         }
         if (cursor != null) {
             setData();
@@ -69,15 +71,18 @@ public class ContentFragment extends BaseFragment implements LoaderManager.Loade
                 artistFragment = ArtistFragmentBuilder.newArtistFragment(cursor.getString(cursor.getColumnIndex(ContentProviderContract.Artists.NAME)));
                 getChildFragmentManager().beginTransaction().replace(R.id.container, artistFragment, "artist").commit();
             }
-            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            LinearLayoutManager layout = new LinearLayoutManager(getContext());
+
+            recyclerView.setLayoutManager(layout);
             recyclerView.setAdapter(new ArtistRecyclerAdapter(name -> {
                 artistFragment.update(name);
             }, cursor));
+            layout.scrollToPosition(viewPosition);
 
         } else {
             adapter = new ArtistsPagerAdapter(getChildFragmentManager(), cursor);
             viewPager.setAdapter(adapter);
-            handler.post(() -> viewPager.setCurrentItem(pagerPosition,false));
+            handler.post(() -> viewPager.setCurrentItem(viewPosition, false));
             TabLayout tabLayout = (TabLayout) getView().findViewById(R.id.tab_layout);
             tabLayout.setupWithViewPager(viewPager);
         }
@@ -87,8 +92,8 @@ public class ContentFragment extends BaseFragment implements LoaderManager.Loade
     public void onDestroyView() {
         super.onDestroyView();
         artistFragment = null;
-        if(viewPager!=null)pagerPosition=viewPager.getCurrentItem();
-        viewPager=null;
+        if (viewPager != null) viewPosition = viewPager.getCurrentItem();
+        viewPager = null;
         recyclerView = null;
     }
 
@@ -118,8 +123,12 @@ public class ContentFragment extends BaseFragment implements LoaderManager.Loade
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        if(viewPager!=null)pagerPosition=viewPager.getCurrentItem();
-        outState.putInt("viewPagerPosition", pagerPosition);
+        if (viewPager != null) viewPosition = viewPager.getCurrentItem();
+        if (recyclerView != null && recyclerView.getLayoutManager() != null) {
+            LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
+            viewPosition = manager.findFirstVisibleItemPosition();
+        }
+        outState.putInt("viewPagerPosition", viewPosition);
         super.onSaveInstanceState(outState);
 
     }
