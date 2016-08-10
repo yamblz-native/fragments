@@ -87,6 +87,16 @@ dependencies {
     compile libraries.dagger
     apt libraries.daggerCompiler
 
+    compile libraries.rxjava
+    compile libraries.rxandroid
+    compile libraries.jacksonConverter
+    compile libraries.jacksonDatabind
+    compile libraries.jacksonAnnotations
+    compile libraries.retrofit
+    compile libraries.retrofitAdapter
+    compile libraries.retrofitAdapter
+    compile libraries.universalImageLoader
+
     compile libraries.supportAnnotations
     compile libraries.supportAppCompat
     compile libraries.supportDesign

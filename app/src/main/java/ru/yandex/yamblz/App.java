@@ -4,6 +4,9 @@ import android.app.Application;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+
 import ru.yandex.yamblz.developer_settings.DevMetricsProxy;
 import ru.yandex.yamblz.developer_settings.DeveloperSettingsModel;
 import timber.log.Timber;
@@ -31,6 +34,13 @@ public class App extends Application {
             DevMetricsProxy devMetricsProxy = applicationComponent.devMetricsProxy();
             devMetricsProxy.apply();
         }
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this)
+                .diskCacheSize( 20 * 1024 * 1024 ) // 20Mb
+                .memoryCacheSize( 2 * 1024 * 1024 ) // 2Mb
+                .threadPoolSize( 5 )
+                .diskCacheFileCount( 100 )
+                .build();
+        ImageLoader.getInstance().init( config );
     }
 
     @NonNull
