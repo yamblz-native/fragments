@@ -11,6 +11,8 @@ buildscript {
         maven { url 'https://plugins.gradle.org/m2/' }
     }
     dependencies {
+
+        classpath "com.fernandocejas.frodo:frodo-plugin:0.8.3"
         // See dependencies.gradle for declaration of plugins.
 
         classpath gradlePlugins.android

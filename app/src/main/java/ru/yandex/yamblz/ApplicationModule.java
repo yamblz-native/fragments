@@ -5,6 +5,9 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 
+
+import org.greenrobot.eventbus.EventBus;
+
 import javax.inject.Named;
 import javax.inject.Singleton;
 
@@ -31,6 +34,11 @@ public class ApplicationModule {
     @Provides @NonNull @Named(MAIN_THREAD_HANDLER) @Singleton
     public Handler provideMainThreadHandler() {
         return new Handler(Looper.getMainLooper());
+    }
+
+    @Provides @NonNull
+    public EventBus provideEventBus(){
+        return EventBus.getDefault();
     }
 
 }

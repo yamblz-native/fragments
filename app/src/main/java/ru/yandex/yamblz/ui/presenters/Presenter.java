@@ -4,12 +4,14 @@ import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import ru.yandex.yamblz.ui.contcract.BaseContract;
+
 /**
  * Base presenter implementation.
  *
  * @param <V> view.
  */
-public class Presenter<V> {
+public class Presenter<V extends BaseContract.MvpView> implements BaseContract.MvpPresenter<V> {
 
     @Nullable
     private volatile V view;
@@ -26,7 +28,7 @@ public class Presenter<V> {
     }
 
     @Nullable
-    protected V view() {
+    public V view() {
         return view;
     }
 

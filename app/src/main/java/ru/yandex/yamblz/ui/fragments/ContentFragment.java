@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import ru.yandex.yamblz.ApplicationComponent;
 import ru.yandex.yamblz.R;
 
 public class ContentFragment extends BaseFragment {
@@ -14,5 +15,10 @@ public class ContentFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_content, container, false);
+    }
+
+    @Override
+    protected void setUpComponent(ApplicationComponent applicationComponent) {
+
     }
 }
