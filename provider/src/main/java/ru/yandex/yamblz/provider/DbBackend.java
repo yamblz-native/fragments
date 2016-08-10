@@ -61,20 +61,25 @@ public class DbBackend {
      */
     public boolean forceSingersUpdate(List<Singer> singers) {
         SQLiteDatabase db = mDbOpenHelper.getWritableDatabase();
-        db.beginTransactionNonExclusive();
         boolean success = true;
+        try {
+            db.beginTransactionNonExclusive();
 
-        truncateTable(Singers.TABLE_NAME);
-        truncateTable(Genres.TABLE_NAME);
-        truncateTable(SingersGenres.TABLE_NAME);
+            truncateTable(Singers.TABLE_NAME);
+            truncateTable(Genres.TABLE_NAME);
+            truncateTable(SingersGenres.TABLE_NAME);
 
-        success &= insertSingers(singers);
-        success &= insertGenres(Singer.extractGenres(singers));
-        insertArtistGenres(singers);
-        if(success) {
-            db.setTransactionSuccessful();
+            success &= insertSingers(singers);
+            success &= insertGenres(Singer.extractGenres(singers));
+            insertArtistGenres(singers);
+            if (success) {
+                db.setTransactionSuccessful();
+            }
+        } catch (Exception e) {
+            success = false;
+        } finally {
+            db.endTransaction();
         }
-        db.endTransaction();
         return success;
     }
 

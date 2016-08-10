@@ -82,7 +82,6 @@ public class TabsFragment extends BaseFragment {
         mUnbinder.unbind();
     }
 
-
     private DataProvider.Callback<List<Singer>> mSingersCallback = new DataProvider.Callback<List<Singer>>() {
         @Override
         public void postResult(List<Singer> result) {
