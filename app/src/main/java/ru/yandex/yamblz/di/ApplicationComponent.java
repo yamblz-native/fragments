@@ -1,4 +1,4 @@
-package ru.yandex.yamblz;
+package ru.yandex.yamblz.di;
 
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -13,11 +13,15 @@ import ru.yandex.yamblz.developer_settings.DeveloperSettingsModel;
 import ru.yandex.yamblz.developer_settings.DeveloperSettingsModule;
 import ru.yandex.yamblz.developer_settings.LeakCanaryProxy;
 import ru.yandex.yamblz.ui.activities.MainActivity;
+import ru.yandex.yamblz.ui.fragments.ArtistDetailsFragment;
+import ru.yandex.yamblz.ui.fragments.ArtistPreviewFragment;
+import ru.yandex.yamblz.ui.fragments.ArtistsTabsFragment;
 
 @Singleton
 @Component(modules = {
         ApplicationModule.class,
         DeveloperSettingsModule.class,
+        InteractorsModule.class
 })
 public interface ApplicationComponent {
 
@@ -36,4 +40,11 @@ public interface ApplicationComponent {
     Handler mainThreadHandler();
 
     void inject(@NonNull MainActivity mainActivity);
+
+    void inject(ArtistPreviewFragment fragment);
+
+    void inject(ArtistsTabsFragment fragment);
+
+    void inject(ArtistDetailsFragment fragment);
+
 }
