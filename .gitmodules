@@ -1,0 +1,6 @@
+[submodule "fragments"]
+	path = fragments
+	url = https://github.com/TimofeyTalenfeld/fragments.git
+[submodule "empty-template"]
+	path = empty-template
+	url = https://github.com/TimofeyTalenfeld/empty-template.git
