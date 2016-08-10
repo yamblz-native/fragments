@@ -1,25 +1,32 @@
 package ru.yandex.yamblz.ui.activities;
 
 import android.annotation.SuppressLint;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
+
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import ru.yandex.yamblz.App;
+import ru.yandex.yamblz.Provider;
 import ru.yandex.yamblz.R;
 import ru.yandex.yamblz.developer_settings.DeveloperSettingsModule;
 import ru.yandex.yamblz.model.Artist;
+import ru.yandex.yamblz.model.ArtistContract;
 import ru.yandex.yamblz.model.ArtistProvider;
 import ru.yandex.yamblz.model.ArtistProviderImpl;
+import ru.yandex.yamblz.model.content_provider.ArtistMaker;
+import ru.yandex.yamblz.model.content_provider.ArtistProviderCP;
 import ru.yandex.yamblz.ui.adapters.ArtistListAdapterCallbacks;
 import ru.yandex.yamblz.ui.fragments.ArtistDetailDialogFragment;
 import ru.yandex.yamblz.ui.fragments.ArtistListFragment;
 import ru.yandex.yamblz.ui.fragments.ArtistPhotoFragment;
 import ru.yandex.yamblz.ui.fragments.ArtistViewPagerFragment;
-import ru.yandex.yamblz.Provider;
 import ru.yandex.yamblz.ui.other.ViewModifier;
 
 public class MainActivity extends BaseActivity implements
@@ -42,7 +49,20 @@ public class MainActivity extends BaseActivity implements
         App.get(this).applicationComponent().inject(this);
         setContentView(viewModifier.modify(getLayoutInflater().inflate(R.layout.activity_master_detail, null)));
 
-        mArtistProvider = new ArtistProviderImpl(getResources());
+        mArtistProvider = new ArtistProviderCP(this);
+
+        if (mArtistProvider.getArtistCount() == 0) {
+            ArtistProvider artistProvider = new ArtistProviderImpl(getResources());
+            List<Artist> artists = artistProvider.getArtists();
+
+            ContentResolver contentResolver = getContentResolver();
+            ArtistMaker artistMaker = new ArtistMaker();
+            for (Artist artist : artists) {
+                ContentValues cv = artistMaker.getContentValueForArtist(artist);
+                contentResolver.insert(ArtistContract.Artist.CONTENT_URI, cv);
+            }
+            mArtistProvider = new ArtistProviderCP(this);
+        }
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         if (savedInstanceState == null) {
