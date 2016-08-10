@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/list_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="#3F51B5"
+            app:layout_collapseMode="pin"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            xmlns:android="http://schemas.android.com/apk/res/android">
+
+            <ImageButton
+                android:layout_width="62dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/leak_canary_icon"
+                android:id="@+id/toolbarImageButtonInfoId"
+                android:layout_gravity="end"
+                android:background="#3F51B5"
+                />
+            <ImageButton
+                android:layout_width="62dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/leak_canary_icon"
+                android:id="@+id/toolbarImageButtonMailId"
+                android:layout_gravity="end"
+                android:background="#3F51B5"
+                />
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.CoordinatorLayout>
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+</LinearLayout>
