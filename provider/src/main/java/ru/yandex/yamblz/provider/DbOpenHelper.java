@@ -31,6 +31,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
     public void onOpen(SQLiteDatabase db) {
         super.onOpen(db);
         db.execSQL("PRAGMA foreign_keys=ON;");
+        db.enableWriteAheadLogging();
     }
 
     private void createSingersTable(SQLiteDatabase db) {

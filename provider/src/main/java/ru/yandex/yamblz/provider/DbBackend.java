@@ -61,7 +61,7 @@ public class DbBackend {
      */
     public boolean forceSingersUpdate(List<Singer> singers) {
         SQLiteDatabase db = mDbOpenHelper.getWritableDatabase();
-        db.beginTransaction();
+        db.beginTransactionNonExclusive();
         boolean success = true;
 
         truncateTable(Singers.TABLE_NAME);
