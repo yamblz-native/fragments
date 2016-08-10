@@ -12,7 +12,7 @@ android {
     buildToolsVersion versions.buildTools
 
     defaultConfig {
-        applicationId 'ru.yandex.yamblz'
+        applicationId 'ru.yandex.yamblzProvider'
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
         versionCode versions.code // Notice that you may want to use BUILD_NUMBER from CI in real project with own CI.
@@ -84,32 +84,7 @@ android {
 
 // Libraries declared in dependencies.gradle in the root of the project
 dependencies {
-    compile libraries.dagger
-    apt libraries.daggerCompiler
-
-    compile libraries.supportAnnotations
-    compile libraries.supportAppCompat
-    compile libraries.supportDesign
-    compile libraries.supportRecyclerView
-    compile libraries.supportCardView
-
     compile libraries.gson
-    compile libraries.picasso
-
-    compile libraries.icepick
-    provided libraries.icepickProcessor
-
-    compile libraries.butterKnife
-    apt libraries.butterKnifeCompiler
-
-    compile libraries.timber
-
-    // Developer tools (Developer Settings)
-    compile libraries.stetho
-    compile libraries.leakCanary
-    compile libraries.tinyDancer
-    compile libraries.lynx
-    compile libraries.processPhoenix
 
     testCompile libraries.junit
     testCompile libraries.robolectric
