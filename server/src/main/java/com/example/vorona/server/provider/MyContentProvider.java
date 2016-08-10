@@ -17,22 +17,9 @@ import android.util.Log;
 
 import com.example.vorona.server.db.DBHelper;
 import com.example.vorona.server.db.DbContract;
-import com.example.vorona.server.model.Singer;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import static com.example.vorona.server.db.DbContract.ARTISTS;
-import static com.example.vorona.server.db.DbContract.Artist.ALBUM;
-import static com.example.vorona.server.db.DbContract.Artist.BIO;
-import static com.example.vorona.server.db.DbContract.Artist.COVER;
-import static com.example.vorona.server.db.DbContract.Artist.COVER_SMALL;
-import static com.example.vorona.server.db.DbContract.Artist.GENRES;
 import static com.example.vorona.server.db.DbContract.Artist.ID;
-import static com.example.vorona.server.db.DbContract.Artist.LOCAL_ID;
 import static com.example.vorona.server.db.DbContract.Artist.NAME;
-import static com.example.vorona.server.db.DbContract.Artist.TRACKS;
 
 public class MyContentProvider extends ContentProvider implements DbContract {
 

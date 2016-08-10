@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import static com.example.vorona.server.db.DbContract.Artist.*;
+import static com.example.vorona.server.db.DbContract.Genre.*;
+import static com.example.vorona.server.db.DbContract.ArtistGenre.*;
 
 /**
  * Class for database access.
@@ -23,23 +25,42 @@ public class DBHelper extends SQLiteOpenHelper implements DbContract{
         Log.w("DBHelper", "Creating table");
         db.execSQL("create table " + ARTISTS + " ("
                 + LOCAL_ID + " integer primary key autoincrement,"
-                + ID +" integer,"
+                + Artist.ID +" integer,"
                 + NAME + " text,"
                 + BIO + " text,"
                 + ALBUM + " integer,"
                 + TRACKS + " integer,"
                 + COVER + " text,"
-                + GENRES + " text,"
                 + COVER_SMALL + " text"
                 +");");
 
-        db.execSQL("CREATE INDEX idx_" + ID +
-                " ON " + ARTISTS + "(" + ID + ")");
+        db.execSQL("CREATE INDEX idx_" + Artist.ID +
+                " ON " + ARTISTS + "(" + Artist.ID + ")");
+
+        db.execSQL("create table " + GENRES + " ("
+                + Genre.ID +" integer primary key autoincrement,"
+                + GENRE + " text"
+                +");");
+
+        db.execSQL("CREATE INDEX idx_genres_" + Genre.ID +
+                " ON " + GENRES + "(" + Genre.ID + ")");
+
+        db.execSQL("create table " + ARTIST_GENRES + " ("
+                + ARTIST_ID + " integer,"
+                + GENRE_ID + " integer"
+                +");");
+
+        db.execSQL("CREATE INDEX idx_artist_" + ARTIST_ID +
+                " ON " + ARTIST_GENRES + "(" + ARTIST_ID + ")");
+        db.execSQL("CREATE INDEX idx_genre_" + GENRE_ID +
+                " ON " + ARTIST_GENRES + "(" + GENRE_ID + ")");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE " + ARTISTS);
+        db.execSQL("DROP TABLE " + GENRES);
+        db.execSQL("DROP TABLE " + ARTIST_GENRES);
         db.setVersion(newVersion);
     }
 

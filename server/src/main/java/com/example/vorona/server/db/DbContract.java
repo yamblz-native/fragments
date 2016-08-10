@@ -7,6 +7,8 @@ public interface DbContract {
     String DB_NAME = "main.sqlite";
 
     String ARTISTS = "artists";
+    String GENRES = "genres";
+    String ARTIST_GENRES = "artists_genres";
     interface Artist {
         String LOCAL_ID = "local_id";
         String ID = "id";
@@ -15,7 +17,16 @@ public interface DbContract {
         String TRACKS = "tracks";
         String NAME = "name";
         String COVER = "cover";
-        String GENRES = "genres";
         String COVER_SMALL = "cover_small";
+    }
+
+    interface Genre{
+        String ID = "id";
+        String GENRE = "genre";
+    }
+
+    interface ArtistGenre{
+        String ARTIST_ID = "artist_id";
+        String GENRE_ID = "genre_id";
     }
 }

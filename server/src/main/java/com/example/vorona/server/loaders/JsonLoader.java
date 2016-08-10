@@ -135,14 +135,13 @@ public class JsonLoader extends AsyncTaskLoader<List<Singer>> {
                 case "genres":
                     reader.beginArray();
                     StringBuilder str = new StringBuilder();
+                    List<String> gns = new ArrayList<>();
                     while (reader.hasNext()) {
                         String s = reader.nextString();
-                        str.append(s).append(", ");
+                        gns.add(s);
                     }
                     reader.endArray();
-                    if (str.lastIndexOf(", ") > 0 && str.length() > 0) {
-                        res.setGenres(str.toString().substring(0, str.lastIndexOf(",")));
-                    }
+                    res.setGenres(gns);
                     break;
                 default:
                     reader.skipValue();

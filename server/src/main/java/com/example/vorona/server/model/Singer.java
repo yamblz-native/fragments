@@ -3,9 +3,12 @@ package com.example.vorona.server.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Singer implements Parcelable{
     private long id;
-    private String genres = "";
+    private List<String> genres = new ArrayList<>();
     private String link;
     private String cover_small;
     private String cover_big;
@@ -28,7 +31,7 @@ public class Singer implements Parcelable{
         bio = parcel.readString();
         albums = parcel.readInt();
         tracks = parcel.readInt();
-        genres = parcel.readString();
+        parcel.readStringList(genres);
     }
 
     /**
@@ -72,7 +75,7 @@ public class Singer implements Parcelable{
         dest.writeString(bio);
         dest.writeInt(albums);
         dest.writeInt(tracks);
-        dest.writeString(genres);
+        dest.writeStringList(genres);
     }
 
     public void setId(long id) {
@@ -95,7 +98,7 @@ public class Singer implements Parcelable{
         this.bio = bio;
     }
 
-    public void setGenres(String genres) {
+    public void setGenres(List<String> genres) {
         this.genres = genres;
     }
 
@@ -135,7 +138,7 @@ public class Singer implements Parcelable{
         return bio;
     }
 
-    public String getGenres() {
+    public List<String> getGenres() {
         return genres;
     }
 

@@ -1,7 +1,6 @@
 package com.example.vorona.server.db;
 
 
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -16,9 +15,10 @@ import org.robolectric.RuntimeEnvironment;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
 
 import static com.example.vorona.server.db.DbContract.ARTISTS;
+import static com.example.vorona.server.db.DbContract.ARTIST_GENRES;
+import static com.example.vorona.server.db.DbContract.GENRES;
 
 /**
  * Created by vorona on 05.08.16.
@@ -37,6 +37,9 @@ public class DbBackendTest {
         //Empty table, one singer added
         Singer singer = new Singer();
         singer.setName("AAAA");
+        List<String> g = new ArrayList<>();
+        g.add("BlaBla");
+        singer.setGenres(g);
         dbBackend.insertSinger(singer);
         Assert.assertEquals(1, getCount(db, ARTISTS));
 
@@ -124,23 +127,26 @@ public class DbBackendTest {
     }
 
     @Test
-    public void testGetSinger() {
+    public void testGenres() {
         DBHelper helper = new DBHelper(RuntimeEnvironment.application);
         SQLiteDatabase db = helper.getWritableDatabase();
         DbBackend dbBackend = new DbBackend(RuntimeEnvironment.application);
-        List<Singer> singerList = new ArrayList<>();
-        //Empty table, list of singers added
+
         Singer singer = new Singer();
+        List<String> g = new ArrayList<>();
+        g.add("BlaBla");
+        singer.setGenres(g);
         singer.setName("AAAA");
         singer.setId(1);
-        Singer singer2 = new Singer();
-        singer2.setName("BBB");
-        singer2.setId(2);
-        singerList.add(singer);
-        singerList.add(singer2);
-        dbBackend.insertList(singerList);
+
+        dbBackend.insertSinger(singer);
+        Cursor c = db.query(GENRES, null, null, null, null, null, null);
+        Assert.assertEquals(c.getCount(), 1);
+        c.close();
+
         Singer s = dbBackend.getSinger(1);
-        Assert.assertEquals(s.getName(), singer.getName());
+        //Check genres
+        Assert.assertEquals(g.get(0), s.getGenres().get(0));
     }
 
     @Test
