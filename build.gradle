@@ -47,6 +47,8 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        maven {url "https://clojars.org/repo/"}
+
     }
 
     // Workaround to prevent Gradle from stealing focus from other apps during tests run/etc.

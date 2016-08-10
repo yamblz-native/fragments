@@ -97,6 +97,21 @@ dependencies {
     apt libraries.butterKnifeCompiler
 
     compile libraries.timber
+    compile libraries.glide
+
+    compile libraries.storio
+    compile libraries.storioResolver
+    compile libraries.storioAnnotations
+    apt libraries.storioProcessor
+
+    compile libraries.rxJava
+    compile libraries.rxAndroid
+
+    compile libraries.icepick
+    provided libraries.icepickProcessor
+
+    compile libraries.fragmentargs
+    apt libraries.fragmentargsProcessor
 
     // Developer tools (Developer Settings)
     compile libraries.stetho
