@@ -3,6 +3,7 @@
     package="ru.yandex.yamblz">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name="ru.yandex.yamblz.App"
@@ -22,8 +23,8 @@
         </activity>
 
         <provider
-            android:authorities=""
-            android:name=""
+            android:name=".provider.MyContentProvider"
+            android:authorities="ru.yandex.yamblz"
             android:exported="true" />
 
     </application>

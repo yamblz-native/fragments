@@ -12,7 +12,7 @@ android {
     buildToolsVersion versions.buildTools
 
     defaultConfig {
-        applicationId 'ru.yandex.yamblz'
+        applicationId 'ru.yandex.yamblz2'
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
         versionCode versions.code // Notice that you may want to use BUILD_NUMBER from CI in real project with own CI.
@@ -104,6 +104,21 @@ dependencies {
     compile libraries.tinyDancer
     compile libraries.lynx
     compile libraries.processPhoenix
+
+    compile libraries.rxJava
+    compile libraries.rxAndroid
+
+
+    compile "com.squareup.retrofit2:retrofit:2.0.0"
+    compile "com.squareup.retrofit2:converter-gson:2.0.0"
+    compile "com.squareup.retrofit2:adapter-rxjava:2.0.0"
+
+
+    compile libraries.converterGson
+    compile libraries.gson
+    compile libraries.okhttp
+    compile libraries.glide
+    compile libraries.okhttpLogging
 
     testCompile libraries.junit
     testCompile libraries.robolectric
