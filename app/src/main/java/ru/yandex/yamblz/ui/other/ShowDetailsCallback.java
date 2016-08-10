@@ -1,4 +1,4 @@
-package ru.yandex.yamblz.ui.fragments;
+package ru.yandex.yamblz.ui.other;
 
 import ru.yandex.yamblz.model.Artist;
 

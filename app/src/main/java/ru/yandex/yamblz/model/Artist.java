@@ -1,12 +1,13 @@
 package ru.yandex.yamblz.model;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 import java.util.List;
 
-public class Artist implements Serializable {
-
-    private static final long serialVersionUID = 432L;
+public class Artist implements  Parcelable {
 
     private long id;
     private String name;
@@ -17,6 +18,20 @@ public class Artist implements Serializable {
     private String description;
     private Cover cover;
 
+
+    public Artist() {
+    }
+
+    protected Artist(Parcel in) {
+        this.id = in.readLong();
+        this.name = in.readString();
+        this.genres = in.createStringArrayList();
+        this.tracks = in.readInt();
+        this.albums = in.readInt();
+        this.link = in.readString();
+        this.description = in.readString();
+        this.cover = (Cover) in.readSerializable();
+    }
 
     public long getId() {
         return id;
@@ -126,4 +141,34 @@ public class Artist implements Serializable {
                 ", cover=" + cover +
                 '}';
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.id);
+        dest.writeString(this.name);
+        dest.writeStringList(this.genres);
+        dest.writeInt(this.tracks);
+        dest.writeInt(this.albums);
+        dest.writeString(this.link);
+        dest.writeString(this.description);
+        dest.writeParcelable(this.cover,0);
+    }
+
+
+    public static final Creator<Artist> CREATOR = new Creator<Artist>() {
+        @Override
+        public Artist createFromParcel(Parcel source) {
+            return new Artist(source);
+        }
+
+        @Override
+        public Artist[] newArray(int size) {
+            return new Artist[size];
+        }
+    };
 }

@@ -13,7 +13,7 @@ import ru.yandex.yamblz.R;
 import ru.yandex.yamblz.utils.StringUtils;
 import ru.yandex.yamblz.model.Artist;
 
-public class ArtistDetailsFragment extends BaseFragment{
+public class ArtistDetailsFragment extends BaseDialogFragment{
 
 
     public static final String EXTRA_ARTIST = "EXTRA_ARTIST_DETAILS";
@@ -36,7 +36,7 @@ public class ArtistDetailsFragment extends BaseFragment{
         View view = inflater.inflate(R.layout.fragment_artist_details, container, false);
         Bundle args = getArguments();
         if (args != null) {
-            artist = (Artist) args.getSerializable(EXTRA_ARTIST);
+            artist = (Artist) args.getParcelable(EXTRA_ARTIST);
         }
         return view;
     }

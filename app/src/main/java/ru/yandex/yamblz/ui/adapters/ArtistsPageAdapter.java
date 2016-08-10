@@ -5,13 +5,11 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.PagerAdapter;
-import android.view.View;
 
 import java.util.List;
 
 import ru.yandex.yamblz.model.Artist;
-import ru.yandex.yamblz.ui.fragments.ArtistFragment;
+import ru.yandex.yamblz.ui.fragments.ArtistImageFragment;
 
 public class ArtistsPageAdapter extends FragmentStatePagerAdapter  {
 
@@ -21,8 +19,6 @@ public class ArtistsPageAdapter extends FragmentStatePagerAdapter  {
     public CharSequence getPageTitle(int position) {
         return artists.get(position).getName();
     }
-
-
 
     public ArtistsPageAdapter(@NonNull List<Artist> artists, FragmentManager manager){
         super(manager);
@@ -37,13 +33,11 @@ public class ArtistsPageAdapter extends FragmentStatePagerAdapter  {
     @Override
     public Fragment getItem(int position) {
         Artist currentArtist = artists.get(position);
-        ArtistFragment fragment = new ArtistFragment();
+        ArtistImageFragment fragment = new ArtistImageFragment();
         Bundle bundle = new Bundle();
-        bundle.putSerializable(ArtistFragment.EXTRA_ARTIST, currentArtist);
+        bundle.putParcelable(ArtistImageFragment.EXTRA_ARTIST, currentArtist);
         fragment.setArguments(bundle);
 
         return fragment;
     }
-
-
 }
