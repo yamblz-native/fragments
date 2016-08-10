@@ -33,6 +33,7 @@ public class App extends Application {
         }
     }
 
+
     @NonNull
     protected DaggerApplicationComponent.Builder prepareApplicationComponent() {
         return DaggerApplicationComponent.builder()
