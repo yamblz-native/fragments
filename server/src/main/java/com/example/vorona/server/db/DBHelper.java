@@ -60,7 +60,6 @@ public class DBHelper extends SQLiteOpenHelper implements DbContract{
     @Override
     public void onConfigure(SQLiteDatabase db) {
         super.onConfigure(db);
-        Cursor cursor = db.rawQuery("PRAGMA journal_mode = WAL;", null);
-        cursor.close();
+        db.enableWriteAheadLogging();
     }
 }

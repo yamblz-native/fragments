@@ -36,6 +36,7 @@ public class DbBackend implements DbContract {
     public void insertSinger(Singer singer) {
         SQLiteDatabase db = mDbOpenHelper.getWritableDatabase();
         ContentValues values = createCV(singer);
+        db.beginTransaction();
         db.insert(ARTISTS, null, values);
         //inserting genres
         for (String g : singer.getGenres()) {
@@ -65,34 +66,51 @@ public class DbBackend implements DbContract {
                 }
                 genre.close();
             }
+            db.setTransactionSuccessful();
         } else {
             Log.w("DbBackend", "Inserted but didn't find later");
         }
+
+        db.endTransaction();
         artist.close();
     }
 
     public void insertSingerUnique(Singer singer) {
         SQLiteDatabase db = mDbOpenHelper.getWritableDatabase();
         ContentValues values = createCV(singer);
+
+        db.beginTransaction();
         Cursor presence = db.query(ARTISTS, null, Artist.NAME + " = ?",
                 new String[]{singer.getName()}, null, null, null);
         if (presence.moveToFirst()) {
             presence.close();
+            db.setTransactionSuccessful();
+            db.endTransaction();
             return;
         }
         db.insert(ARTISTS, null, values);
+        db.setTransactionSuccessful();
+        db.endTransaction();
     }
 
     public void insertList(List<Singer> singers) {
+        SQLiteDatabase db = mDbOpenHelper.getWritableDatabase();
+        db.beginTransaction();
         for (Singer singer : singers) {
             insertSinger(singer);
         }
+        db.setTransactionSuccessful();
+        db.endTransaction();
     }
 
     public void insertListUnique(List<Singer> singers) {
+        SQLiteDatabase db = mDbOpenHelper.getWritableDatabase();
+        db.beginTransaction();
         for (Singer singer : singers) {
             insertSingerUnique(singer);
         }
+        db.setTransactionSuccessful();
+        db.endTransaction();
     }
 
     private ContentValues createCV(Singer singer) {
