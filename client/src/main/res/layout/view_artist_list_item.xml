@@ -1,0 +1,25 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:orientation="horizontal">
+
+    <ru.yandex.yamblz.ui.views.SquareDraweeView
+        android:id="@+id/cover"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        app:useLargerSide="true"/>
+
+    <TextView
+        android:id="@+id/name"
+        style="@style/Subheading"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="10dp"
+        android:ellipsize="end"
+        android:maxLines="3"
+        tools:ignore="RtlHardcoded"/>
+
+</LinearLayout>

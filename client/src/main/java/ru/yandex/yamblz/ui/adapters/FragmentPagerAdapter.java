@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import java.util.List;
 
 import ru.yandex.yamblz.euv.shared.model.Artist;
-import ru.yandex.yamblz.ui.fragments.ArtistShortInfoBuilder;
+import ru.yandex.yamblz.ui.fragments.ArtistInfoShortBuilder;
 
 public class FragmentPagerAdapter extends FragmentStatePagerAdapter {
     private final List<Artist> artists;
@@ -20,7 +20,7 @@ public class FragmentPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return new ArtistShortInfoBuilder(artists.get(position)).build();
+        return new ArtistInfoShortBuilder(artists.get(position)).build();
     }
 
 
