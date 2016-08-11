@@ -78,7 +78,7 @@ public class PageFragment extends BaseFragment {
         listener = (PageFragmentListener) getActivity();
         if (artist != null) {
             Glide.with(getContext())
-                    .load(artist.getCover().getBig())
+                    .load(artist.getCoverBig())
                     .centerCrop()
                     .into(imageView);
         }

@@ -79,7 +79,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         void bind(Artist artist) {
             Glide.with(itemView.getContext())
-                    .load(artist.getCover().getSmall())
+                    .load(artist.getCoverSmall())
                     .placeholder(R.drawable.google_chrome)
                     .centerCrop()
                     .crossFade()

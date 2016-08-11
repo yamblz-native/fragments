@@ -1,23 +1,54 @@
 package ru.yandex.yamblz.model;
 
-import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.text.TextUtils;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
- * Created by SerG3z on 07.08.16.
+ * Created by SerG3z on 11.07.16.
  */
-
 public class Artist implements Parcelable {
-    public static final Parcelable.Creator<Artist> CREATOR = new Parcelable.Creator<Artist>() {
+
+    private int id;
+    private String name;
+    private String link;
+    private int tracks;
+    private int albums;
+    private String coverBig;
+    private String coverSmall;
+    private String description;
+    private String genresString;
+
+    public Artist() {
+    }
+
+    public Artist(int id, String name, String link, int tracks, int albums, String coverBig, String coverSmall, String description, String genresString) {
+        this.id = id;
+        this.name = name;
+        this.link = link;
+        this.tracks = tracks;
+        this.albums = albums;
+        this.coverBig = coverBig;
+        this.coverSmall = coverSmall;
+        this.description = description;
+        this.genresString = genresString;
+    }
+
+    protected Artist(Parcel in) {
+        id = in.readInt();
+        name = in.readString();
+        link = in.readString();
+        tracks = in.readInt();
+        albums = in.readInt();
+        coverBig = in.readString();
+        coverSmall = in.readString();
+        description = in.readString();
+        genresString = in.readString();
+    }
+
+    public static final Creator<Artist> CREATOR = new Creator<Artist>() {
         @Override
-        public Artist createFromParcel(Parcel source) {
-            return new Artist(source);
+        public Artist createFromParcel(Parcel in) {
+            return new Artist(in);
         }
 
         @Override
@@ -25,58 +56,9 @@ public class Artist implements Parcelable {
             return new Artist[size];
         }
     };
-    private int id;
-    private String name;
-    private List<String> genres;
-    private Cover cover;
-    private int tracks;
-    private int albums;
-    private String description;
-    private String link;
-
-    private Artist(int id, String name, List<String> genres, Cover cover, int tracks, int albums, String description, String link) {
-        this.id = id;
-        this.name = name;
-        this.genres = genres;
-        this.cover = cover;
-        this.tracks = tracks;
-        this.albums = albums;
-        this.description = description;
-        this.link = link;
-    }
-
-    private Artist(Parcel in) {
-        this.id = in.readInt();
-        this.name = in.readString();
-        this.genres = in.createStringArrayList();
-        this.cover = in.readParcelable(Cover.class.getClassLoader());
-        this.tracks = in.readInt();
-        this.albums = in.readInt();
-        this.description = in.readString();
-        this.link = in.readString();
-    }
-
-    public static Artist getArtistFromCursor(Cursor cursor) {
-        String genresString = cursor.getString(8);
-        List<String> genres = new ArrayList<>(Collections.singletonList(genresString));
-
-        return new Artist.Builder()
-                .setName(cursor.getString(1))
-                .setLink(cursor.getString(2))
-                .setTracks(cursor.getInt(3))
-                .setAlbums(cursor.getInt(4))
-                .setCover(new Cover(cursor.getString(6), cursor.getString(5)))
-                .setDescription(cursor.getString(7))
-                .setGenres(genres)
-                .build();
-    }
 
     public String getDescription() {
         return description;
-    }
-
-    public String getLink() {
-        return link;
     }
 
     public int getTracks() {
@@ -95,12 +77,8 @@ public class Artist implements Parcelable {
         return name;
     }
 
-    public Cover getCover() {
-        return cover;
-    }
-
-    public String getGenres() {
-        return TextUtils.join(", ", genres);
+    public String getLink() {
+        return link;
     }
 
     @Override
@@ -110,73 +88,76 @@ public class Artist implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.id);
-        dest.writeString(this.name);
-        dest.writeStringList(this.genres);
-        dest.writeParcelable(this.cover, flags);
-        dest.writeInt(this.tracks);
-        dest.writeInt(this.albums);
-        dest.writeString(this.description);
-        dest.writeString(this.link);
+        dest.writeInt(id);
+        dest.writeString(name);
+        dest.writeString(link);
+        dest.writeInt(tracks);
+        dest.writeInt(albums);
+        dest.writeString(coverBig);
+        dest.writeString(coverSmall);
+        dest.writeString(description);
+        dest.writeString(genresString);
+    }
+
+    public String getCoverSmall() {
+        return coverSmall;
+    }
+
+    public String getCoverBig() {
+        return coverBig;
+    }
+
+    public String getGenresString() {
+        return genresString;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Artist artist = (Artist) o;
+
+        if (id != artist.id) return false;
+        if (tracks != artist.tracks) return false;
+        if (albums != artist.albums) return false;
+        if (!name.equals(artist.name)) return false;
+        if (!link.equals(artist.link)) return false;
+        if (!coverBig.equals(artist.coverBig)) return false;
+        if (!coverSmall.equals(artist.coverSmall)) return false;
+        if (!description.equals(artist.description)) return false;
+        return genresString.equals(artist.genresString);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + name.hashCode();
+        result = 31 * result + link.hashCode();
+        result = 31 * result + tracks;
+        result = 31 * result + albums;
+        result = 31 * result + coverBig.hashCode();
+        result = 31 * result + coverSmall.hashCode();
+        result = 31 * result + description.hashCode();
+        result = 31 * result + genresString.hashCode();
+        return result;
     }
 
     @Override
     public String toString() {
-        return "Artist: " + name;
-    }
-
-    public static class Builder {
-        private int id;
-        private String name;
-        private List<String> genres;
-        private Cover cover;
-        private int tracks;
-        private int albums;
-        private String description;
-        private String link;
-
-        public Builder setId(int id) {
-            this.id = id;
-            return this;
-        }
-
-        public Builder setName(String name) {
-            this.name = name;
-            return this;
-        }
-
-        public Builder setGenres(List<String> genres) {
-            this.genres = genres;
-            return this;
-        }
-
-        public Builder setCover(Cover cover) {
-            this.cover = cover;
-            return this;
-        }
-
-        public Builder setTracks(int tracks) {
-            this.tracks = tracks;
-            return this;
-        }
-
-        public Builder setAlbums(int albums) {
-            this.albums = albums;
-            return this;
-        }
-
-        public Builder setDescription(String description) {
-            this.description = description;
-            return this;
-        }
-
-        public Builder setLink(String link) {
-            this.link = link;
-            return this;
-        }
-
-        public Artist build() {
-            return new Artist(id, name, genres, cover, tracks, albums, description, link);
-        }
+        return "Artist{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", link='" + link + '\'' +
+                ", tracks=" + tracks +
+                ", albums=" + albums +
+                ", coverBig='" + coverBig + '\'' +
+                ", coverSmall='" + coverSmall + '\'' +
+                ", description='" + description + '\'' +
+                ", genresString='" + genresString + '\'' +
+                '}';
     }
 }
+
+

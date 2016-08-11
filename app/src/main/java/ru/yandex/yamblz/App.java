@@ -11,7 +11,6 @@ import timber.log.Timber;
 public class App extends Application {
     private ApplicationComponent applicationComponent;
 
-    // Prevent need in a singleton (global) reference to the application object.
     @NonNull
     public static App get(@NonNull Context context) {
         return (App) context.getApplicationContext();

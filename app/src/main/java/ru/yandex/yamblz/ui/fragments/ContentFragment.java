@@ -1,6 +1,8 @@
 package ru.yandex.yamblz.ui.fragments;
 
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -12,16 +14,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.pushtorefresh.storio.contentresolver.StorIOContentResolver;
+import com.pushtorefresh.storio.contentresolver.impl.DefaultStorIOContentResolver;
+import com.pushtorefresh.storio.contentresolver.operations.get.DefaultGetResolver;
+import com.pushtorefresh.storio.contentresolver.queries.Query;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import ru.yandex.yamblz.R;
-import ru.yandex.yamblz.manager.DataManager;
 import ru.yandex.yamblz.model.Artist;
-import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 public class ContentFragment extends BaseFragment {
     private static final String TAG_LAST_POSITION = "last_pos";
@@ -33,7 +39,9 @@ public class ContentFragment extends BaseFragment {
     @BindView(R.id.sliding_tabs)
     TabLayout slidingTabLayout;
 
-    private DataManager dataManager;
+    @Inject
+    StorIOContentResolver storIOContentResolver;
+
     private FragmentManager fragmentManager;
     private int orientation;
     private int lastPositionViewPager;
@@ -54,7 +62,6 @@ public class ContentFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         fragmentManager = getChildFragmentManager();
-        dataManager = DataManager.getInstance(getActivity());
         if (savedInstanceState != null) {
             lastPositionViewPager = savedInstanceState.getInt(TAG_LAST_POSITION);
             artistList = savedInstanceState.getParcelableArrayList(TAG_LIST_ARTIST);
@@ -77,16 +84,43 @@ public class ContentFragment extends BaseFragment {
     }
 
     private void loadArtists() {
-        Observable.from(dataManager.getArtistsListCursor())
-                .map(Artist::getArtistFromCursor)
-                .toList()
-                .subscribeOn(Schedulers.io())
+        StorIOContentResolver storIOContentResolver = DefaultStorIOContentResolver.builder()
+                .contentResolver(getContext().getContentResolver())
+                .build();
+
+        storIOContentResolver
+                .get()
+                .listOfObjects(Artist.class)
+                .withQuery(Query.builder()
+                        .uri(Uri.parse("content://" + "ru.yandex.yamblz" + "/artists"))
+                        .build())
+                .withGetResolver(new DefaultGetResolver<Artist>() {
+                    @NonNull
+                    @Override
+                    public Artist mapFromCursor(@NonNull Cursor cursor) {
+                        // не захотелось чтобы storIO генерил автоматически
+                        return new Artist(
+                                cursor.getInt(cursor.getColumnIndex("rowid")),
+                                cursor.getString(cursor.getColumnIndex("name")),
+                                cursor.getString(cursor.getColumnIndex("link")),
+                                cursor.getInt(cursor.getColumnIndex("tracks")),
+                                cursor.getInt(cursor.getColumnIndex("albums")),
+                                cursor.getString(cursor.getColumnIndex("cover_big")),
+                                cursor.getString(cursor.getColumnIndex("cover_small")),
+                                cursor.getString(cursor.getColumnIndex("description")),
+                                cursor.getString(cursor.getColumnIndex("genres_list"))
+                        );
+                    }
+                })
+                .prepare()
+                .asRxObservable()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(artists -> {
                     artistList = new ArrayList<>(artists.size());
                     artistList.addAll(artists);
                     initForOrientation();
                 });
+
     }
 
     private void initForOrientation() {
@@ -111,4 +145,5 @@ public class ContentFragment extends BaseFragment {
         outState.putInt(TAG_LAST_POSITION, lastPositionViewPager);
         outState.putParcelableArrayList(TAG_LIST_ARTIST, (ArrayList<? extends Parcelable>) artistList);
     }
+
 }

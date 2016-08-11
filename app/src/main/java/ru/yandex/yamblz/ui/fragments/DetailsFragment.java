@@ -99,11 +99,11 @@ public class DetailsFragment extends BaseDialogFragment {
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
         Glide.with(this)
-                .load(artist.getCover().getSmall())
+                .load(artist.getCoverSmall())
                 .dontAnimate()
                 .into(imageView);
 
-        typeMusic.setText(artist.getGenres());
+        typeMusic.setText(artist.getGenresString());
         String typeInfoStr = String.valueOf(artist.getAlbums() + artist.getTracks());
         typeInfo.setText(typeInfoStr);
         biographyInfo.setText(artist.getDescription());
