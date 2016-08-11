@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Fragments HW</string>
+    <string name="content">Fragments &amp; Content Provider &amp; SQLite</string>
+    <string name="more">More</string>
+    <string name="biography">Biography</string>
+    <string name="separator">%1$s · %2$s</string>
+</resources>
