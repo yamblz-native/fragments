@@ -72,4 +72,5 @@ public class ApplicationModule {
         Observable<List<Artist>> getArtists();
     }
 
+
 }

@@ -9,13 +9,14 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import ru.aleien.yapplication.model.Artist;
+import ru.yandex.yamblz.model.Artist;
 import rx.Observable;
 
-import static ru.aleien.yapplication.database.DBContract.GenreToArtist.ARTIST_ID;
-import static ru.aleien.yapplication.database.DBContract.GenreToArtist.GENRE_ID;
-import static ru.aleien.yapplication.database.DBContract.GenreToArtist.TABLE;
-import static ru.aleien.yapplication.database.DBContract.allColumns;
+import static ru.yandex.yamblz.database.DBContract.GenreToArtist.ARTIST_ID;
+import static ru.yandex.yamblz.database.DBContract.GenreToArtist.GENRE_ID;
+import static ru.yandex.yamblz.database.DBContract.GenreToArtist.TABLE;
+import static ru.yandex.yamblz.database.DBContract.allColumns;
+
 
 public class DBBackend {
 

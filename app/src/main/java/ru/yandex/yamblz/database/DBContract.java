@@ -1,8 +1,5 @@
 package ru.yandex.yamblz.database;
 
-/**
- * Created by aleien on 08.08.16.
- */
 
 public interface DBContract {
     interface Artists {

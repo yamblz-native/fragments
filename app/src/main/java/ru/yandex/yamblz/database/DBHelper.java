@@ -7,9 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import ru.aleien.yapplication.model.Artist;
-
-import static ru.aleien.yapplication.database.DBContract.DROP_TABLE_IF_EXISTS;
+import static ru.yandex.yamblz.database.DBContract.DROP_TABLE_IF_EXISTS;
 
 @Singleton
 public class DBHelper extends SQLiteOpenHelper {

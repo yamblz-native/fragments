@@ -9,19 +9,15 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
-import ru.aleien.yapplication.database.DBContract;
-import ru.aleien.yapplication.database.DBHelper;
-import ru.aleien.yapplication.model.Artist;
+import ru.yandex.yamblz.database.DBContract;
+import ru.yandex.yamblz.database.DBHelper;
 import timber.log.Timber;
 
-import static ru.aleien.yapplication.database.DBContract.allColumns;
+import static ru.yandex.yamblz.database.DBContract.allColumns;
 
-/**
- * Created by aleien on 10.08.16.
- */
 
 public class ArtistsContentProvider extends ContentProvider {
-    static final String AUTHORITY = "ru.aleien.yapplication.provider";
+    static final String AUTHORITY = "ru.aleien.yapplication.reader.provider";
 
     static final String ARTISTS_PATH = "Artists";
     static final int URI_ARTISTS = 1;
