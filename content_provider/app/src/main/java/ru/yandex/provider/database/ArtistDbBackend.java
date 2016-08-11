@@ -5,10 +5,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.io.Closeable;
+
 /**
  * Created by root on 8/9/16.
  */
-public class ArtistDbBackend implements ArtistDbContract {
+public class ArtistDbBackend implements ArtistDbContract, Closeable {
 
     private ArtistDbOpenHelper dbOpenHelper;
 
@@ -63,6 +65,11 @@ public class ArtistDbBackend implements ArtistDbContract {
         } finally {
             db.endTransaction();
         }
+    }
+
+    @Override
+    public void close() {
+        dbOpenHelper.close();
     }
 
     private void updateArtist(SQLiteDatabase db, ru.yandex.yamblz.artistmodel.Artist artist) {
