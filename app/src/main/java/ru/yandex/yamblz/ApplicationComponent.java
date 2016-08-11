@@ -12,7 +12,6 @@ import ru.yandex.yamblz.developer_settings.DeveloperSettingsComponent;
 import ru.yandex.yamblz.developer_settings.DeveloperSettingsModel;
 import ru.yandex.yamblz.developer_settings.DeveloperSettingsModule;
 import ru.yandex.yamblz.developer_settings.LeakCanaryProxy;
-import ru.yandex.yamblz.ui.activities.MainActivity;
 
 @Singleton
 @Component(modules = {
@@ -35,5 +34,4 @@ public interface ApplicationComponent {
     @NonNull @Named(ApplicationModule.MAIN_THREAD_HANDLER)
     Handler mainThreadHandler();
 
-    void inject(@NonNull MainActivity mainActivity);
 }

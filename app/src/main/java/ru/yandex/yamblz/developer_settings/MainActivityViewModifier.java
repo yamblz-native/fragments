@@ -16,12 +16,12 @@ public class MainActivityViewModifier implements ViewModifier {
     @Override
     public <T extends View> T modify(@NonNull T view) {
         // Basically, what we do here is adding a Developer Setting Fragment to a DrawerLayout!
-        DrawerLayout drawerLayout = (DrawerLayout) view.findViewById(ru.yandex.yamblz.R.id.main_drawer_layout);
-
-        DrawerLayout.LayoutParams layoutParams = new DrawerLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
-        layoutParams.gravity = Gravity.END;
-
-        drawerLayout.addView(LayoutInflater.from(view.getContext()).inflate(ru.yandex.yamblz.R.layout.developer_settings_view, drawerLayout, false), layoutParams);
+//        DrawerLayout drawerLayout = (DrawerLayout) view.findViewById(ru.yandex.yamblz.R.id.main_drawer_layout);
+//
+//        DrawerLayout.LayoutParams layoutParams = new DrawerLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
+//        layoutParams.gravity = Gravity.END;
+//
+//        drawerLayout.addView(LayoutInflater.from(view.getContext()).inflate(ru.yandex.yamblz.R.layout.developer_settings_view, drawerLayout, false), layoutParams);
         return view;
     }
 }
