@@ -38,6 +38,10 @@ buildscript {
 
         // Check latest version of dependencies, task: dependencyUpdates
         classpath gradlePlugins.versions
+
+        classpath "net.ltgt.gradle:gradle-apt-plugin:0.7"
+
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
     }
 
     // Part of workaround for Lint + Retrolambda.

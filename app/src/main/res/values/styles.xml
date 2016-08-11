@@ -13,8 +13,26 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
+
+    <style name="MyTextAppearance"/>
+
+    <style name="MyTextAppearance.BigText">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="MyTextAppearance.SmallDarkText">
+        <item name="android:textColor">@color/ya_dark_gray</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="MyTextAppearance.SmallLightText">
+        <item name="android:textColor">@color/ya_medium_gray</item>
+        <item name="android:textSize">14sp</item>
+    </style>
 
 </resources>

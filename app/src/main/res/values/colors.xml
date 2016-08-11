@@ -3,4 +3,8 @@
     <color name="colorPrimary">#009688</color>
     <color name="colorPrimaryDark">#00796B</color>
     <color name="colorAccent">#03A9F4</color>
+
+    <color name="ya_light_gray">#f2f2f2</color>
+    <color name="ya_medium_gray">#b3b3b3</color>
+    <color name="ya_dark_gray">#999999</color>
 </resources>

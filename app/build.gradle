@@ -5,6 +5,8 @@ apply from: '../code_quality_tools/jacoco.gradle'
 apply plugin: 'com.frogermcs.androiddevmetrics'
 apply from: '../code_quality_tools/quality.gradle'
 apply plugin: 'com.github.ben-manes.versions'
+apply plugin: "net.ltgt.apt"
+apply plugin: 'com.neenbedankt.android-apt'
 
 android {
     // Declared in dependencies.gradle in the root of the project.
@@ -15,7 +17,8 @@ android {
         applicationId 'ru.yandex.yamblz'
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
-        versionCode versions.code // Notice that you may want to use BUILD_NUMBER from CI in real project with own CI.
+        versionCode versions.code
+        // Notice that you may want to use BUILD_NUMBER from CI in real project with own CI.
         versionName versions.name
 
         // Make generated apks contain version name and code.
@@ -81,6 +84,10 @@ android {
         }
     }
 }
+repositories {
+    jcenter()
+    maven { url "https://clojars.org/repo/" }
+}
 
 // Libraries declared in dependencies.gradle in the root of the project
 dependencies {
@@ -104,6 +111,16 @@ dependencies {
     compile libraries.tinyDancer
     compile libraries.lynx
     compile libraries.processPhoenix
+
+    compile "com.google.auto.value:auto-value:1.2"
+    apt "com.google.auto.value:auto-value:1.2"
+
+    apt 'frankiesardo:auto-parcel:1.0.3'
+
+    compile 'com.squareup.picasso:picasso:2.5.2'
+
+    compile 'frankiesardo:icepick:3.2.0'
+    apt 'frankiesardo:icepick-processor:3.2.0'
 
     testCompile libraries.junit
     testCompile libraries.robolectric

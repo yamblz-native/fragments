@@ -3,4 +3,12 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <dimen name="image_view_artist_img_width">108dp</dimen>
+    <dimen name="image_view_artist_img_height">108dp</dimen>
+
+    <dimen name="artist_preview_item_padding">16dp</dimen>
+    <dimen name="artist_img_right_margin">16dp</dimen>
+
+    <dimen name="artist_detail_padding">14dp</dimen>
+    <dimen name="artist_detail_padding_biography">12dp</dimen>
 </resources>
