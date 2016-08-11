@@ -51,7 +51,7 @@ public class GettingArtistsAsyncTask extends AsyncTask<Void, Void, Artist[]> {
 
         Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
 
-        if(cursor == null) {
+        if(cursor == null || cursor.getCount() == 0) {
             return null;
         }
 
