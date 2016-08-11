@@ -46,6 +46,7 @@ public class JsonLoader extends AsyncTaskLoader<List<Singer>> {
         return singers;
     }
 
+
     public List<Singer> getSinger() throws IOException {
         URL url = new URL("http://cache-spb05.cdn.yandex.net/download.cdn.yandex.net/mobilization-2016/artists.json");
         List<Singer> res;

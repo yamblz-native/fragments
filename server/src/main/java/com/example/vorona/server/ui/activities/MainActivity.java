@@ -43,10 +43,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             resulst.setText("Downloaded!");
             DbProvider provider = new DbProvider(this);
             provider.insertListUnique(singerList);
-//            List<Singer> singers = provider.getSingers();
-//            for (Singer singer:singers)
-//                System.out.println(singer.getName());
-//            System.out.println("All");
         }
         else
             resulst.setText("Failed!");

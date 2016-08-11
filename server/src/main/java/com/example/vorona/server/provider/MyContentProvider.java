@@ -12,6 +12,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -39,6 +40,12 @@ public class MyContentProvider extends ContentProvider implements DbContract {
         uriMatcher.addURI(PROVIDER_NAME, ARTISTS+"/#", ART_ID);
     }
 
+    @VisibleForTesting
+    public MyContentProvider(Context context) {
+        dbHelper = new DBHelper(context);
+    }
+
+
     @Override
     public boolean onCreate() {
         Log.w("ContentProvider", "onCreate");
@@ -47,6 +54,8 @@ public class MyContentProvider extends ContentProvider implements DbContract {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         return db != null;
     }
+
+
 
     @Override
     public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
@@ -105,34 +114,28 @@ public class MyContentProvider extends ContentProvider implements DbContract {
     public Cursor query(@NonNull Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
         Log.d("Provider", "query, " + uri.toString());
-
-        switch (uriMatcher.match(uri)) {
-            case ART:
-                Log.d("Provider", "URI_CONTACTS");
-                if (TextUtils.isEmpty(sortOrder)) {
-                    sortOrder = NAME + " ASC";
-                }
-                break;
-            case ART_ID:
-                String id = uri.getLastPathSegment();
-                Log.d("Provider", "URI_CONTACTS_ID, " + id);
-                if (TextUtils.isEmpty(selection)) {
-                    selection = ID + " = " + id;
-                } else {
-                    selection = selection + " AND " + ID + " = " + id;
-                }
-                break;
-            default:
-                throw new IllegalArgumentException("Wrong URI: " + uri);
-        }
+        //Yes, we will ignore all projections and selections and always return whole list
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        Cursor cursor = db.query(ARTISTS, projection, selection,
-                selectionArgs, null, null, sortOrder);
 
-        cursor.setNotificationUri(getContext().getContentResolver(),
-                CONTENT_URI);
-        System.out.println(cursor.getCount());
-        return cursor;
+        String tables = ARTISTS + " LEFT JOIN " + ARTIST_GENRES + " ON " +
+                ARTISTS + "." + Artist.ID + "=" + ARTIST_GENRES + "." + ArtistGenre.ARTIST_ID +
+                " LEFT JOIN " + GENRES + " ON " +
+                GENRES + "." + Genre.ID + "=" + ARTIST_GENRES + "." + ArtistGenre.GENRE_ID;
+
+        String[] columns = new String[]{
+                ARTISTS + "." + Artist.ID,
+                ARTISTS + "." + Artist.NAME,
+                ARTISTS + "." + Artist.TRACKS,
+                ARTISTS + "." + Artist.ALBUM,
+                ARTISTS + "." + Artist.BIO,
+                ARTISTS + "." + Artist.COVER,
+                ARTISTS + "." + Artist.COVER_SMALL,
+                "group_concat" + "(" + GENRES + "." + Genre.GENRE + ", ', ') as " + Artist.GENRES};
+        String groupBy = Artist.NAME;
+        Cursor c = db.query(tables, columns, null, null, groupBy, null, null);
+
+        System.out.println(c.getCount());
+        return c;
     }
 
     @Override

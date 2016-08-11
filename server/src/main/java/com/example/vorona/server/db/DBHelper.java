@@ -34,26 +34,19 @@ public class DBHelper extends SQLiteOpenHelper implements DbContract{
                 + COVER_SMALL + " text"
                 +");");
 
-        db.execSQL("CREATE INDEX idx_" + Artist.ID +
-                " ON " + ARTISTS + "(" + Artist.ID + ")");
-
         db.execSQL("create table " + GENRES + " ("
                 + Genre.ID +" integer primary key autoincrement,"
                 + GENRE + " text"
                 +");");
 
-        db.execSQL("CREATE INDEX idx_genres_" + Genre.ID +
-                " ON " + GENRES + "(" + Genre.ID + ")");
-
         db.execSQL("create table " + ARTIST_GENRES + " ("
-                + ARTIST_ID + " integer,"
-                + GENRE_ID + " integer"
+                + ARTIST_ID + " INTEGER NOT NULL,"
+                + GENRE_ID + " INTEGER NOT NULL,"
+                + "CONSTRAINT new_pk PRIMARY KEY (" + ARTIST_ID + ", " + GENRE_ID +")"
                 +");");
 
         db.execSQL("CREATE INDEX idx_artist_" + ARTIST_ID +
                 " ON " + ARTIST_GENRES + "(" + ARTIST_ID + ")");
-        db.execSQL("CREATE INDEX idx_genre_" + GENRE_ID +
-                " ON " + ARTIST_GENRES + "(" + GENRE_ID + ")");
     }
 
     @Override

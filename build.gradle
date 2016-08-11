@@ -40,6 +40,7 @@ buildscript {
         classpath gradlePlugins.versions
 
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+        classpath 'me.tatarka:gradle-retrolambda:3.2.3'
     }
 
     // Part of workaround for Lint + Retrolambda.

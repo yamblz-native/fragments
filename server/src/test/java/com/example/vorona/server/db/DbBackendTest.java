@@ -1,10 +1,14 @@
 package com.example.vorona.server.db;
 
 
+import android.content.ContentProvider;
+import android.content.ContentResolver;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 
 import com.example.vorona.server.model.Singer;
+import com.example.vorona.server.provider.MyContentProvider;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -26,6 +30,10 @@ import static com.example.vorona.server.db.DbContract.GENRES;
 
 @RunWith(RobolectricTestRunner.class)
 public class DbBackendTest {
+
+    private static final String PROVIDER_NAME = "ru.yandex.yamblz.database";
+    private static final String URL = "content://" + PROVIDER_NAME + "/artists";
+    private static final Uri CONTENT_URI = Uri.parse(URL);
 
     @Test
     public void testInsertSinger() {
@@ -143,34 +151,30 @@ public class DbBackendTest {
         Cursor c = db.query(GENRES, null, null, null, null, null, null);
         Assert.assertEquals(c.getCount(), 1);
         c.close();
-
-        Singer s = dbBackend.getSinger(1);
-        //Check genres
+        ContentProvider provider = new MyContentProvider(RuntimeEnvironment.application);
+        Cursor cursor = provider.query(CONTENT_URI, null, null, null, null);
+        Singer s = new Singer();
+        cursor.moveToFirst();
+        setSinger(s, cursor);
+        cursor.close();
         Assert.assertEquals(g.get(0), s.getGenres().get(0));
-    }
-
-    @Test
-    public void testGetAllSingers() {
-        DBHelper helper = new DBHelper(RuntimeEnvironment.application);
-        SQLiteDatabase db = helper.getWritableDatabase();
-        DbBackend dbBackend = new DbBackend(RuntimeEnvironment.application);
-        List<Singer> singerList = new ArrayList<>();
-        //Empty table, list of singers added
-        Singer singer = new Singer();
-        singer.setName("AAAA");
-        singer.setId(1);
-        Singer singer2 = new Singer();
-        singer2.setName("BBB");
-        singer2.setId(2);
-        singerList.add(singer);
-        singerList.add(singer2);
-        dbBackend.insertList(singerList);
-        List<Singer> s = dbBackend.getSingers();
-        Assert.assertEquals(s.size(), singerList.size());
     }
 
     private int getCount(SQLiteDatabase db, String table) {
         return db.rawQuery("select * from " + table, null).getCount();
+    }
+
+    private void setSinger(Singer singer, Cursor c) {
+        singer.setId(c.getInt(c.getColumnIndex(DbContract.Artist.ID)));
+        singer.setName(c.getString(c.getColumnIndex(DbContract.Artist.NAME)));
+        singer.setBio(c.getString(c.getColumnIndex(DbContract.Artist.BIO)));
+        singer.setAlbums(c.getInt(c.getColumnIndex(DbContract.Artist.ALBUM)));
+        singer.setTracks(c.getInt(c.getColumnIndex(DbContract.Artist.TRACKS)));
+        singer.setCover_big(c.getString(c.getColumnIndex(DbContract.Artist.COVER)));
+        singer.setCover_small(c.getString(c.getColumnIndex(DbContract.Artist.COVER_SMALL)));
+        List<String> g = new ArrayList<>();
+        g.add(c.getString(c.getColumnIndex(DbContract.Artist.GENRES)));
+        singer.setGenres(g);
     }
 
 }

@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'com.android.application' // or apply plugin: 'java'
+apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileSdkVersion 24
@@ -15,6 +17,12 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -37,4 +45,8 @@ dependencies {
     provided 'javax.annotation:jsr250-api:1.0'
     compile 'com.google.android.gms:play-services-appindexing:9.4.0'
     compile 'com.google.guava:guava:19.0'
+    compile 'com.google.auto.value:auto-value:1.2'
+    compile 'com.google.code.gson:gson:2.6.2'
+    compile 'com.squareup.retrofit2:retrofit:2.0.2'
+    compile 'com.squareup.retrofit2:converter-gson:2.0.2'
 }

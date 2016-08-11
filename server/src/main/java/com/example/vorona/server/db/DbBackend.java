@@ -33,58 +33,6 @@ public class DbBackend implements DbContract {
         mDbOpenHelper = new DBHelper(context);
     }
 
-    public List<Singer> getSingers() {
-        SQLiteDatabase db = mDbOpenHelper.getWritableDatabase();
-        List<Singer> singerList = new ArrayList<>();
-        Cursor c = db.query(ARTISTS, null, null, null, null, null, null);
-        if (c.moveToFirst()) {
-            do {
-                Singer singer = new Singer();
-                setSinger(singer, c, db);
-                singerList.add(singer);
-            } while (c.moveToNext());
-        }
-        c.close();
-        return singerList;
-    }
-
-    private void setSinger(Singer singer, Cursor c, SQLiteDatabase db) {
-        singer.setId(c.getInt(c.getColumnIndex(Artist.ID)));
-        singer.setName(c.getString(c.getColumnIndex(Artist.NAME)));
-        singer.setBio(c.getString(c.getColumnIndex(Artist.BIO)));
-        singer.setAlbums(c.getInt(c.getColumnIndex(Artist.ALBUM)));
-        singer.setTracks(c.getInt(c.getColumnIndex(Artist.TRACKS)));
-        singer.setCover_big(c.getString(c.getColumnIndex(Artist.COVER)));
-        singer.setCover_small(c.getString(c.getColumnIndex(Artist.COVER_SMALL)));
-
-        int relativeID = c.getInt(c.getColumnIndex(Artist.LOCAL_ID));
-        List<String> initGenres = new ArrayList<>();
-        Cursor genres = db.rawQuery("SELECT * FROM " + ARTIST_GENRES +
-                        " LEFT JOIN " + GENRES + " ON " + ARTIST_GENRES + "." + ArtistGenre.GENRE_ID + " = " +
-                        GENRES + "." + Genre.ID + " WHERE " + ARTIST_GENRES + "." + ArtistGenre.ARTIST_ID + " = ?",
-                new String[]{Long.toString(relativeID)});
-        if (genres.moveToFirst()) {
-            do {
-                initGenres.add(genres.getString(genres.getColumnIndex(Genre.GENRE)));
-            } while (genres.moveToNext());
-        }
-        genres.close();
-        singer.setGenres(initGenres);
-    }
-
-    public Singer getSinger(int id) {
-        SQLiteDatabase db = mDbOpenHelper.getWritableDatabase();
-        Singer singer = new Singer();
-        Cursor c = db.query(ARTISTS, null, Artist.ID + " = ?",
-                new String[]{Integer.toString(id)}, null, null, null);
-        if (c.moveToFirst()) {
-            setSinger(singer, c, db);
-        }
-        c.close();
-
-        return singer;
-    }
-
     public void insertSinger(Singer singer) {
         SQLiteDatabase db = mDbOpenHelper.getWritableDatabase();
         ContentValues values = createCV(singer);

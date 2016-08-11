@@ -9,17 +9,18 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.yandex.yamblz.db.DbContract;
 import ru.yandex.yamblz.model.Singer;
 
 /**
  * Created by vorona on 19.07.16.
  */
 
-public class ArtistLoader extends AsyncTaskLoader<List<Singer>> {
+public class ArtistLoader extends AsyncTaskLoader<List<Singer>> implements DbContract {
 
-    static final String PROVIDER_NAME = "ru.yandex.yamblz.database";
-    static final String URL = "content://" + PROVIDER_NAME + "/artists";
-    static final Uri CONTENT_URI = Uri.parse(URL);
+    private static final String PROVIDER_NAME = "ru.yandex.yamblz.database";
+    private static final String URL = "content://" + PROVIDER_NAME + "/artists";
+    private static final Uri CONTENT_URI = Uri.parse(URL);
     private List<Singer> singers;
 
     public ArtistLoader(Context context) {
@@ -36,14 +37,14 @@ public class ArtistLoader extends AsyncTaskLoader<List<Singer>> {
             if (c != null && c.moveToFirst()) {
                 do {
                     Singer singer = new Singer();
-                    singer.setId(c.getInt(c.getColumnIndex("id")));
-                    singer.setName(c.getString(c.getColumnIndex("name")));
-                    singer.setBio(c.getString(c.getColumnIndex("bio")));
-                    singer.setAlbums(c.getInt(c.getColumnIndex("albums")));
-                    singer.setTracks(c.getInt(c.getColumnIndex("tracks")));
-                    singer.setCoverBig(c.getString(c.getColumnIndex("cover")));
-                    singer.setGenres(c.getString(c.getColumnIndex("genres")));
-                    singer.setCoverSmall(c.getString(c.getColumnIndex("cover_small")));
+                    singer.setId(c.getInt(c.getColumnIndex(Artist.ID)));
+                    singer.setName(c.getString(c.getColumnIndex(Artist.NAME)));
+                    singer.setBio(c.getString(c.getColumnIndex(Artist.BIO)));
+                    singer.setAlbums(c.getInt(c.getColumnIndex(Artist.ALBUM)));
+                    singer.setTracks(c.getInt(c.getColumnIndex(Artist.TRACKS)));
+                    singer.setCoverBig(c.getString(c.getColumnIndex(Artist.COVER)));
+                    singer.setGenres(c.getString(c.getColumnIndex(Artist.GENRES)));
+                    singer.setCoverSmall(c.getString(c.getColumnIndex(Artist.COVER_SMALL)));
                     singers.add(singer);
                 } while (c.moveToNext());
                 c.close();
