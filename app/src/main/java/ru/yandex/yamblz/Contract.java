@@ -23,5 +23,7 @@ public interface Contract {
         String COLUMN_NAME_DESCRIPTION = "description";
         String COLUMN_NAME_COVER_SMALL = "cover_small";
         String COLUMN_NAME_COVER_BIG = "cover_big";
+
+        String LIST_OF_GENRES = "list_of_genres";
     }
 }

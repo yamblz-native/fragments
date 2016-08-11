@@ -18,7 +18,7 @@ import ru.yandex.yamblz.model.Cover;
  * Created by Aleksandra on 07/08/16.
  */
 public class MyLoader extends AsyncTaskLoader<List<Artist>> {
-    private static final String BASE_URI = "content://com.bobrusha.android.yandex.content_provider_server.content_provider.MyProvider/artist";
+    private static final String BASE_URI = "content://com.bobrusha.android.yandex.content_provider_server.content_provider.ArtistsContentProvider/artist";
     public static final String DEBUG_TAG = MyLoader.class.getName();
 
     @Override
@@ -52,7 +52,7 @@ public class MyLoader extends AsyncTaskLoader<List<Artist>> {
 
 
     public static Artist getArtistFromCursor(Cursor c) {
-        String[] genres = c.getString(c.getColumnIndex(Contract.ArtistEntry.COLUMN_NAME_GENRES)).split(", ", -1);
+        String[] genres = c.getString(c.getColumnIndex(Contract.ArtistEntry.LIST_OF_GENRES)).split(",", -1);
 
         Cover cover = Cover.builder()
                 .smallCover(c.getString(c.getColumnIndex(Contract.ArtistEntry.COLUMN_NAME_COVER_SMALL)))

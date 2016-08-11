@@ -38,6 +38,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
     }
 
     public void setDataset(List<Artist> artists) {
+        Timber.d("Size of dataset %d", artists.size());
         dataset = artists;
         notifyDataSetChanged();
     }
