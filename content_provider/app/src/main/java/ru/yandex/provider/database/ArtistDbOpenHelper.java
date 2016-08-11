@@ -20,7 +20,6 @@ public class ArtistDbOpenHelper extends SQLiteOpenHelper implements ArtistDbCont
         super.onConfigure(db);
         db.setForeignKeyConstraintsEnabled(true);
         db.enableWriteAheadLogging();
-        db.beginTransactionNonExclusive();
     }
 
     @Override
