@@ -52,7 +52,8 @@ public abstract class ArtistsFragment extends BaseFragment implements ArtistClic
         artistsProvider.getArtists()
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(t -> Timber.e("getArtists"))
-                .subscribe(artists -> showContent(artists, this));
+                .subscribe(artists -> showContent(artists, this),
+                        t -> Timber.e(t + "getArtistsFromWeb"));
     }
 
     @Override

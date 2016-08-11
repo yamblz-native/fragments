@@ -27,8 +27,7 @@ public class ArtistTabFragment extends BaseFragment {
     @BindBool(R.bool.is_tablet) boolean isTablet;
 
     @Arg
-    @NonNull
-    Artist artist;  // Студия подчеркивает, что not initialized. Как тут быть?
+    Artist artist;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
