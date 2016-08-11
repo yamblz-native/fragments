@@ -61,8 +61,6 @@ public class ArtistProvider extends ContentProvider {
                 throw new IllegalArgumentException("Wrong URI: " + uri.toString());
         }
 
-        cursor.setNotificationUri(getContext().getContentResolver(), uri);
-
         Log.d("contentproviderapp", "" + cursor.getColumnIndex(ArtistDbContract.Genre.GENRE_NAME));
 
         return cursor;

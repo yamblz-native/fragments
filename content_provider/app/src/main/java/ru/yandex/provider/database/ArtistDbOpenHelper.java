@@ -18,8 +18,9 @@ public class ArtistDbOpenHelper extends SQLiteOpenHelper implements ArtistDbCont
     @Override
     public void onConfigure(SQLiteDatabase db) {
         super.onConfigure(db);
-        db.rawQuery("PRAGMA foreign_keys = ON", null);
-        db.rawQuery("PRAGMA journal_mode = WAL", null);
+        db.setForeignKeyConstraintsEnabled(true);
+        db.enableWriteAheadLogging();
+        db.beginTransactionNonExclusive();
     }
 
     @Override
@@ -41,13 +42,10 @@ public class ArtistDbOpenHelper extends SQLiteOpenHelper implements ArtistDbCont
             ArtistGenre.ARTIST_ID + " INTEGER REFERENCES " + ARTIST + "(" + Artist.ID + "), " +
             ArtistGenre.GENRE_ID + " INTEGER REFERENCES " + GENRE + "(" + Genre.ID + ") " + ")");
 
-        db.execSQL("CREATE INDEX " + ARTIST + "_idx_" + Artist.NAME +
-            " ON " + ARTIST + "(" + Artist.NAME + ")");
-
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        throw new IllegalStateException("onUpgrade() method is not implemented!");
     }
 }

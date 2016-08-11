@@ -50,7 +50,7 @@ public class ArtistDbBackend implements ArtistDbContract, Closeable {
 
     public void insertArtist(ru.yandex.yamblz.artistmodel.Artist artist) {
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
-        db.beginTransaction();
+        db.beginTransactionNonExclusive();
         try {
             Long artistId = queryArtistByName(db, artist.getName());
             if (artistId == null) {
