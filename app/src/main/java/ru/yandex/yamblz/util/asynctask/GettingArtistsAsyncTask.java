@@ -23,22 +23,24 @@ public class GettingArtistsAsyncTask extends AsyncTask<Void, Void, Artist[]> {
     private static final String ARTIST_PATH = "artist";
     private static final String SCHEME = "content";
 
-    private final Runnable before;
-    private final Consumer<Artist[]> after;
+    private final Runnable onStart;
+    private final Consumer<Artist[]> onFinish;
+    private final Runnable onError;
     private Context context;
 
-    public GettingArtistsAsyncTask(Runnable before, Consumer<Artist[]> after, Context context) {
+    public GettingArtistsAsyncTask(Runnable onStart, Consumer<Artist[]> onFinish, Runnable onError, Context context) {
 
-        this.before = before;
-        this.after = after;
+        this.onStart = onStart;
+        this.onFinish = onFinish;
+        this.onError = onError;
         this.context = context.getApplicationContext();
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        if(before != null) {
-            before.run();
+        if(onStart != null) {
+            onStart.run();
         }
     }
 
@@ -48,6 +50,10 @@ public class GettingArtistsAsyncTask extends AsyncTask<Void, Void, Artist[]> {
         List<Artist> artists = new ArrayList<>();
 
         Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
+
+        if(cursor == null) {
+            return null;
+        }
 
         try {
             cursor.moveToFirst();
@@ -65,9 +71,14 @@ public class GettingArtistsAsyncTask extends AsyncTask<Void, Void, Artist[]> {
     @Override
     protected void onPostExecute(Artist[] artists) {
         super.onPostExecute(artists);
-
-        if(after != null) {
-            after.apply(artists);
+        if(artists != null) {
+            if (onFinish != null) {
+                onFinish.apply(artists);
+            }
+        } else {
+            if (onError != null) {
+                onError.run();
+            }
         }
     }
 }

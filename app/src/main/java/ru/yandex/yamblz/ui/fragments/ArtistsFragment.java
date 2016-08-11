@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import icepick.Icepick;
@@ -66,6 +67,11 @@ public class ArtistsFragment extends BaseFragment {
 
     }
 
+    private void onErrorLoading() {
+        progressBar.setVisibility(View.GONE);
+        Toast.makeText(getContext(), getContext().getResources().getString(R.string.nodata), Toast.LENGTH_SHORT).show();
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -76,7 +82,7 @@ public class ArtistsFragment extends BaseFragment {
 
         if(artists == null) {
             cancelLoading();
-            gettingArtistsAsyncTask = new GettingArtistsAsyncTask(this::showProgress, this::setupPager, getContext());
+            gettingArtistsAsyncTask = new GettingArtistsAsyncTask(this::showProgress, this::setupPager, this::onErrorLoading, getContext());
             gettingArtistsAsyncTask.execute();
         } else {
             setupPager(artists);

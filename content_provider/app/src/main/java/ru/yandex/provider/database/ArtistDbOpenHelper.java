@@ -13,11 +13,13 @@ public class ArtistDbOpenHelper extends SQLiteOpenHelper implements ArtistDbCont
 
     public ArtistDbOpenHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
+        context.deleteDatabase(DB_NAME);
     }
 
     @Override
     public void onConfigure(SQLiteDatabase db) {
         super.onConfigure(db);
+
         db.setForeignKeyConstraintsEnabled(true);
         db.enableWriteAheadLogging();
     }

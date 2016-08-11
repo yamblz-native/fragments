@@ -6,4 +6,5 @@
     <string name="official_site">Официальный сайт</string>
     <string name="artist_photo_transition_name">artist_photo</string>
     <string name="select_artist">Выберите исполнителя</string>
+    <string name="nodata">Произошла ошибка при загрузке данных</string>
 </resources>

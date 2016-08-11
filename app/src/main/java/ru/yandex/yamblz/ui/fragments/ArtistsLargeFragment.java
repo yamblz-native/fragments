@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import ru.yandex.yamblz.R;
@@ -46,6 +47,11 @@ public class ArtistsLargeFragment extends BaseFragment {
         progressBar.setVisibility(View.VISIBLE);
     }
 
+    private void onErrorLoading() {
+        progressBar.setVisibility(View.GONE);
+        Toast.makeText(getContext(), getContext().getResources().getString(R.string.nodata), Toast.LENGTH_SHORT).show();
+    }
+
     private void cancelLoading() {
         if(gettingArtistsAsyncTask != null) {
             gettingArtistsAsyncTask.cancel(true);
@@ -62,7 +68,7 @@ public class ArtistsLargeFragment extends BaseFragment {
 
         if(artists == null) {
             cancelLoading();
-            gettingArtistsAsyncTask = new GettingArtistsAsyncTask(this::showProgress, this::setupRecycler, getContext());
+            gettingArtistsAsyncTask = new GettingArtistsAsyncTask(this::showProgress, this::setupRecycler, this::onErrorLoading, getContext());
             gettingArtistsAsyncTask.execute();
         } else {
             setupRecycler(artists);
