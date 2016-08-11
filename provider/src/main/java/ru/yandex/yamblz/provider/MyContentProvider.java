@@ -19,6 +19,7 @@ import ru.yandex.yamblz.service.YandexArtistApi;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+import timber.log.Timber;
 
 /**
  * Created by SerG3z on 06.08.16.
@@ -96,10 +97,12 @@ public class MyContentProvider extends ContentProvider {
                 .subscribe(new Subscriber<List<Artist>>() {
                     @Override
                     public void onCompleted() {
+                        Timber.d("Данные добавлены");
                     }
 
                     @Override
                     public void onError(Throwable e) {
+                        Timber.d("Произошла ошибка при загрузке с сервера");
                     }
 
                     @Override
