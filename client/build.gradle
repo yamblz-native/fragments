@@ -98,6 +98,10 @@ dependencies {
 
     compile libraries.timber
 
+    compile 'com.facebook.fresco:fresco:0.9.0'
+    compile 'com.hannesdorfmann.fragmentargs:annotation:3.0.2'
+    apt 'com.hannesdorfmann.fragmentargs:processor:3.0.2'
+
     // Developer tools (Developer Settings)
     compile libraries.stetho
     compile libraries.leakCanary

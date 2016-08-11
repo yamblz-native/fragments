@@ -1,5 +1,6 @@
 package ru.yandex.yamblz.euv.shared.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import java.util.List;
  * Data model.
  * Used both in Provider (as output of JSON parser) and Client.
  */
-public class Artist {
+public class Artist implements Serializable {
     private int id;
     private String name;
     private List<String> genres = new ArrayList<>();

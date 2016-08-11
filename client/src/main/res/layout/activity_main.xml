@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include layout="@layout/toolbar" />
+        <!--<include layout="@layout/toolbar" />-->
 
         <FrameLayout
             android:id="@+id/main_frame_layout"
@@ -20,5 +20,5 @@
             android:layout_weight="1" />
 
     </LinearLayout>
-    
+
 </android.support.v4.widget.DrawerLayout>

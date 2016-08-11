@@ -26,7 +26,7 @@ public class DbInflater {
     public void inflate(SQLiteDatabase db) {
         ArrayList<Artist> artists = loadArtistList();
         if (artists == null || artists.isEmpty()) {
-            Timber.e("There is no artists to fill the database");
+            Timber.e("There are no artists to fill the database");
             return;
         }
 

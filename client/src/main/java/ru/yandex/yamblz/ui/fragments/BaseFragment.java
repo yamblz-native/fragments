@@ -9,6 +9,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
+import com.hannesdorfmann.fragmentargs.FragmentArgs;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import ru.yandex.yamblz.App;
@@ -18,6 +20,12 @@ public abstract class BaseFragment extends Fragment {
 
     private Handler mainThreadHandler;
     private Unbinder viewBinder;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        FragmentArgs.inject(this);
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -44,7 +52,7 @@ public abstract class BaseFragment extends Fragment {
         }
     }
 
-    private boolean isFragmentAlive() {
+    protected boolean isFragmentAlive() {
         return getActivity() != null && isAdded() && !isDetached() && getView() != null && !isRemoving();
     }
 
