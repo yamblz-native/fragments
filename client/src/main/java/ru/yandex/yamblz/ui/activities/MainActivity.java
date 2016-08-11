@@ -13,6 +13,7 @@ import ru.yandex.yamblz.R;
 import ru.yandex.yamblz.developer_settings.DeveloperSettingsModule;
 import ru.yandex.yamblz.euv.shared.model.Artist;
 import ru.yandex.yamblz.ui.adapters.RecyclerAdapter.ArtistSelectedListener;
+import ru.yandex.yamblz.ui.fragments.ArtistInfoFull;
 import ru.yandex.yamblz.ui.fragments.ArtistInfoFullBuilder;
 import ru.yandex.yamblz.ui.fragments.ArtistInfoShortBuilder;
 import ru.yandex.yamblz.ui.fragments.ArtistListRecyclerFragment;
@@ -59,15 +60,16 @@ public class MainActivity extends BaseActivity implements MoreButtonClickListene
     public void onMoreButtonClicked(Artist artist) {
         if (isDestroyed()) return;
 
+        ArtistInfoFull artistInfoFull = new ArtistInfoFullBuilder(artist).build();
         if (singlePaneLayout) {
             getSupportFragmentManager()
                     .beginTransaction()
                     .setCustomAnimations(fade_in, fade_out, fade_in, fade_out)
-                    .add(R.id.single_pane_container, new ArtistInfoFullBuilder(artist).build())
+                    .add(R.id.single_pane_container, artistInfoFull)
                     .addToBackStack(null)
                     .commit();
         } else {
-            // TODO Show Dialog Fragment
+            artistInfoFull.show(getSupportFragmentManager(), null);
         }
     }
 

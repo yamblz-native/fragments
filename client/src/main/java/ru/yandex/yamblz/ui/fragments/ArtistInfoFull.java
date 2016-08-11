@@ -18,7 +18,7 @@ import ru.yandex.yamblz.euv.shared.model.Artist;
 import ru.yandex.yamblz.ui.views.SquareDraweeView;
 
 @FragmentWithArgs
-public class ArtistInfoFull extends BaseFragment {
+public class ArtistInfoFull extends BaseDialogFragment {
 
     @Arg Artist artist;
 
