@@ -71,6 +71,4 @@ public class ApplicationModule {
         @GET("artists.json")
         Observable<List<Artist>> getArtists();
     }
-
-
 }

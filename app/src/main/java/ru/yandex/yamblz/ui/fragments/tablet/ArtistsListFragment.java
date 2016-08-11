@@ -1,6 +1,9 @@
 package ru.yandex.yamblz.ui.fragments.tablet;
 
+import android.database.ContentObserver;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -78,5 +81,4 @@ public class ArtistsListFragment extends ArtistsFragment implements ArtistClickH
                 setFragment(new ArtistTabFragmentBuilder(currentArtist).build());
         }
     }
-
 }
