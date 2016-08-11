@@ -36,62 +36,89 @@ public class DbBackend implements DbContract {
     public void insertSinger(Singer singer) {
         SQLiteDatabase db = mDbOpenHelper.getWritableDatabase();
         ContentValues values = createCV(singer);
-        db.insert(ARTISTS, null, values);
-        //inserting genres
-        for (String g : singer.getGenres()) {
-            ContentValues genre = new ContentValues();
-            genre.put(Genre.GENRE, g);
-            db.insert(GENRES, null, genre);
-        }
-
-        //lets take artist from table by its id and get his local id
-        Cursor artist = db.query(ARTISTS, null, Artist.ID + " = ?",
-                new String[]{Long.toString(singer.getId())}, null, null, null);
-
-        if (artist.moveToFirst()) {
-            int relative_id = artist.getInt(artist.getColumnIndex(Artist.LOCAL_ID));
-
+        db.beginTransaction();
+        try {
+            db.insert(ARTISTS, null, values);
+            //inserting genres
             for (String g : singer.getGenres()) {
-                //take genre's id
-                Cursor genre = db.query(GENRES, null, Genre.GENRE + " = ?",
-                        new String[]{g}, null, null, null);
-                if (genre.moveToFirst()) {
-                    //insert pair of artist and genre
-                    int genre_id = genre.getInt(genre.getColumnIndex(Genre.ID));
-                    ContentValues artistGenre = new ContentValues();
-                    artistGenre.put(ArtistGenre.ARTIST_ID, relative_id);
-                    artistGenre.put(ArtistGenre.GENRE_ID, genre_id);
-                    db.insert(ARTIST_GENRES, null, artistGenre);
-                }
-                genre.close();
+                ContentValues genre = new ContentValues();
+                genre.put(Genre.GENRE, g);
+                db.insert(GENRES, null, genre);
             }
-        } else {
-            Log.w("DbBackend", "Inserted but didn't find later");
+
+            //lets take artist from table by its id and get his local id
+            Cursor artist = db.query(ARTISTS, null, Artist.ID + " = ?",
+                    new String[]{Long.toString(singer.getId())}, null, null, null);
+
+            if (artist.moveToFirst()) {
+                int relative_id = artist.getInt(artist.getColumnIndex(Artist.LOCAL_ID));
+
+                for (String g : singer.getGenres()) {
+                    //take genre's id
+                    Cursor genre = db.query(GENRES, null, Genre.GENRE + " = ?",
+                            new String[]{g}, null, null, null);
+                    if (genre.moveToFirst()) {
+                        //insert pair of artist and genre
+                        int genre_id = genre.getInt(genre.getColumnIndex(Genre.ID));
+                        ContentValues artistGenre = new ContentValues();
+                        artistGenre.put(ArtistGenre.ARTIST_ID, relative_id);
+                        artistGenre.put(ArtistGenre.GENRE_ID, genre_id);
+                        db.insert(ARTIST_GENRES, null, artistGenre);
+                    }
+                    genre.close();
+                }
+                db.setTransactionSuccessful();
+                artist.close();
+            } else {
+                Log.w("DbBackend", "Inserted but didn't find later");
+            }
+        } finally {
+            db.endTransaction();
         }
-        artist.close();
     }
 
     public void insertSingerUnique(Singer singer) {
         SQLiteDatabase db = mDbOpenHelper.getWritableDatabase();
         ContentValues values = createCV(singer);
-        Cursor presence = db.query(ARTISTS, null, Artist.NAME + " = ?",
-                new String[]{singer.getName()}, null, null, null);
-        if (presence.moveToFirst()) {
-            presence.close();
-            return;
+        db.beginTransaction();
+        try {
+            Cursor presence = db.query(ARTISTS, null, Artist.NAME + " = ?",
+                    new String[]{singer.getName()}, null, null, null);
+            if (presence.moveToFirst()) {
+                presence.close();
+                db.setTransactionSuccessful();
+                return;
+            }
+            db.insert(ARTISTS, null, values);
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
         }
-        db.insert(ARTISTS, null, values);
     }
 
     public void insertList(List<Singer> singers) {
-        for (Singer singer : singers) {
-            insertSinger(singer);
+        SQLiteDatabase db = mDbOpenHelper.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            for (Singer singer : singers) {
+                insertSinger(singer);
+            }
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
         }
     }
 
     public void insertListUnique(List<Singer> singers) {
-        for (Singer singer : singers) {
-            insertSingerUnique(singer);
+        SQLiteDatabase db = mDbOpenHelper.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            for (Singer singer : singers) {
+                insertSingerUnique(singer);
+            }
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
         }
     }
 
