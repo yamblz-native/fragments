@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">Yamblz</string>
-    <string name="content">Hello</string>
+    <string name="artist_photo">Artist photo</string>
+    <string name="biography">Biography</string>
+    <string name="music_info" formatted="false">%d albums · %d songs</string>
+    <string name="item_music_info" formatted="false">%d albums, %d songs</string>
+
+    <string name="alert_dialog_ok">OK</string>
+    <string name="more">MORE</string>
 </resources>
