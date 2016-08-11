@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import butterknife.BindView;
 import ru.yandex.yamblz.R;
@@ -21,6 +22,7 @@ import ru.yandex.yamblz.util.asynctask.GettingArtistsAsyncTask;
 public class ArtistsLargeFragment extends BaseFragment {
 
     @BindView(R.id.artist_list) RecyclerView recyclerView;
+    @BindView(R.id.progress) ProgressBar progressBar;
 
     private RecyclerView.Adapter adapter;
 
@@ -40,6 +42,10 @@ public class ArtistsLargeFragment extends BaseFragment {
         cancelLoading();
     }
 
+    private void showProgress() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
     private void cancelLoading() {
         if(gettingArtistsAsyncTask != null) {
             gettingArtistsAsyncTask.cancel(true);
@@ -56,7 +62,7 @@ public class ArtistsLargeFragment extends BaseFragment {
 
         if(artists == null) {
             cancelLoading();
-            gettingArtistsAsyncTask = new GettingArtistsAsyncTask(null, this::setupRecycler, getContext());
+            gettingArtistsAsyncTask = new GettingArtistsAsyncTask(this::showProgress, this::setupRecycler, getContext());
             gettingArtistsAsyncTask.execute();
         } else {
             setupRecycler(artists);
@@ -81,6 +87,7 @@ public class ArtistsLargeFragment extends BaseFragment {
 
         recyclerView.setAdapter(adapter);
 
+        progressBar.setVisibility(View.GONE);
     }
 
 }
