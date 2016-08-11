@@ -10,12 +10,19 @@ import javax.inject.Named;
 import ru.yandex.yamblz.App;
 import ru.yandex.yamblz.R;
 import ru.yandex.yamblz.developer_settings.DeveloperSettingsModule;
+import ru.yandex.yamblz.euv.shared.model.Artist;
+import ru.yandex.yamblz.ui.fragments.ArtistFullInfoBuilder;
 import ru.yandex.yamblz.ui.fragments.ArtistListTabFragment;
+import ru.yandex.yamblz.ui.fragments.ArtistShortInfo.MoreButtonClickListener;
 import ru.yandex.yamblz.ui.other.ViewModifier;
 
-public class MainActivity extends BaseActivity {
+import static android.R.anim.fade_in;
+import static android.R.anim.fade_out;
 
-    @Inject @Named(DeveloperSettingsModule.MAIN_ACTIVITY_VIEW_MODIFIER)
+public class MainActivity extends BaseActivity implements MoreButtonClickListener {
+
+    @Inject
+    @Named(DeveloperSettingsModule.MAIN_ACTIVITY_VIEW_MODIFIER)
     ViewModifier viewModifier;
 
     @SuppressLint("InflateParams") // It's okay in our case.
@@ -32,5 +39,18 @@ public class MainActivity extends BaseActivity {
                     .replace(R.id.main_frame_layout, new ArtistListTabFragment())
                     .commit();
         }
+    }
+
+
+    @Override
+    public void onMoreButtonClicked(Artist artist) {
+        if (isDestroyed()) return;
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(fade_in, fade_out, fade_in, fade_out)
+                .add(R.id.main_frame_layout, new ArtistFullInfoBuilder(artist).build())
+                .addToBackStack(null)
+                .commit();
     }
 }

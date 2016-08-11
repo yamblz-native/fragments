@@ -1,0 +1,64 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ru.yandex.yamblz.ui.views.SquareDraweeView
+            android:id="@+id/cover"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            app:useLargerSide="true"/>
+
+        <TextView
+            android:id="@+id/name"
+            style="@style/Subheading"
+            android:layout_below="@id/cover"
+            android:layout_marginLeft="@dimen/text_default_padding"
+            android:layout_marginRight="@dimen/text_default_padding"
+            android:layout_marginTop="10dp"
+            android:textSize="24sp"/>
+
+        <TextView
+            android:id="@+id/genres"
+            style="@style/SecondaryText"
+            android:layout_below="@id/name"
+            android:layout_marginLeft="@dimen/text_default_padding"
+            android:layout_marginRight="@dimen/text_default_padding"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:id="@+id/albums_and_tracks"
+            style="@style/SecondaryText"
+            android:layout_below="@id/genres"
+            android:layout_marginLeft="@dimen/text_default_padding"
+            android:layout_marginRight="@dimen/text_default_padding"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:id="@+id/biography"
+            style="@style/Subheading"
+            android:layout_below="@id/albums_and_tracks"
+            android:layout_marginLeft="@dimen/text_default_padding"
+            android:layout_marginRight="@dimen/text_default_padding"
+            android:layout_marginTop="@dimen/text_default_padding"
+            android:text="@string/biography"/>
+
+        <TextView
+            android:id="@+id/description"
+            style="@style/PrimaryText"
+            android:layout_below="@id/biography"
+            android:layout_marginBottom="@dimen/text_default_padding"
+            android:layout_marginLeft="@dimen/text_default_padding"
+            android:layout_marginRight="@dimen/text_default_padding"
+            android:layout_marginTop="10dp"/>
+
+    </RelativeLayout>
+
+</ScrollView>
