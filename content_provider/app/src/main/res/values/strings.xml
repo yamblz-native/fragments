@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">ArtistProvider</string>
+    <string name="content">This app contains database with artists and content provider to provide them</string>
+</resources>

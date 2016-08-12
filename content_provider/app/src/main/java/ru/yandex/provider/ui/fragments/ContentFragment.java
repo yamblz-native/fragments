@@ -1,4 +1,4 @@
-package ru.yandex.yamblz.ui.fragments;
+package ru.yandex.provider.ui.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import ru.yandex.yamblz.R;
+import ru.yandex.provider.R;
 
 public class ContentFragment extends BaseFragment {
     @NonNull

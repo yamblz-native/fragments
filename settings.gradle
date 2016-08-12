@@ -1,1 +1,2 @@
-include ':app'
+include ':app', ':artistmodel'
+project(':artistmodel').projectDir = new File('artist_model/artistmodel')

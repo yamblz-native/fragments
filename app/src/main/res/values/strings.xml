@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">Yamblz</string>
     <string name="content">Hello</string>
+    <string name="more">Подробнее</string>
+    <string name="bio">Биография</string>
+    <string name="official_site">Официальный сайт</string>
+    <string name="artist_photo_transition_name">artist_photo</string>
+    <string name="select_artist">Выберите исполнителя</string>
+    <string name="nodata">Произошла ошибка при загрузке данных</string>
 </resources>
