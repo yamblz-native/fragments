@@ -55,15 +55,12 @@ public class BardListPresenter extends Presenter<BardListContract.BardListView> 
     @NonNull
     @RxLogObservable
     private Observable<List<BardUI>> getBardListObservable() {
-        return Observable.merge(Observable.just(null), view().clickRefresh())
+        return Observable.merge(Observable.just(null))
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext(v -> view().showLoading(true))
                 .observeOn(Schedulers.io())
                 .flatMap(aVoid -> bardRepository.getAllBards().toObservable())
                 .observeOn(AndroidSchedulers.mainThread())
-                //.retryWhen(errors -> errors.doOnNext(t-> view().showRetryError(true))
-                //            .flatMap(o -> view().clickRetry())
-                //            .flatMap(r -> (r)? Observable.just(r): errors))
                 .observeOn(Schedulers.computation())
                 .map(bards -> bardUIMapper.improove(bards))
                 .observeOn(AndroidSchedulers.mainThread())

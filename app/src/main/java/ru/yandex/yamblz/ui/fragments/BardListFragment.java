@@ -88,25 +88,6 @@ public class BardListFragment extends BaseFragment implements BardListContract.B
         applicationComponent.plus(FragmentArgumentModule.empty()).inject(this);
     }
 
-    @Override
-    public Observable<Void> clickRefresh() {
-        return Observable.never();
-    }
-
-    @Override
-    public Observable<BardUI> clickOnBard() {
-        return Observable.never();
-    }
-
-    @Override
-    public Observable<Boolean> clickRetry() {
-        return Observable.never();
-    }
-
-    @Override
-    public void showRetryError(boolean isShow) {
-
-    }
 
     @Override
     public void showData(List<BardUI> data) {

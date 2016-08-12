@@ -14,10 +14,6 @@ import rx.Observable;
 public final class BardListContract extends BaseContract {
 
     public interface BardListView extends MvpView {
-        Observable<Void> clickRefresh();
-        Observable<BardUI> clickOnBard();
-        Observable<Boolean> clickRetry();
-        void showRetryError(boolean isShow);
         void showData(List<BardUI> data);
     }
 

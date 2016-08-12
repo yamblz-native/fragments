@@ -13,11 +13,16 @@
         <item quantity="many">%d песен</item>
         <item quantity="two">%d песни</item>
         <item quantity="few">%d песни</item>
+        <item quantity="zero">%d песен</item>
+        <item quantity="other">%d песен</item>
     </plurals>
     <plurals name="plur_albums">
+        <item quantity="other">%d альбомов</item>
         <item quantity="many">%d альбомов</item>
         <item quantity="one">%d альбом</item>
         <item quantity="two">%d альбома</item>
         <item quantity="few">%d альбома</item>
+        <item quantity="zero">%d альбомов</item>
+
     </plurals>
 </resources>

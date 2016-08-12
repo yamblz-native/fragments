@@ -70,26 +70,6 @@ public class BardViewPagerFragment extends BaseFragment
     }
 
     @Override
-    public Observable<Void> clickRefresh() {
-        return null;
-    }
-
-    @Override
-    public Observable<BardUI> clickOnBard() {
-        return null;
-    }
-
-    @Override
-    public Observable<Boolean> clickRetry() {
-        return null;
-    }
-
-    @Override
-    public void showRetryError(boolean isShow) {
-
-    }
-
-    @Override
     public void showData(List<BardUI> data) {
         bardPagerAdapter = new BardPagerAdapter(getChildFragmentManager(), data);
         vpContent.setAdapter(bardPagerAdapter);
