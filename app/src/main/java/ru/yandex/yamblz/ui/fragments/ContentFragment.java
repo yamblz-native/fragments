@@ -113,7 +113,7 @@ public class ContentFragment extends BaseFragment {
                     @Override
                     public Artist mapFromCursor(@NonNull Cursor cursor) {
                         // не захотелось чтобы storIO генерил автоматически
-                        Artist artist = new Artist(
+                        return new Artist(
                                 cursor.getInt(cursor.getColumnIndex("rowid")),
                                 cursor.getString(cursor.getColumnIndex("name")),
                                 cursor.getString(cursor.getColumnIndex("link")),
@@ -124,8 +124,6 @@ public class ContentFragment extends BaseFragment {
                                 cursor.getString(cursor.getColumnIndex("description")),
                                 cursor.getString(cursor.getColumnIndex("genres_list"))
                         );
-                        cursor.close();
-                        return artist;
                     }
                 })
                 .prepare()
