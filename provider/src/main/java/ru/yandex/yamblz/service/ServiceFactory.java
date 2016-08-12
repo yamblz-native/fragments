@@ -1,5 +1,6 @@
 package ru.yandex.yamblz.service;
 
+import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -19,7 +20,11 @@ public class ServiceFactory {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
+                .addInterceptor(logging);
+
         Retrofit retrofit = builder
+                .client(httpClient.build())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
 

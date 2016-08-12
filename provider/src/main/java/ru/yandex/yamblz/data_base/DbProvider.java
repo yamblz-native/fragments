@@ -36,18 +36,8 @@ public class DbProvider {
     }
 
     public void addArtistsList(final List<Artist> artistList) {
-        executor.execute(() -> {
-            dbBackend.addArtistsList(artistList);
-        });
+        executor.execute(() -> dbBackend.addArtistsList(artistList));
     }
-
-    // чет не получилось
-//    public void clear() {
-//        executor.execute(() -> {
-//            dbBackend.clear();
-//            dbNotificationManager.notifyListeners();
-//        });
-//    }
 
     private class CustomExecutor extends ThreadPoolExecutor {
         CustomExecutor() {

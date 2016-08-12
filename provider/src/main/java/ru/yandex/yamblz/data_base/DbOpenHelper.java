@@ -8,6 +8,7 @@ class DbOpenHelper extends SQLiteOpenHelper implements DbContract {
 
     private static final int DB_VERSION = 12;
     private static final String SQL_CREATE_ARTISTS = "CREATE TABLE " + ARTISTS + "(" +
+            Artists.ID + " INTEGER PRIMARY KEY," +
             Artists.NAME + " TEXT UNIQUE NOT NULL, " +
             Artists.LINK + " TEXT, " +
             Artists.TRACKS + " INTEGER NOT NULL, " +
@@ -16,9 +17,11 @@ class DbOpenHelper extends SQLiteOpenHelper implements DbContract {
             Artists.COVER_SMALL + " TEXT, " +
             Artists.DESCRIPTION + " TEXT" + ")";
     private static final String SQL_CREATE_GENRES = "CREATE TABLE " + ARTISTS_GENRES + "(" +
+            ArtistsGenres.ID + " INTEGER PRIMARY KEY," +
             ArtistsGenres.ARTIST_ID + " INTEGER NOT NULL, " +
             ArtistsGenres.GENRE_ID + " INTEGER NOT NULL" + ")";
     private static final String SQL_CREATE_ARTIST_GENRE = "CREATE TABLE " + GENRES + "(" +
+            Genres.ID + " INTEGER PRIMARY KEY," +
             Genres.NAME + " TEXT NOT NULL UNIQUE" + ")";
 
     public DbOpenHelper(Context context) {
@@ -30,6 +33,12 @@ class DbOpenHelper extends SQLiteOpenHelper implements DbContract {
         db.execSQL(SQL_CREATE_ARTISTS);
         db.execSQL(SQL_CREATE_ARTIST_GENRE);
         db.execSQL(SQL_CREATE_GENRES);
+    }
+
+    @Override
+    public void onConfigure(SQLiteDatabase db) {
+        super.onConfigure(db);
+        setWriteAheadLoggingEnabled(true);
     }
 
     @Override

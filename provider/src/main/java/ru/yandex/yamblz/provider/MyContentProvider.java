@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import ru.yandex.yamblz.data_base.DbProvider;
-import ru.yandex.yamblz.data_base.FakeContainer;
 import ru.yandex.yamblz.model.Artist;
 import ru.yandex.yamblz.service.ServiceFactory;
 import ru.yandex.yamblz.service.YandexArtistApi;
@@ -27,13 +26,15 @@ import timber.log.Timber;
 
 public class MyContentProvider extends ContentProvider {
     private static final String AUTHORITY = "ru.yandex.yamblz";
+    private static final String CONTENT = "content://";
+    private static final String ARTISTS_PATH = "artists";
     private static final int ARTISTS_URI_CODE = 1;
     private static final UriMatcher uriMatcher;
     private DbProvider provider;
 
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI(AUTHORITY, "artists", ARTISTS_URI_CODE);
+        uriMatcher.addURI(AUTHORITY, ARTISTS_PATH, ARTISTS_URI_CODE);
     }
 
     public Cursor query(@NonNull Uri uri, String[] projection, String selection,
@@ -54,7 +55,7 @@ public class MyContentProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        provider = FakeContainer.getProviderInstance(getContext());
+        provider = new DbProvider(getContext());
         saveArtistsInDataBase();
         return false;
     }
@@ -88,7 +89,7 @@ public class MyContentProvider extends ContentProvider {
     }
 
     //скачиваю через rx и пишу в базу
-    private void saveArtistsInDataBase() {
+    public void saveArtistsInDataBase() {
         YandexArtistApi yandexArtistApi = ServiceFactory.createService(YandexArtistApi.class);
         yandexArtistApi
                 .getListArtist()
@@ -98,16 +99,19 @@ public class MyContentProvider extends ContentProvider {
                     @Override
                     public void onCompleted() {
                         Timber.d("Данные добавлены");
+                        getContext().getContentResolver().notifyChange(Uri.parse(CONTENT + AUTHORITY + "/" + ARTISTS_PATH), null);
+                        Timber.d("Кинул нотификацию");
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Timber.d("Произошла ошибка при загрузке с сервера");
+                        Timber.d("Произошла ошибка при загрузке с сервера" + e.getMessage());
                     }
 
                     @Override
                     public void onNext(List<Artist> artists) {
                         provider.addArtistsList(artists);
+                        Timber.d("Данные получены");
                     }
                 });
     }

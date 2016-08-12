@@ -16,7 +16,6 @@ class DbBackend implements DbContract {
 
     DbBackend(Context context) {
         mDbOpenHelper = new DbOpenHelper(context);
-        mDbOpenHelper.setWriteAheadLoggingEnabled(true);
     }
 
     @VisibleForTesting
@@ -26,9 +25,9 @@ class DbBackend implements DbContract {
 
     public Cursor getArtistsList() {
         SQLiteDatabase db = mDbOpenHelper.getWritableDatabase();
-        String tables = ARTISTS + " INNER JOIN " + ARTISTS_GENRES + " ON " +
+        String tables = ARTISTS + " LEFT JOIN " + ARTISTS_GENRES + " ON " +
                 ARTISTS + "." + Artists.ID + "=" + ARTISTS_GENRES + "." + ArtistsGenres.ARTIST_ID +
-                " INNER JOIN " + GENRES + " ON " +
+                " LEFT JOIN " + GENRES + " ON " +
                 ARTISTS_GENRES + "." + ArtistsGenres.GENRE_ID + "=" + GENRES + "." + Genres.ID;
 
         String[] columns = new String[]{
@@ -130,9 +129,4 @@ class DbBackend implements DbContract {
                 Genres.NAME + "=?", new String[]{genre}, null, null, null);
         return DbUtils.getResultLongAndClose(c);
     }
-
-//    public void clear() {
-//        SQLiteDatabase db = mDbOpenHelper.getWritableDatabase();
-//        mDbOpenHelper.onUpgrade(db, 12, 12);
-//    }
 }
