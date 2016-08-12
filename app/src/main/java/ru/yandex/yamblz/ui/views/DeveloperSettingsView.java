@@ -3,8 +3,9 @@ package ru.yandex.yamblz.ui.views;
 import android.support.annotation.NonNull;
 
 import ru.yandex.yamblz.performance.AnyThread;
+import ru.yandex.yamblz.ui.contcract.BaseContract;
 
-public interface DeveloperSettingsView {
+public interface DeveloperSettingsView extends BaseContract.MvpView {
 
     @AnyThread
     void changeBuildVersionCode(@NonNull String versionCode);

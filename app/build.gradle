@@ -1,10 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.neenbedankt.android-apt'
-apply from: '../code_quality_tools/jacoco.gradle'
 apply plugin: 'com.frogermcs.androiddevmetrics'
-apply from: '../code_quality_tools/quality.gradle'
-apply plugin: 'com.github.ben-manes.versions'
+apply plugin: 'com.fernandocejas.frodo'
 
 android {
     // Declared in dependencies.gradle in the root of the project.
@@ -20,6 +18,8 @@ android {
 
         // Make generated apks contain version name and code.
         archivesBaseName = "app-${versions.name}-${versions.code}"
+
+        multiDexEnabled true
     }
 
     compileOptions {
@@ -71,6 +71,7 @@ android {
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/LICENSE.txt'
         exclude 'META-INF/services/javax.annotation.processing.Processor'
+        exclude 'project.clj'
     }
 
     // This allows us see tests execution progress in the output on the CI.
@@ -82,10 +83,36 @@ android {
     }
 }
 
+repositories {
+    jcenter()
+    maven {url "https://clojars.org/repo/"}
+    maven { url "https://jitpack.io" }
+}
+
 // Libraries declared in dependencies.gradle in the root of the project
 dependencies {
     compile libraries.dagger
     apt libraries.daggerCompiler
+    compile 'com.hannesdorfmann.fragmentargs:annotation:3.0.2'
+    apt 'com.hannesdorfmann.fragmentargs:processor:3.0.2'
+    compile 'com.google.code.gson:gson:2.7'
+    compile "frankiesardo:auto-parcel:1.0.3"
+    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'io.reactivex:rxjava:1.1.8'
+    compile 'com.github.pakoito:RxTuples:1.0.0'
+    compile 'com.pushtorefresh.storio:content-resolver:1.10.0'
+
+    compile'com.android.support.constraint:constraint-layout:1.0.0-alpha4'
+    compile 'com.joanzapata.iconify:android-iconify-fontawesome:2.2.2' // (v4.5)
+    compile "com.squareup.retrofit2:retrofit:2.0.0"
+    compile "com.squareup.retrofit2:converter-gson:2.0.0"
+    compile "com.squareup.retrofit2:adapter-rxjava:2.0.0"
+    compile 'frankiesardo:icepick:3.2.0'
+    provided 'frankiesardo:icepick-processor:3.2.0'
+
+    compile 'com.facebook.fresco:fresco:0.12.0'
+    compile 'org.greenrobot:eventbus:3.0.0'
+
 
     compile libraries.supportAnnotations
     compile libraries.supportAppCompat
@@ -105,6 +132,9 @@ dependencies {
     compile libraries.lynx
     compile libraries.processPhoenix
 
+    testCompile('com.github.peter-tackage.assert-rx:assert-rx:0.9.6-beta'){
+        exclude module: 'rxjava'
+    }
     testCompile libraries.junit
     testCompile libraries.robolectric
     testCompile libraries.assertJ

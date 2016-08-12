@@ -24,6 +24,7 @@ import butterknife.BindView;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import ru.yandex.yamblz.App;
+import ru.yandex.yamblz.ApplicationComponent;
 import ru.yandex.yamblz.R;
 import ru.yandex.yamblz.performance.AnyThread;
 import ru.yandex.yamblz.ui.presenters.DeveloperSettingsPresenter;
@@ -55,7 +56,12 @@ public class DeveloperSettingsFragment extends BaseFragment implements Developer
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        App.get(getContext()).applicationComponent().plusDeveloperSettingsComponent().inject(this);
+
+    }
+
+    @Override
+    protected void setUpComponent(ApplicationComponent applicationComponent) {
+        applicationComponent.plusDeveloperSettingsComponent().inject(this);
     }
 
     @NonNull

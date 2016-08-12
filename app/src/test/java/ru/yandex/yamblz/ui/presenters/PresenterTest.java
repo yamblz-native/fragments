@@ -3,16 +3,18 @@ package ru.yandex.yamblz.ui.presenters;
 import org.junit.Before;
 import org.junit.Test;
 
+import ru.yandex.yamblz.ui.contcract.BaseContract;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.failBecauseExceptionWasNotThrown;
 
 public class PresenterTest {
-    private Presenter<Object> presenter;
-    private Object view;
+    private Presenter<BaseContract.MvpView> presenter;
+    private BaseContract.MvpView view;
 
     @Before
     public void beforeEachTest() {
-        view = new Object();
+        view = isLoading -> {};
         presenter = new Presenter<>();
     }
 
@@ -27,7 +29,7 @@ public class PresenterTest {
         presenter.bindView(view);
 
         try {
-            presenter.bindView(new Object());
+            presenter.bindView(isLoading -> {});
             failBecauseExceptionWasNotThrown(IllegalStateException.class);
         } catch (IllegalStateException expected) {
             assertThat(expected).hasMessage("Previous view is not unbounded! previousView = " + view);
@@ -51,7 +53,7 @@ public class PresenterTest {
     @Test
     public void unbindView_shouldThrowIfPreviousViewIsNotSameAsExpected() {
         presenter.bindView(view);
-        Object unexpectedView = new Object();
+        BaseContract.MvpView unexpectedView = isLoading -> {};
 
         try {
             presenter.unbindView(unexpectedView);

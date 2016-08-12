@@ -1,0 +1,91 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'com.fernandocejas.frodo'
+
+android {
+    compileSdkVersion versions.compileSdk
+    buildToolsVersion versions.buildTools
+
+    defaultConfig {
+        applicationId "ru.yamblz.netizen.provider"
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.targetSdk
+        versionCode 1
+        versionName "1.0"
+
+        // Make generated apks contain version name and code.
+        archivesBaseName = "app-${versions.name}-${versions.code}"
+
+        multiDexEnabled true
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        debug {
+
+            applicationIdSuffix '.debug_provider'
+
+            // Enables code coverage with Jacoco only for instrumentation tests.
+            // Coverage for JVM tests done by code_quality_tools/jacoco.gradle.
+            testCoverageEnabled true
+        }
+
+        release {
+
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt')
+
+            // Enables code coverage with Jacoco only for instrumentation tests.
+            // Coverage for JVM tests done by code_quality_tools/jacoco.gradle.
+            testCoverageEnabled true
+        }
+    }
+
+    lintOptions {
+        warningsAsErrors true
+        abortOnError true // Fail early.
+
+        disable 'GoogleAppIndexingWarning' // App does not have deep linking.
+        disable 'InvalidPackage' // Okio references java.nio that does not presented in Android SDK.
+    }
+
+    packagingOptions {
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
+        exclude 'project.clj'
+    }
+
+    // This allows us see tests execution progress in the output on the CI.
+    testOptions.unitTests.all {
+        testLogging {
+            events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
+            exceptionFormat 'full'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    apt      "com.google.auto.value:auto-value:1.2"
+    provided "com.google.auto.value:auto-value:1.2"
+
+    apt 'com.gabrielittner.auto.value:auto-value-cursor:1.0.0-rc1'
+// if you need the @ColumnName or @ColumnAdapter annotations also include this:
+    compile 'com.gabrielittner.auto.value:auto-value-cursor-annotations:1.0.0-rc1'
+    apt 'com.ryanharter.auto.value:auto-value-gson:0.4.2'
+    provided 'com.ryanharter.auto.value:auto-value-gson:0.4.2'
+    compile 'com.google.code.gson:gson:2.7'
+
+    compile libraries.timber
+
+
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:appcompat-v7:24.1.1'
+    testCompile 'junit:junit:4.12'
+}
