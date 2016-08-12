@@ -42,10 +42,10 @@ public class BardRepository implements IBardRepository {
 
     @NonNull
     @Override
-    public Single<Genre> getGenreById(long idGenre) {
+    public Single<String> getGenreById(long idGenre) {
         return getAllGenres()
                 .flatMapObservable(Observable::from)
-                .first(g-> g.id() == idGenre)
+                .first(g-> g.hashCode() == idGenre)
                 .switchIfEmpty(Observable.error(new NotFoundException("Not found genre by id = " + idGenre)))
                 .toSingle();
     }
@@ -57,7 +57,7 @@ public class BardRepository implements IBardRepository {
         return dataSource.getAllBards()
                 .observeOn(Schedulers.computation())
                 .flatMapObservable(Observable::from)
-                .filter(g-> containsGenreWithId(g.getGenres(), idGenre))
+                .filter(g-> containsGenreWithId(g.genres(), idGenre))
                 .switchIfEmpty(Observable.error(new NotFoundException("Not found bard by " + idGenre)))
                 .toList()
                 .toSingle();
@@ -66,11 +66,11 @@ public class BardRepository implements IBardRepository {
     @NonNull
     @Override
     @RxLogObservable
-    public Single<List<Pair<Genre, List<Bard>>>> getAllBardsByGenre() {
+    public Single<List<Pair<String, List<Bard>>>> getAllBardsByGenre() {
         return dataSource.getAllBards()
                 .observeOn(Schedulers.computation())
                 .flatMapObservable(Observable::from)
-                .flatMap(bard -> Observable.from(bard.getGenres())
+                .flatMap(bard -> Observable.from(bard.genres())
                         .map(it-> Pair.with(it,bard)))
                 .groupBy(Pair::getValue0)
                 .flatMap(genrePair -> genrePair
@@ -84,20 +84,20 @@ public class BardRepository implements IBardRepository {
 
     @NonNull
     @Override
-    public Single<List<Genre>> getAllGenres() {
+    public Single<List<String>> getAllGenres() {
         return dataSource.getAllBards()
                 .observeOn(Schedulers.computation())
                 .flatMapObservable(Observable::from)
-                .flatMap(b->Observable.from(b.getGenres()))
+                .flatMap(b->Observable.from(b.genres()))
                 .switchIfEmpty(Observable.error(new NotFoundException("Not found genres")))
                 .distinct()
                 .toList()
                 .toSingle();
     }
 
-    private boolean containsGenreWithId(List<Genre> data, long idGenre){
-        for (Genre g : data){
-            if (g.id() == idGenre) return true;
+    private boolean containsGenreWithId(List<String> data, long idGenre){
+        for (String g : data){
+            if (g.hashCode() == idGenre) return true;
         }
         return false;
     }

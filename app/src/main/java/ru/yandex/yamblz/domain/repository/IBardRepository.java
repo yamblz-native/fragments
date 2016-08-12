@@ -18,8 +18,8 @@ import rx.Single;
 public interface IBardRepository {
     @NonNull Single<List<Bard>> getAllBards();
     @NonNull Single<Bard> getBardById(long idBard);
-    @NonNull Single<Genre> getGenreById(long idGenre);
+    @NonNull Single<String> getGenreById(long idGenre);
     @NonNull Single<List<Bard>> getAllBardByGenre(long idGenre);
-    @NonNull Single<List<Pair<Genre, List<Bard>>>> getAllBardsByGenre();
-    @NonNull Single<List<Genre>> getAllGenres();
+    @NonNull Single<List<Pair<String, List<Bard>>>> getAllBardsByGenre();
+    @NonNull Single<List<String>> getAllGenres();
 }

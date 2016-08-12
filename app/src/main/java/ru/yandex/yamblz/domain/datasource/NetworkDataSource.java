@@ -34,7 +34,7 @@ public class NetworkDataSource implements IDataSource {
     public Single<Bard> getBardById(long idBard) {
         return getAllBards()
                 .flatMapObservable(Observable::from)
-                .filter(bard -> bard.getId() == idBard)
+                .filter(bard -> bard.id() == idBard)
                 .toSingle();
     }
 }

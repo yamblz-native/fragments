@@ -1,8 +1,11 @@
 package ru.yandex.yamblz.di.module;
 
+import android.app.Application;
+
 import dagger.Module;
 import dagger.Provides;
 import ru.yandex.yamblz.domain.datasource.BardService;
+import ru.yandex.yamblz.domain.datasource.ContentProviderDataSource;
 import ru.yandex.yamblz.domain.datasource.IDataSource;
 import ru.yandex.yamblz.domain.datasource.NetworkDataSource;
 import ru.yandex.yamblz.domain.mapper.Mapper;
@@ -16,7 +19,7 @@ import ru.yandex.yamblz.domain.model.core.Bard;
 public class DataSourceModule {
 
     @Provides
-    IDataSource provideDataSource(BardService bardService, Mapper<NetBard, Bard> mapper){
-        return new NetworkDataSource(bardService, mapper);
+    IDataSource provideDataSource(Application application){
+        return new ContentProviderDataSource(application.getContentResolver());
     }
 }

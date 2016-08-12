@@ -16,18 +16,15 @@ public class BardMapper extends BaseMapper<Bard, BardUI> {
     @Override
     public BardUI improove(Bard bard) {
         BardUI.Builder builder = BardUI.builder();
-        builder.id(bard.getId());
-        builder.name(bard.getName());
-        builder.description(bard.getDescription());
-        builder.albums(bard.getAlbums());
-        builder.tracks(bard.getTracks());
-        builder.bigImage(bard.getBigImage());
-        builder.smallImage(bard.getSmallImage());
-        builder.link(bard.getLink());
-        List<String> genres = new ArrayList<>(bard.getGenres().size());
-        for (Genre g: bard.getGenres())
-            genres.add(g.name());
-        builder.genres(Collections.unmodifiableList(genres));
+        builder.id(bard.id());
+        builder.name(bard.name());
+        builder.description(bard.description());
+        builder.albums(bard.albums());
+        builder.tracks(bard.tracks());
+        builder.bigImage(bard.bigImage());
+        builder.smallImage(bard.smallImage());
+        builder.link(bard.link());
+        builder.genres(Collections.unmodifiableList(bard.genres()));
         return builder.build();
     }
 }
