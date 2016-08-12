@@ -1,9 +1,11 @@
 package ru.yandex.yamblz.ui.fragments;
 
 import android.content.res.Configuration;
+import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -28,6 +30,7 @@ import butterknife.BindView;
 import ru.yandex.yamblz.R;
 import ru.yandex.yamblz.model.Artist;
 import rx.android.schedulers.AndroidSchedulers;
+import timber.log.Timber;
 
 public class ContentFragment extends BaseFragment {
     private static final String TAG_LAST_POSITION = "last_pos";
@@ -61,6 +64,16 @@ public class ContentFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        //получаю уведомление из провайдера и обновляю данные
+        getContext().getContentResolver().registerContentObserver(Uri.parse("content://" + "ru.yandex.yamblz" + "/artists"), true, new ContentObserver(new Handler()) {
+            @Override
+            public void onChange(boolean selfChange) {
+                super.onChange(selfChange);
+                loadArtists();
+            }
+        });
+
         fragmentManager = getChildFragmentManager();
         if (savedInstanceState != null) {
             lastPositionViewPager = savedInstanceState.getInt(TAG_LAST_POSITION);
@@ -84,6 +97,7 @@ public class ContentFragment extends BaseFragment {
     }
 
     private void loadArtists() {
+        Timber.d("refresh");
         StorIOContentResolver storIOContentResolver = DefaultStorIOContentResolver.builder()
                 .contentResolver(getContext().getContentResolver())
                 .build();
@@ -99,7 +113,7 @@ public class ContentFragment extends BaseFragment {
                     @Override
                     public Artist mapFromCursor(@NonNull Cursor cursor) {
                         // не захотелось чтобы storIO генерил автоматически
-                        return new Artist(
+                        Artist artist = new Artist(
                                 cursor.getInt(cursor.getColumnIndex("rowid")),
                                 cursor.getString(cursor.getColumnIndex("name")),
                                 cursor.getString(cursor.getColumnIndex("link")),
@@ -110,6 +124,8 @@ public class ContentFragment extends BaseFragment {
                                 cursor.getString(cursor.getColumnIndex("description")),
                                 cursor.getString(cursor.getColumnIndex("genres_list"))
                         );
+                        cursor.close();
+                        return artist;
                     }
                 })
                 .prepare()
@@ -120,7 +136,6 @@ public class ContentFragment extends BaseFragment {
                     artistList.addAll(artists);
                     initForOrientation();
                 });
-
     }
 
     private void initForOrientation() {
