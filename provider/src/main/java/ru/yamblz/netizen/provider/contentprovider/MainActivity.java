@@ -20,7 +20,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Timber.d("Start");
         Cursor query = getContentResolver().query(Uri.parse(ProviderContract.BARD_URI), null, null, null, null);
-        Cursor query2 = getContentResolver().query(Uri.parse(ProviderContract.BARD_URI_BY_ID + 2765181), null, null, null, null);
         Timber.d("Cursor " + (query != null));
     }
 }
