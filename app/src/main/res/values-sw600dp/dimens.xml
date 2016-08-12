@@ -1,0 +1,3 @@
+<resources>
+    <bool name="flag_page_dialog_fragment">true</bool>
+</resources>
