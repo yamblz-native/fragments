@@ -1,6 +1,5 @@
 package ru.yandex.yamblz.ui.fragments;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,7 +14,6 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import butterknife.BindView;
-import icepick.Icepick;
 import icepick.State;
 import ru.yandex.yamblz.R;
 import ru.yandex.yamblz.artistmodel.Artist;
@@ -62,20 +60,30 @@ public class ArtistsFragment extends BaseFragment {
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
 
-        progressBar.setVisibility(View.GONE);
         viewPager.setVisibility(View.VISIBLE);
+        hideProgress();
 
     }
 
-    private void onErrorLoading() {
+    private void hideProgress() {
         progressBar.setVisibility(View.GONE);
+    }
+
+    private void onErrorLoading() {
         Toast.makeText(getContext(), getContext().getResources().getString(R.string.nodata), Toast.LENGTH_SHORT).show();
+        hideProgress();
     }
 
     @Override
     public void onResume() {
         super.onResume();
         loadData();
+    }
+
+    private void cancelLoading() {
+        if(gettingArtistsAsyncTask != null) {
+            gettingArtistsAsyncTask.cancel(true);
+        }
     }
 
     private void loadData() {
@@ -93,11 +101,5 @@ public class ArtistsFragment extends BaseFragment {
     public void onPause() {
         super.onPause();
         cancelLoading();
-    }
-
-    private void cancelLoading() {
-        if(gettingArtistsAsyncTask != null) {
-            gettingArtistsAsyncTask.cancel(true);
-        }
     }
 }

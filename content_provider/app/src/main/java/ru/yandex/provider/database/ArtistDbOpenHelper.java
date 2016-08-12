@@ -13,7 +13,6 @@ public class ArtistDbOpenHelper extends SQLiteOpenHelper implements ArtistDbCont
 
     public ArtistDbOpenHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
-        context.deleteDatabase(DB_NAME);
     }
 
     @Override

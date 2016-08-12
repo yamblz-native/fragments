@@ -1,5 +1,6 @@
 package ru.yandex.yamblz.ui.fragments;
 
+import android.content.Context;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -48,13 +49,11 @@ public class ArtistTabFragment extends BaseFragment implements View.OnClickListe
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
+    public void onAttach(Context context) {
+        super.onAttach(context);
         if(!(getActivity() instanceof OnDetailClickListener)) {
             throw new IllegalStateException("Host activity must implement " + OnDetailClickListener.class.getCanonicalName());
         }
-
     }
 
     @Override
