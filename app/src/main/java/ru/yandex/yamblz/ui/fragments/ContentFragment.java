@@ -15,6 +15,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.pushtorefresh.storio.contentresolver.StorIOContentResolver;
 import com.pushtorefresh.storio.contentresolver.impl.DefaultStorIOContentResolver;
@@ -30,7 +31,6 @@ import butterknife.BindView;
 import ru.yandex.yamblz.R;
 import ru.yandex.yamblz.model.Artist;
 import rx.android.schedulers.AndroidSchedulers;
-import timber.log.Timber;
 
 public class ContentFragment extends BaseFragment {
     private static final String TAG_LAST_POSITION = "last_pos";
@@ -71,6 +71,7 @@ public class ContentFragment extends BaseFragment {
             public void onChange(boolean selfChange) {
                 super.onChange(selfChange);
                 loadArtists();
+                Toast.makeText(getActivity(), "Данные обновлены !!! ", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -97,8 +98,7 @@ public class ContentFragment extends BaseFragment {
     }
 
     private void loadArtists() {
-        Timber.d("refresh");
-        StorIOContentResolver storIOContentResolver = DefaultStorIOContentResolver.builder()
+        storIOContentResolver = DefaultStorIOContentResolver.builder()
                 .contentResolver(getContext().getContentResolver())
                 .build();
 
@@ -158,5 +158,4 @@ public class ContentFragment extends BaseFragment {
         outState.putInt(TAG_LAST_POSITION, lastPositionViewPager);
         outState.putParcelableArrayList(TAG_LIST_ARTIST, (ArrayList<? extends Parcelable>) artistList);
     }
-
 }
