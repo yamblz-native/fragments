@@ -17,8 +17,8 @@ public interface ArtistsContract
     String TYPE_ARTISTS_ITEM = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/vnd." + CONTENT_AUTHORITY + "." + PATH_ARTISTS;
 
     String COLUMN_ARTIST_ID = "artist_id";
-    String COLUMN_ARTIST_NAME = "name";
-    String COLUMN_GENRES = "genres";
+    String COLUMN_ARTIST_NAME = "artist_name";
+    String COLUMN_GENRES = "genre";
     String COLUMN_TRACKS = "tracks";
     String COLUMN_ALBUMS = "albums";
     String COLUMN_DESC = "description";
