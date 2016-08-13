@@ -16,7 +16,6 @@ import ru.yandex.yamblz.homework.Injection;
 import ru.yandex.yamblz.homework.artists.adapter.ArtistsAdapter;
 import ru.yandex.yamblz.homework.artists.interfaces.ArtistsPresenter;
 import ru.yandex.yamblz.homework.artists.interfaces.ArtistsView;
-import ru.yandex.yamblz.homework.artists.interfaces.FragmentTransactionManager;
 import ru.yandex.yamblz.homework.artists.interfaces.ToolbarProvider;
 import ru.yandex.yamblz.homework.base.BaseFragment;
 import ru.yandex.yamblz.homework.data.entity.Artist;
@@ -115,6 +114,6 @@ public class ArtistsListFragment extends BaseFragment implements ArtistsView,
     public void onItemClick(View view, int position)
     {
         Artist artist = artistsAdapter.getList().get(position);
-        getFragmentTransactionManager().replaceFragment(ArtistsFragment.newInstance(artist), false);
+        getFragmentTransactionManager().replaceFragmentWithoutBackStack(ArtistsFragment.newInstance(artist));
     }
 }

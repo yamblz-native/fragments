@@ -31,46 +31,55 @@ public class ArtistsActivity extends AppCompatActivity implements ToolbarProvide
 
         if (savedInstanceState == null)
         {
-            if (!twoPanel) addFragment(ViewPagerFragment.newInstance());
+            if (!twoPanel) addFragmentWithoutBackStack(ViewPagerFragment.newInstance());
         }
-    }
-
-
-    @Override
-    public void addFragment(Fragment fragment, boolean toBackStack)
-    {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.add(R.id.content_fragment, fragment);
-        if (toBackStack) transaction.addToBackStack(null);
-        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        transaction.commit();
     }
 
     @Override
     public void addFragment(Fragment fragment)
     {
-        addFragment(fragment, false);
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.content_fragment, fragment)
+                .addToBackStack(null)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .commit();
     }
 
     @Override
-    public void replaceFragment(Fragment fragment, boolean toBackStack)
+    public void addFragmentWithoutBackStack(Fragment fragment)
     {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.content_fragment, fragment);
-        if (toBackStack) transaction.addToBackStack(null);
-        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        transaction.commit();
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.content_fragment, fragment)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .commit();
+    }
+
+    @Override
+    public void replaceFragment(Fragment fragment)
+    {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.content_fragment, fragment)
+                .addToBackStack(null)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .commit();
+    }
+
+    @Override
+    public void replaceFragmentWithoutBackStack(Fragment fragment)
+    {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.content_fragment, fragment)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .commit();
     }
 
     @Override
     public void removeFragment(Fragment fragment)
     {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.remove(fragment);
-        transaction.commit();
+        getSupportFragmentManager().beginTransaction()
+                .remove(fragment)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
+                .commit();
     }
 
     @Override
@@ -79,7 +88,6 @@ public class ArtistsActivity extends AppCompatActivity implements ToolbarProvide
         switch (item.getItemId())
         {
             case android.R.id.home:
-                updateToolbar(getString(R.string.app_name));
                 onBackPressed();
                 return true;
         }
@@ -99,5 +107,12 @@ public class ArtistsActivity extends AppCompatActivity implements ToolbarProvide
     public void updateToolbar(String title)
     {
         updateToolbar(title, false);
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+        updateToolbar(getString(R.string.app_name));
     }
 }
