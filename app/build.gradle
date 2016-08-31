@@ -12,7 +12,7 @@ android {
     buildToolsVersion versions.buildTools
 
     defaultConfig {
-        applicationId 'ru.yandex.yamblz'
+        applicationId 'ru.yandex.yamblz.postnov'
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
         versionCode versions.code // Notice that you may want to use BUILD_NUMBER from CI in real project with own CI.
@@ -92,6 +92,11 @@ dependencies {
     compile libraries.supportDesign
     compile libraries.supportRecyclerView
     compile libraries.supportCardView
+
+    compile libraries.glide
+
+    compile libraries.rxAndroid
+    compile libraries.storeio
 
     compile libraries.butterKnife
     apt libraries.butterKnifeCompiler
